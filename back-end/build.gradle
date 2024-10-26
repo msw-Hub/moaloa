@@ -24,11 +24,18 @@ repositories {
 }
 
 dependencies {
+	//spring boot web
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	//aop
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+	//security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	//lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	//JPA, Mysql
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	runtimeOnly 'com.mysql:mysql-connector-j'
 }
 
 tasks.named('test') {
