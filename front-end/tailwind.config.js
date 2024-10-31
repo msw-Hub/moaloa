@@ -8,6 +8,7 @@ export default {
       colors: {
         bgdark: "#303030",
         ctdark: "#424242",
+        bddark: "#808080",
         light: "#f5f5f5",
         hover: "#f0f0f0",
       },
