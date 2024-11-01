@@ -36,6 +36,8 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	// 크롤링을 위한 Selinium 의존성
 	implementation 'org.seleniumhq.selenium:selenium-java:4.25.0'
+	// 크롤링을 위한 json
+	implementation 'org.json:json:20211205'
 }
 
 tasks.named('test') {

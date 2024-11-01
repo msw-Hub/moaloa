@@ -1,18 +1,29 @@
 package moaloa.store.back_end.crawling;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.Duration;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CrawlingService {
+
+    private final CrawlingRepository crawlingRepository;
 
     public void crawlAndClick() {
         System.setProperty("webdriver.chrome.driver", "C://Users//swmoo//Downloads//chromedriver.exe"); // 여기에 실제 경로를 입력하세요.
@@ -60,7 +71,6 @@ public class CrawlingService {
             String[] engraveOptionIds = {
                     "headlessui-listbox-option-:r13:", // 각인 옵션 1
                     "headlessui-listbox-option-:r17:", // 각인 옵션 2
-                    // (필요한 각인 옵션 ID 추가)
             };
 
             // 각 직업 옵션 ID 순회하면서 클릭
@@ -99,6 +109,201 @@ public class CrawlingService {
                             try {
                                 String name = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath))).getText();
                                 System.out.println("Info for engrave option " + engraveId + ": " + name);
+
+                                // db저장
+                                String characterClassName = null;
+                                String engraveName = null;
+
+                                if(jobId.equals("headlessui-listbox-option-:r8:")) {
+                                    characterClassName = "디스트로이어";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "분노의망치";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "중력수련";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:r9:")) {
+                                    characterClassName = "워로드";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "고독한기사";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "전투태세";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:ra:")) {
+                                    characterClassName = "버서커";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "광기";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "광전사의비기";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:rb:")) {
+                                    characterClassName = "홀리나이트";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "심판자";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "축복의오라";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:rc:")) {
+                                    characterClassName = "슬레이어";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "처단자";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "포식자";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:rd:")) {
+                                    characterClassName = "스트라이커";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "오의난무";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "일격필살";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:re:")) {
+                                    characterClassName = "브레이커";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "권왕파천무";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "수라의길";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:rf:")) {
+                                    characterClassName = "배틀마스터";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "오의강화";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "초심";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:rg:")) {
+                                    characterClassName = "인파이터";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "체술";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "충격단련";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:rh:")) {
+                                    characterClassName = "기공사";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "세맥타통";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "역천지체";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:ri:")) {
+                                    characterClassName = "기공사";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "절정";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "절제";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:rj:")) {
+                                    characterClassName = "데빌헌터";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "강화무기";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "핸드거너";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:rk:")) {
+                                    characterClassName = "블래스터";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "포격강화";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "화력강화";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:rl:")) {
+                                    characterClassName = "호크아이";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "두번째동료";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "죽음의습격";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:rm:")) {
+                                    characterClassName = "스카우터";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "아르데타인의기술";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "진화의유산";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:rn:")) {
+                                    characterClassName = "건슬링어";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "사냥의시간";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "피스메이커";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:ro:")) {
+                                    characterClassName = "바드";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "절실한구원";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "진실된용맹";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:rp:")) {
+                                    characterClassName = "서머너";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "넘치는교감";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "상급소환사";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:rq:")) {
+                                    characterClassName = "아르카나";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "황제의칙령";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "황후의은총";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:rr:")) {
+                                    characterClassName = "소서리스";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "점화";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "환류";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:rs:")) {
+                                    characterClassName = "블레이드";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "버스트";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "잔재된기운";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:rt:")) {
+                                    characterClassName = "데모닉";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "멈출수없는충동";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "완벽한억제";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:ru:")) {
+                                    characterClassName = "리퍼";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "갈증";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "달의소리";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:rv:")) {
+                                    characterClassName = "소울이터";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "만월의집행자";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "그믐의경계";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:r10:")) {
+                                    characterClassName = "도화가";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "만개";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "회귀";
+                                    }
+                                } else if (jobId.equals("headlessui-listbox-option-:r11:")) {
+                                    characterClassName = "기상술사";
+                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
+                                        engraveName = "이슬비";
+                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
+                                        engraveName = "질풍술사";
+                                    }
+                                }
+
+                                CrawlingEntity entity = new CrawlingEntity();
+                                entity.setCharacterClassName(characterClassName);
+                                entity.setEngraveName(engraveName);
+                                entity.setUserNickName(name);
+                                crawlingRepository.save(entity);
+
                             } catch (Exception e) {
                                 System.out.println("Element not found at index: " + i);
                             }
@@ -151,6 +356,73 @@ public class CrawlingService {
             e.printStackTrace();
         } finally {
             driver.quit(); // 브라우저 종료
+        }
+    }
+    public void loaAPI(String api, String userNickName) throws IOException {
+        String endpoint = "/armories/characters/" + userNickName + "/gems";
+        URL url = new URL("https://developer-lostark.game.onstove.com" + endpoint);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Authorization", "bearer " + api);
+        connection.setRequestProperty("Accept", "application/json");
+
+        int responseCode = connection.getResponseCode();
+        log.info("Response Code: {}", responseCode);
+
+        StringBuilder response = new StringBuilder();
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+        } catch (IOException e) {
+            log.error("InputStream 읽기 오류: {}", e.getMessage());
+            return; // 오류 발생 시 메서드 종료
+        }
+
+        // 응답 내용 확인
+        String responseString = response.toString();
+        log.info("Response: {}", responseString);
+
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            if (responseString == null || responseString.isEmpty()) {
+                log.error("응답 본문이 비어 있습니다.");
+                return;
+            }
+
+            try {
+                JSONObject gemJson = new JSONObject(responseString);
+
+                // Gems 배열 확인
+                if (gemJson.has("Gems") && gemJson.getJSONArray("Gems").length() > 0) {
+                    JSONObject gem = gemJson.getJSONArray("Gems").getJSONObject(0);
+
+                    // Name 확인
+                    String name = gem.getString("Name");
+                    if (name.contains("작열")) {
+                        System.out.println("[작열]이 이름에 포함되어 있습니다.");
+                    } else if (name.contains("겁화")) {
+                        System.out.println("[겁화]가 이름에 포함되어 있습니다.");
+                    } else {
+                        System.out.println("[작열] 또는 [겁화]가 이름에 포함되어 있지 않습니다.");
+                    }
+
+                    // Tooltip 데이터 파싱
+                    String tooltipData = gem.getString("Tooltip");
+                    JSONObject tooltipJson = new JSONObject(tooltipData);
+
+                    // Element_001의 스킬 이름 추출
+                    String skillName = tooltipJson.getJSONObject("Element_001").getJSONObject("value").getString("leftStr0");
+                    System.out.println("스킬 이름: " + skillName);
+                } else {
+                    log.error("Gems 데이터가 없습니다.");
+                }
+            } catch (JSONException e) {
+                log.error("JSON 파싱 오류: {}", e.getMessage());
+            }
+        } else {
+            log.error("Failed to fetch gems. Response Code: {}, Response: {}", responseCode, responseString);
         }
     }
 }
