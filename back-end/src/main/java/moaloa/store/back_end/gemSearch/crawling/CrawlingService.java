@@ -3,20 +3,12 @@ package moaloa.store.back_end.gemSearch.crawling;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moaloa.store.back_end.exception.custom.ClawlingClickException;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
@@ -69,8 +61,8 @@ public class CrawlingService {
         engraveMap.put("headlessui-listbox-option-:r8:", destroyerEngraves);
 
         Map<String, String> warlordEngraves = new HashMap<>();
-        warlordEngraves.put("headlessui-listbox-option-:r13:", "전투태세");
-        warlordEngraves.put("headlessui-listbox-option-:r17:", "고독한기사");
+        warlordEngraves.put("headlessui-listbox-option-:r13:", "고독한기사");
+        warlordEngraves.put("headlessui-listbox-option-:r17:", "전투태세");
         engraveMap.put("headlessui-listbox-option-:r9:", warlordEngraves);
 
         Map<String, String> berserkerEngraves = new HashMap<>();
@@ -243,7 +235,7 @@ public class CrawlingService {
 
                     // 각인 버튼 클릭
                     clickEngraveButton(engraveId,driver,wait);
-                    Thread.sleep(2000); // 클릭 후 2초 대기 (화면 로딩)
+                    Thread.sleep(3000); // 클릭 후 2초 대기 (화면 로딩)
 
                     // 상위 20명의 닉네임 db에 저장
                     for (int i = 1; i <= 20; i++) {
@@ -309,87 +301,6 @@ public class CrawlingService {
             if (id != null && id.startsWith("headlessui-listbox-option-")) {
                 System.out.println("List Box ID: " + id);
             }
-        }
-    }
-
-    public void loaAPI(String api, String userNickName) {
-        try {
-            String encodedUserNickName = URLEncoder.encode(userNickName, "UTF-8");
-            String reqURL = "https://developer-lostark.game.onstove.com/armories/characters/" + encodedUserNickName + "/gems";
-            log.info("Calling API: {}", reqURL);
-            URL url = new URL(reqURL);
-
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Authorization", "bearer " + api);
-            conn.setRequestProperty("Accept", "application/json");
-
-            // 응답 읽기
-            int responseCode = conn.getResponseCode();
-            InputStreamReader streamReader;
-
-            if (responseCode == 200) {
-                streamReader = new InputStreamReader(conn.getInputStream());
-            } else {
-                streamReader = new InputStreamReader(conn.getErrorStream());
-            }
-            BufferedReader br = new BufferedReader(streamReader);
-            String line;
-            StringBuilder result = new StringBuilder();
-
-            while ((line = br.readLine()) != null) {
-                result.append(line);
-            }
-            br.close();
-
-            // 결과 출력 (디버그 용도)
-            log.info("Response Code: {}", responseCode);
-            log.info("Response: {}", result);
-
-            String responseString = result.toString();
-            try {
-                JSONObject gemJson = new JSONObject(responseString);
-
-                // Effects 확인
-                if (gemJson.has("Effects")) {
-                    JSONObject effectsJson = gemJson.getJSONObject("Effects");
-
-                    // Skills 배열 확인
-                    if (effectsJson.has("Skills") && effectsJson.getJSONArray("Skills").length() > 0) {
-                        JSONArray skillsArray = effectsJson.getJSONArray("Skills");
-
-                        for (int j = 0; j < skillsArray.length(); j++) {
-                            JSONObject skill = skillsArray.getJSONObject(j);
-                            String skillName = skill.getString("Name");
-                            JSONArray descriptionArray = skill.getJSONArray("Description");
-
-                            // Description이 배열이므로 첫 번째 요소 가져오기
-                            String description = descriptionArray.length() > 0 ? descriptionArray.getString(0) : "";
-
-                            // 이름과 설명 검사
-                            if (description.contains("재사용")) {
-                                // "재사용"이 포함된 경우
-                                System.out.println("스킬 이름 (재사용): " + skillName);
-                                System.out.println("설명: " + description);
-                            } else if (description.contains("피해")) {
-                                // "피해"가 포함된 경우
-                                System.out.println("스킬 이름 (피해): " + skillName);
-                                System.out.println("설명: " + description);
-                            } else {
-                                System.out.println("스킬 이름 및 설명에 '재사용' 또는 '피해'가 포함되어 있지 않습니다.");
-                            }
-                        }
-                    } else {
-                        log.error("Skills 데이터가 없습니다.");
-                    }
-                } else {
-                    log.error("Effects 데이터가 없습니다.");
-                }
-            } catch (JSONException e) {
-                log.error("JSON 파싱 오류: {}", e.getMessage());
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to call API: " + e.getMessage(), e);
         }
     }
 }

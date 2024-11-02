@@ -2,20 +2,21 @@ package moaloa.store.back_end.gemSearch.gemApi;
 
 import lombok.RequiredArgsConstructor;
 import moaloa.store.back_end.gemSearch.crawling.CrawlingService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/crawling")
+@RequestMapping("/api/v1/gemApi")
 public class GemApiController {
 
-    private final CrawlingService crawlingService;
+    private final GemApiService gemApiService;
 
     @GetMapping("/test")
     public String test() {
-        crawlingService.crawlAndClick();
+        gemApiService.loaAPI();
+
         return "success";
     }
 }
