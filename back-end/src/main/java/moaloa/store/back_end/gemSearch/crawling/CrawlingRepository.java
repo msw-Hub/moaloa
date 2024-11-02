@@ -1,4 +1,4 @@
-package moaloa.store.back_end.crawling;
+package moaloa.store.back_end.gemSearch.crawling;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,4 +1,4 @@
-package moaloa.store.back_end.crawling;
+package moaloa.store.back_end.gemSearch.crawling;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;

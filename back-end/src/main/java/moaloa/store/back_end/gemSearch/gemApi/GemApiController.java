@@ -1,15 +1,15 @@
-package moaloa.store.back_end.gemSearch.crawling;
+package moaloa.store.back_end.gemSearch.gemApi;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
-import java.util.Map;
+import moaloa.store.back_end.gemSearch.crawling.CrawlingService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/crawling")
-public class CrawlingController {
+public class GemApiController {
 
     private final CrawlingService crawlingService;
 
