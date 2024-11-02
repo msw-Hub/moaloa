@@ -16,7 +16,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -25,310 +28,277 @@ public class CrawlingService {
 
     private final CrawlingRepository crawlingRepository;
 
+
+    private Map<String, String> createJobMap() {
+        Map<String, String> jobMap = new HashMap<>();
+        jobMap.put("headlessui-listbox-option-:r8:", "디스트로이어");
+        jobMap.put("headlessui-listbox-option-:r9:", "워로드");
+        jobMap.put("headlessui-listbox-option-:ra:", "버서커");
+        jobMap.put("headlessui-listbox-option-:rb:", "홀리나이트");
+        jobMap.put("headlessui-listbox-option-:rc:", "슬레이어");
+        jobMap.put("headlessui-listbox-option-:rd:", "스트라이커");
+        jobMap.put("headlessui-listbox-option-:re:", "브레이커");
+        jobMap.put("headlessui-listbox-option-:rf:", "배틀마스터");
+        jobMap.put("headlessui-listbox-option-:rg:", "인파이터");
+        jobMap.put("headlessui-listbox-option-:rh:", "기공사");
+        jobMap.put("headlessui-listbox-option-:ri:", "창술사");
+        jobMap.put("headlessui-listbox-option-:rj:", "데빌헌터");
+        jobMap.put("headlessui-listbox-option-:rk:", "블래스터");
+        jobMap.put("headlessui-listbox-option-:rl:", "호크아이");
+        jobMap.put("headlessui-listbox-option-:rm:", "스카우터");
+        jobMap.put("headlessui-listbox-option-:rn:", "건슬링어");
+        jobMap.put("headlessui-listbox-option-:ro:", "바드");
+        jobMap.put("headlessui-listbox-option-:rp:", "서머너");
+        jobMap.put("headlessui-listbox-option-:rq:", "아르카나");
+        jobMap.put("headlessui-listbox-option-:rr:", "소서리스");
+        jobMap.put("headlessui-listbox-option-:rs:", "블레이드");
+        jobMap.put("headlessui-listbox-option-:rt:", "데모닉");
+        jobMap.put("headlessui-listbox-option-:ru:", "리퍼");
+        jobMap.put("headlessui-listbox-option-:rv:", "소울이터");
+        jobMap.put("headlessui-listbox-option-:r10:", "도화가");
+        jobMap.put("headlessui-listbox-option-:r11:", "기상술사");
+        return jobMap;
+    }
+    private Map<String, Map<String, String>> createEngraveMap() {
+        Map<String, Map<String, String>> engraveMap = new HashMap<>();
+
+        Map<String, String> destroyerEngraves = new HashMap<>();
+        destroyerEngraves.put("headlessui-listbox-option-:r13:", "분노의망치");
+        destroyerEngraves.put("headlessui-listbox-option-:r17:", "중력수련");
+        engraveMap.put("headlessui-listbox-option-:r8:", destroyerEngraves);
+
+        Map<String, String> warlordEngraves = new HashMap<>();
+        warlordEngraves.put("headlessui-listbox-option-:r13:", "전투태세");
+        warlordEngraves.put("headlessui-listbox-option-:r17:", "고독한기사");
+        engraveMap.put("headlessui-listbox-option-:r9:", warlordEngraves);
+
+        Map<String, String> berserkerEngraves = new HashMap<>();
+        berserkerEngraves.put("headlessui-listbox-option-:r13:", "광기");
+        berserkerEngraves.put("headlessui-listbox-option-:r17:", "광전사의비기");
+        engraveMap.put("headlessui-listbox-option-:ra:", berserkerEngraves);
+
+        Map<String, String> holyKnightEngraves = new HashMap<>();
+        holyKnightEngraves.put("headlessui-listbox-option-:r13:", "심판자");
+        holyKnightEngraves.put("headlessui-listbox-option-:r17:", "축복의오라");
+        engraveMap.put("headlessui-listbox-option-:rb:", holyKnightEngraves);
+
+        Map<String, String> slayerEngraves = new HashMap<>();
+        slayerEngraves.put("headlessui-listbox-option-:r13:", "처단자");
+        slayerEngraves.put("headlessui-listbox-option-:r17:", "포식자");
+        engraveMap.put("headlessui-listbox-option-:rc:", slayerEngraves);
+
+        Map<String, String> strikerEngraves = new HashMap<>();
+        strikerEngraves.put("headlessui-listbox-option-:r13:", "오의난무");
+        strikerEngraves.put("headlessui-listbox-option-:r17:", "일격필살");
+        engraveMap.put("headlessui-listbox-option-:rd:", strikerEngraves);
+
+        Map<String, String> breakerEngraves = new HashMap<>();
+        breakerEngraves.put("headlessui-listbox-option-:r13:", "권왕파천무");
+        breakerEngraves.put("headlessui-listbox-option-:r17:", "수라의길");
+        engraveMap.put("headlessui-listbox-option-:re:", breakerEngraves);
+
+        Map<String, String> battleMasterEngraves = new HashMap<>();
+        battleMasterEngraves.put("headlessui-listbox-option-:r13:", "오의강화");
+        battleMasterEngraves.put("headlessui-listbox-option-:r17:", "초심");
+        engraveMap.put("headlessui-listbox-option-:rf:", battleMasterEngraves);
+
+        Map<String, String> infighterEngraves = new HashMap<>();
+        infighterEngraves.put("headlessui-listbox-option-:r13:", "체술");
+        infighterEngraves.put("headlessui-listbox-option-:r17:", "충격단련");
+        engraveMap.put("headlessui-listbox-option-:rg:", infighterEngraves);
+
+        Map<String, String> soulMasterEngraves = new HashMap<>();
+        soulMasterEngraves.put("headlessui-listbox-option-:r13:", "세맥타통");
+        soulMasterEngraves.put("headlessui-listbox-option-:r17:", "역천지체");
+        engraveMap.put("headlessui-listbox-option-:rh:", soulMasterEngraves);
+
+        Map<String, String> spearMasterEngraves = new HashMap<>();
+        spearMasterEngraves.put("headlessui-listbox-option-:r13:", "절정");
+        spearMasterEngraves.put("headlessui-listbox-option-:r17:", "절제");
+        engraveMap.put("headlessui-listbox-option-:ri:", spearMasterEngraves);
+
+        Map<String, String> devilHunterEngraves = new HashMap<>();
+        devilHunterEngraves.put("headlessui-listbox-option-:r13:", "강화무기");
+        devilHunterEngraves.put("headlessui-listbox-option-:r17:", "핸드거너");
+        engraveMap.put("headlessui-listbox-option-:rj:", devilHunterEngraves);
+
+        Map<String, String> blasterEngraves = new HashMap<>();
+        blasterEngraves.put("headlessui-listbox-option-:r13:", "포격강화");
+        blasterEngraves.put("headlessui-listbox-option-:r17:", "화력강화");
+        engraveMap.put("headlessui-listbox-option-:rk:", blasterEngraves);
+
+        Map<String, String> hawkeyeEngraves = new HashMap<>();
+        hawkeyeEngraves.put("headlessui-listbox-option-:r13:", "두번째동료");
+        hawkeyeEngraves.put("headlessui-listbox-option-:r17:", "죽음의습격");
+        engraveMap.put("headlessui-listbox-option-:rl:", hawkeyeEngraves);
+
+        Map<String, String> scouterEngraves = new HashMap<>();
+        scouterEngraves.put("headlessui-listbox-option-:r13:", "아르데타인의기술");
+        scouterEngraves.put("headlessui-listbox-option-:r17:", "진화의유산");
+        engraveMap.put("headlessui-listbox-option-:rm:", scouterEngraves);
+
+        Map<String, String> gunslingerEngraves = new HashMap<>();
+        gunslingerEngraves.put("headlessui-listbox-option-:r13:", "사냥의시간");
+        gunslingerEngraves.put("headlessui-listbox-option-:r17:", "피스메이커");
+        engraveMap.put("headlessui-listbox-option-:rn:", gunslingerEngraves);
+
+        Map<String, String> bardEngraves = new HashMap<>();
+        bardEngraves.put("headlessui-listbox-option-:r13:", "절실한구원");
+        bardEngraves.put("headlessui-listbox-option-:r17:", "진실된용맹");
+        engraveMap.put("headlessui-listbox-option-:ro:", bardEngraves);
+
+        Map<String, String> summonerEngraves = new HashMap<>();
+        summonerEngraves.put("headlessui-listbox-option-:r13:", "넘치는교감");
+        summonerEngraves.put("headlessui-listbox-option-:r17:", "상급소환사");
+        engraveMap.put("headlessui-listbox-option-:rp:", summonerEngraves);
+
+        Map<String, String> arcanistEngraves = new HashMap<>();
+        arcanistEngraves.put("headlessui-listbox-option-:r13:", "황제의칙령");
+        arcanistEngraves.put("headlessui-listbox-option-:r17:", "황후의은총");
+        engraveMap.put("headlessui-listbox-option-:rq:", arcanistEngraves);
+
+        Map<String, String> sorceressEngraves = new HashMap<>();
+        sorceressEngraves.put("headlessui-listbox-option-:r13:", "점화");
+        sorceressEngraves.put("headlessui-listbox-option-:r17:", "환류");
+        engraveMap.put("headlessui-listbox-option-:rr:", sorceressEngraves);
+
+        Map<String, String> bladeEngraves = new HashMap<>();
+        bladeEngraves.put("headlessui-listbox-option-:r13:", "버스트");
+        bladeEngraves.put("headlessui-listbox-option-:r17:", "잔재된기운");
+        engraveMap.put("headlessui-listbox-option-:rs:", bladeEngraves);
+
+        Map<String, String> demonicEngraves = new HashMap<>();
+        demonicEngraves.put("headlessui-listbox-option-:r13:", "멈출수없는충동");
+        demonicEngraves.put("headlessui-listbox-option-:r17:", "완벽한억제");
+        engraveMap.put("headlessui-listbox-option-:rt:", demonicEngraves);
+
+        Map<String, String> reaperEngraves = new HashMap<>();
+        reaperEngraves.put("headlessui-listbox-option-:r13:", "갈증");
+        reaperEngraves.put("headlessui-listbox-option-:r17:", "달의소리");
+        engraveMap.put("headlessui-listbox-option-:ru:", reaperEngraves);
+
+        Map<String, String> souliterEngraves = new HashMap<>();
+        souliterEngraves.put("headlessui-listbox-option-:r13:", "만월의집행자");
+        souliterEngraves.put("headlessui-listbox-option-:r17:", "그믐의경계");
+        engraveMap.put("headlessui-listbox-option-:rv:", souliterEngraves);
+
+        Map<String, String> painterEngraves = new HashMap<>();
+        painterEngraves.put("headlessui-listbox-option-:r13:", "만개");
+        painterEngraves.put("headlessui-listbox-option-:r17:", "회귀");
+        engraveMap.put("headlessui-listbox-option-:r10:", painterEngraves);
+
+        Map<String, String> weatherEngraves = new HashMap<>();
+        weatherEngraves.put("headlessui-listbox-option-:r13:", "이슬비");
+        weatherEngraves.put("headlessui-listbox-option-:r17:", "질풍술사");
+        engraveMap.put("headlessui-listbox-option-:r11:", weatherEngraves);
+
+        return engraveMap;
+    }
+
     public void crawlAndClick() {
         System.setProperty("webdriver.chrome.driver", "C://Users//swmoo//Downloads//chromedriver.exe"); // 여기에 실제 경로를 입력하세요.
         // WebDriver 인스턴스 생성
         WebDriver driver = new ChromeDriver();
         try {
             String url = "https://kloa.gg/characters";
-
             driver.get(url);
 
-            System.out.println("페이지 제목: " + driver.getTitle());
-
+            // 웹드라이버 인스턴스 생성(최대 10초 대기)
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-            // 직업 옵션 ID 배열 정의
-            String[] jobOptionIds = {
-                    "headlessui-listbox-option-:r8:", // 디트
-                    "headlessui-listbox-option-:r9:", // 워로드
-                    "headlessui-listbox-option-:ra:", // 버서커
-                    "headlessui-listbox-option-:rb:", // 홀나
-                    "headlessui-listbox-option-:rc:", // 슬레
-                    "headlessui-listbox-option-:rd:", // 스커
-                    "headlessui-listbox-option-:re:", // 브레이커
-                    "headlessui-listbox-option-:rf:", // 배마
-                    "headlessui-listbox-option-:rg:", // 인파
-                    "headlessui-listbox-option-:rh:", // 기공사
-                    "headlessui-listbox-option-:ri:", // 창술사
-                    "headlessui-listbox-option-:rj:", // 데빌헌터
-                    "headlessui-listbox-option-:rk:", // 블래스터
-                    "headlessui-listbox-option-:rl:", // 호크아이
-                    "headlessui-listbox-option-:rm:", // 스카우터
-                    "headlessui-listbox-option-:rn:", // 건슬링어
-                    "headlessui-listbox-option-:ro:", // 바드
-                    "headlessui-listbox-option-:rp:", // 서머너
-                    "headlessui-listbox-option-:rq:", // 아르카나
-                    "headlessui-listbox-option-:rr:", // 소서리스
-                    "headlessui-listbox-option-:rs:", // 블레이드
-                    "headlessui-listbox-option-:rt:", // 데모닉
-                    "headlessui-listbox-option-:ru:", // 리퍼
-                    "headlessui-listbox-option-:rv:", // 소울이터
-                    "headlessui-listbox-option-:r10:", // 도화가
-                    "headlessui-listbox-option-:r11:"  // 기상술사
+            // 직업 순서를 명시적으로 정의
+            String[] orderedJobIds = {
+                    "headlessui-listbox-option-:r8:", "headlessui-listbox-option-:r9:", "headlessui-listbox-option-:ra:", "headlessui-listbox-option-:rb:", "headlessui-listbox-option-:rc:", "headlessui-listbox-option-:rd:", "headlessui-listbox-option-:re:", "headlessui-listbox-option-:rf:", "headlessui-listbox-option-:rg:", "headlessui-listbox-option-:rh:", "headlessui-listbox-option-:ri:", "headlessui-listbox-option-:rj:", "headlessui-listbox-option-:rk:", "headlessui-listbox-option-:rl:", "headlessui-listbox-option-:rm:", "headlessui-listbox-option-:rn:", "headlessui-listbox-option-:ro:", "headlessui-listbox-option-:rp:", "headlessui-listbox-option-:rq:", "headlessui-listbox-option-:rr:", "headlessui-listbox-option-:rs:", "headlessui-listbox-option-:rt:", "headlessui-listbox-option-:ru:", "headlessui-listbox-option-:rv:", "headlessui-listbox-option-:r10:", "headlessui-listbox-option-:r11:"
             };
             // 각인 옵션 ID 배열 정의
             String[] engraveOptionIds = {
-                    "headlessui-listbox-option-:r13:", // 각인 옵션 1
-                    "headlessui-listbox-option-:r17:", // 각인 옵션 2
+                    "headlessui-listbox-option-:r13:", "headlessui-listbox-option-:r17:",
             };
 
-            // 각 직업 옵션 ID 순회하면서 클릭
-            for (String jobId : jobOptionIds) {
-                // 캐릭터 직업 선택 버튼 클릭 (전체 직업 버튼)
-                WebElement firstButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("headlessui-listbox-button-:r3:")));
-                firstButton.click();
-                wait.until(ExpectedConditions.attributeToBe(By.id("headlessui-listbox-button-:r3:"), "aria-expanded", "true"));
-                Thread.sleep(1000); // 짧은 대기 추가
+            // 직업과 각인 매핑 생성
+            Map<String, String> jobMap = createJobMap();
+            Map<String, Map<String, String>> engraveMap = createEngraveMap();
 
-                // 각 직업 옵션 클릭
-                WebElement jobOption = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(jobId)));
-                ((JavascriptExecutor) driver).executeScript("arguments[0].click();", jobOption);
-                System.out.println("Clicked job option ID: " + jobId);
-                Thread.sleep(1000); // 클릭 후 짧은 대기
+            // 직업에 대해 반복
+            for (String jobId : orderedJobIds) {
+                String jobName = jobMap.get(jobId);
 
-                // 직업 각인 버튼 클릭
-                WebElement engraveButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("headlessui-listbox-button-:r5:")));
-                engraveButton.click();
-                wait.until(ExpectedConditions.attributeToBe(By.id("headlessui-listbox-button-:r5:"), "aria-expanded", "true"));
-                Thread.sleep(2000); // 직업 각인 드롭다운 열림 대기
-                printEngraveListBoxIds(driver);
+                if (jobName == null) {
+                    log.error("No job name found for ID: {}", jobId);
+                    continue;
+                }
+                log.info("Processing job: {} ({})", jobName, jobId);
 
-                // 각 각인 옵션 ID 순회하며 클릭 후 정보 가져오기
+                // 직업 버튼 클릭
+                clickJobButton(jobId,driver,wait);
+
+
+                // 현재 직업에 맞는 각인 Map 가져오기
+                Map<String, String> currentEngraveMap = engraveMap.get(jobId);
+
+                // 직업 각인 옵션에 대해 반복 (2가지)
                 for (String engraveId : engraveOptionIds) {
-                    try {
-                        // 각인 옵션 클릭
-                        WebElement engraveOption = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(engraveId)));
-                        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", engraveOption);
-                        System.out.println("Clicked engrave option ID: " + engraveId);
-                        Thread.sleep(2000); // 클릭 후 짧은 대기
+                    String engraveName = currentEngraveMap.get(engraveId);
 
-                        // 선택된 각인에 대한 정보 가져오기
+                    try {
+                        // 각인 버튼 클릭
+                        clickEngraveButton(engraveId,driver,wait);
+                        Thread.sleep(2000); // 클릭 후 2초 대기 (화면 로딩)
+
+                        // 상위 20명의 닉네임 db에 저장
                         for (int i = 1; i <= 20; i++) {
+                            // 닉네임이 위치한 XPath
                             String xpath = "//*[@id='content-container']/div/div/ul/li[" + i + "]/div/a";
                             try {
+                                // 닉네임 텍스트를 가져옴
                                 String name = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath))).getText();
-                                System.out.println("Info for engrave option " + engraveId + ": " + name);
 
-                                // db저장
-                                String characterClassName = null;
-                                String engraveName = null;
-
-                                if(jobId.equals("headlessui-listbox-option-:r8:")) {
-                                    characterClassName = "디스트로이어";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "분노의망치";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "중력수련";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:r9:")) {
-                                    characterClassName = "워로드";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "고독한기사";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "전투태세";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:ra:")) {
-                                    characterClassName = "버서커";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "광기";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "광전사의비기";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:rb:")) {
-                                    characterClassName = "홀리나이트";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "심판자";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "축복의오라";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:rc:")) {
-                                    characterClassName = "슬레이어";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "처단자";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "포식자";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:rd:")) {
-                                    characterClassName = "스트라이커";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "오의난무";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "일격필살";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:re:")) {
-                                    characterClassName = "브레이커";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "권왕파천무";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "수라의길";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:rf:")) {
-                                    characterClassName = "배틀마스터";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "오의강화";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "초심";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:rg:")) {
-                                    characterClassName = "인파이터";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "체술";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "충격단련";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:rh:")) {
-                                    characterClassName = "기공사";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "세맥타통";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "역천지체";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:ri:")) {
-                                    characterClassName = "기공사";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "절정";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "절제";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:rj:")) {
-                                    characterClassName = "데빌헌터";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "강화무기";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "핸드거너";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:rk:")) {
-                                    characterClassName = "블래스터";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "포격강화";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "화력강화";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:rl:")) {
-                                    characterClassName = "호크아이";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "두번째동료";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "죽음의습격";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:rm:")) {
-                                    characterClassName = "스카우터";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "아르데타인의기술";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "진화의유산";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:rn:")) {
-                                    characterClassName = "건슬링어";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "사냥의시간";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "피스메이커";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:ro:")) {
-                                    characterClassName = "바드";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "절실한구원";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "진실된용맹";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:rp:")) {
-                                    characterClassName = "서머너";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "넘치는교감";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "상급소환사";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:rq:")) {
-                                    characterClassName = "아르카나";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "황제의칙령";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "황후의은총";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:rr:")) {
-                                    characterClassName = "소서리스";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "점화";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "환류";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:rs:")) {
-                                    characterClassName = "블레이드";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "버스트";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "잔재된기운";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:rt:")) {
-                                    characterClassName = "데모닉";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "멈출수없는충동";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "완벽한억제";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:ru:")) {
-                                    characterClassName = "리퍼";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "갈증";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "달의소리";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:rv:")) {
-                                    characterClassName = "소울이터";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "만월의집행자";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "그믐의경계";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:r10:")) {
-                                    characterClassName = "도화가";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "만개";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "회귀";
-                                    }
-                                } else if (jobId.equals("headlessui-listbox-option-:r11:")) {
-                                    characterClassName = "기상술사";
-                                    if (engraveId.equals("headlessui-listbox-option-:r13:")) {
-                                        engraveName = "이슬비";
-                                    } else if (engraveId.equals("headlessui-listbox-option-:r17:")) {
-                                        engraveName = "질풍술사";
-                                    }
-                                }
-
+                                // DB에 저장
                                 CrawlingEntity entity = new CrawlingEntity();
-                                entity.setCharacterClassName(characterClassName);
+                                entity.setCharacterClassName(jobName);
                                 entity.setEngraveName(engraveName);
                                 entity.setUserNickName(name);
                                 crawlingRepository.save(entity);
 
                             } catch (Exception e) {
+                                // 특정 인덱스에서 요소를 찾지 못한 경우
                                 System.out.println("Element not found at index: " + i);
                             }
                         }
-
-                        // 각인 정보 가져온 후 다시 직업 각인 버튼 열기
-                        WebElement engraveButton2 = wait.until(ExpectedConditions.elementToBeClickable(By.id("headlessui-listbox-button-:r5:")));
-                        engraveButton2.click();
-                        wait.until(ExpectedConditions.attributeToBe(By.id("headlessui-listbox-button-:r5:"), "aria-expanded", "true"));
-                        Thread.sleep(2000); // 직업 각인 드롭다운 열림 대기
-
-                    } catch (TimeoutException e) {
-                        System.out.println("Could not locate engrave option with ID: " + engraveId);
+                    } catch (Exception e) {
+                        // 각인 옵션 클릭 실패 시
+                        System.out.println("Failed to click engrave option: " + engraveId);
                     }
                 }
                 driver.navigate().refresh(); // 페이지 새로고침
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
         } finally {
-            driver.quit(); // 브라우저 종료
+            // 브라우저 닫기
+            driver.quit();
         }
     }
-    // 위에서 작성한 메서드 추가
+    public void clickJobButton(String jobId,WebDriver driver,WebDriverWait wait){
+        // [전체] 직업 버튼 클릭 대기 (찾는중)
+        WebElement firstButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("headlessui-listbox-button-:r3:")));
+        firstButton.click(); // [전체] 직업 버튼 클릭
+        wait.until(ExpectedConditions.attributeToBe(By.id("headlessui-listbox-button-:r3:"), "aria-expanded", "true")); // 버튼이 확장될 때까지 대기
+
+        // [특정 직업] 버튼 클릭 대기 - ID로 찾기 + 보일때까지 대기
+        WebElement jobOption = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(jobId)));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", jobOption);    // javascript로 클릭
+    }
+    public void clickEngraveButton(String engraveId,WebDriver driver,WebDriverWait wait){
+        // [전체] 각인 버튼 클릭 대기 (찾는중)
+        WebElement engraveButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("headlessui-listbox-button-:r5:")));
+        engraveButton.click(); // [전체] 각인 버튼 클릭
+        wait.until(ExpectedConditions.attributeToBe(By.id("headlessui-listbox-button-:r5:"), "aria-expanded", "true")); // 버튼이 확장될 때까지 대기
+
+        // [특정 각인] 버튼 클릭 대기 (찾는중)
+        WebElement engraveOption = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(engraveId)));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", engraveOption);    // javascript로 클릭
+    }
+
+    //id속성 찾기 위한 메서드
     public void printEngraveListBoxIds(WebDriver driver) {
         // 리스트 박스를 나타내는 XPath (고유한 XPath로 수정 필요)
         List<WebElement> listBoxes = driver.findElements(By.xpath("//ul[@role='listbox']//li"));
@@ -338,24 +308,6 @@ public class CrawlingService {
             if (id != null && id.startsWith("headlessui-listbox-option-")) {
                 System.out.println("List Box ID: " + id);
             }
-        }
-    }
-
-    public void scrawlAndClick() {
-        System.setProperty("webdriver.chrome.driver", "C://Users//swmoo//Downloads//chromedriver.exe"); // 여기에 실제 경로를 입력하세요.
-
-        // WebDriver 인스턴스 생성
-        WebDriver driver = new ChromeDriver();
-        try {
-            String url = "https://www.google.com";
-            driver.get(url);
-            // 페이지 제목 출력
-            System.out.println("페이지 제목: " + driver.getTitle());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            driver.quit(); // 브라우저 종료
         }
     }
     public void loaAPI(String api, String userNickName) throws IOException {

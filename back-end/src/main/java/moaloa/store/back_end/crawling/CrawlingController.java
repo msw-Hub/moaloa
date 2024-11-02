@@ -19,11 +19,6 @@ public class CrawlingController {
         return "success";
     }
 
-    @GetMapping("/stest")
-    public String stest() {
-        crawlingService.scrawlAndClick();
-        return "success";
-    }
     @PostMapping("/loaAPI")
     public String loaAPI(@RequestBody Map<String, String> requestBody) throws IOException {
         String api = requestBody.get("api");
