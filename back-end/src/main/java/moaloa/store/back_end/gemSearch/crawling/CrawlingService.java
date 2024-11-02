@@ -2,6 +2,8 @@ package moaloa.store.back_end.crawling;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import moaloa.store.back_end.exception.custom.ClawlingClickException;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.openqa.selenium.*;
@@ -11,12 +13,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -240,62 +242,62 @@ public class CrawlingService {
                 for (String engraveId : engraveOptionIds) {
                     String engraveName = currentEngraveMap.get(engraveId);
 
-                    try {
-                        // 각인 버튼 클릭
-                        clickEngraveButton(engraveId,driver,wait);
-                        Thread.sleep(2000); // 클릭 후 2초 대기 (화면 로딩)
+                    // 각인 버튼 클릭
+                    clickEngraveButton(engraveId,driver,wait);
+                    Thread.sleep(2000); // 클릭 후 2초 대기 (화면 로딩)
 
-                        // 상위 20명의 닉네임 db에 저장
-                        for (int i = 1; i <= 20; i++) {
-                            // 닉네임이 위치한 XPath
-                            String xpath = "//*[@id='content-container']/div/div/ul/li[" + i + "]/div/a";
-                            try {
-                                // 닉네임 텍스트를 가져옴
-                                String name = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath))).getText();
+                    // 상위 20명의 닉네임 db에 저장
+                    for (int i = 1; i <= 20; i++) {
+                        // 닉네임이 위치한 XPath
+                        String xpath = "//*[@id='content-container']/div/div/ul/li[" + i + "]/div/a";
 
-                                // DB에 저장
-                                CrawlingEntity entity = new CrawlingEntity();
-                                entity.setCharacterClassName(jobName);
-                                entity.setEngraveName(engraveName);
-                                entity.setUserNickName(name);
-                                crawlingRepository.save(entity);
+                        // 닉네임 텍스트를 가져옴
+                        String name = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath))).getText();
 
-                            } catch (Exception e) {
-                                // 특정 인덱스에서 요소를 찾지 못한 경우
-                                System.out.println("Element not found at index: " + i);
-                            }
-                        }
-                    } catch (Exception e) {
-                        // 각인 옵션 클릭 실패 시
-                        System.out.println("Failed to click engrave option: " + engraveId);
+                        // DB에 저장
+                        CrawlingEntity entity = new CrawlingEntity();
+                        entity.setCharacterClassName(jobName);
+                        entity.setEngraveName(engraveName);
+                        entity.setUserNickName(name);
+                        crawlingRepository.save(entity);
                     }
                 }
                 driver.navigate().refresh(); // 페이지 새로고침
             }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         } finally {
             // 브라우저 닫기
             driver.quit();
         }
     }
-    public void clickJobButton(String jobId,WebDriver driver,WebDriverWait wait){
-        // [전체] 직업 버튼 클릭 대기 (찾는중)
-        WebElement firstButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("headlessui-listbox-button-:r3:")));
-        firstButton.click(); // [전체] 직업 버튼 클릭
-        wait.until(ExpectedConditions.attributeToBe(By.id("headlessui-listbox-button-:r3:"), "aria-expanded", "true")); // 버튼이 확장될 때까지 대기
-
-        // [특정 직업] 버튼 클릭 대기 - ID로 찾기 + 보일때까지 대기
-        WebElement jobOption = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(jobId)));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", jobOption);    // javascript로 클릭
+    public void clickJobButton(String jobId,WebDriver driver,WebDriverWait wait) {
+        try {
+            // [전체] 직업 버튼 클릭 대기 (찾는중)
+            WebElement firstButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("headlessui-listbox-button-:r3:")));
+            firstButton.click(); // [전체] 직업 버튼 클릭
+            // 버튼이 확장될 때까지 대기
+            wait.until(ExpectedConditions.attributeToBe(By.id("headlessui-listbox-button-:r3:"), "aria-expanded", "true"));
+            // [특정 직업] 버튼 클릭 대기 - ID로 찾기 + 보일때까지 대기
+            WebElement jobOption = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(jobId)));
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", jobOption); // javascript로 클릭
+        } catch (ClawlingClickException e) {
+            System.out.println("Timeout while trying to click the job button: " + e.getMessage());
+        }
     }
     public void clickEngraveButton(String engraveId,WebDriver driver,WebDriverWait wait){
-        // [전체] 각인 버튼 클릭 대기 (찾는중)
-        WebElement engraveButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("headlessui-listbox-button-:r5:")));
-        engraveButton.click(); // [전체] 각인 버튼 클릭
-        wait.until(ExpectedConditions.attributeToBe(By.id("headlessui-listbox-button-:r5:"), "aria-expanded", "true")); // 버튼이 확장될 때까지 대기
+        try {
+            // [전체] 각인 버튼 클릭 대기 (찾는중)
+            WebElement engraveButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("headlessui-listbox-button-:r5:")));
+            engraveButton.click(); // [전체] 각인 버튼 클릭
+            wait.until(ExpectedConditions.attributeToBe(By.id("headlessui-listbox-button-:r5:"), "aria-expanded", "true")); // 버튼이 확장될 때까지 대기
 
-        // [특정 각인] 버튼 클릭 대기 (찾는중)
-        WebElement engraveOption = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(engraveId)));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", engraveOption);    // javascript로 클릭
+            // [특정 각인] 버튼 클릭 대기 (찾는중)
+            WebElement engraveOption = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(engraveId)));
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", engraveOption);    // javascript로 클릭
+        } catch (ClawlingClickException e) {
+            System.out.println("Timeout while trying to click the engrave button: " + e.getMessage());
+        }
     }
 
     //id속성 찾기 위한 메서드
@@ -310,71 +312,85 @@ public class CrawlingService {
             }
         }
     }
-    public void loaAPI(String api, String userNickName) throws IOException {
-        String endpoint = "/armories/characters/" + userNickName + "/gems";
-        URL url = new URL("https://developer-lostark.game.onstove.com" + endpoint);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-        connection.setRequestMethod("GET");
-        connection.setRequestProperty("Authorization", "bearer " + api);
-        connection.setRequestProperty("Accept", "application/json");
+    public void loaAPI(String api, String userNickName) {
+        try {
+            String encodedUserNickName = URLEncoder.encode(userNickName, "UTF-8");
+            String reqURL = "https://developer-lostark.game.onstove.com/armories/characters/" + encodedUserNickName + "/gems";
+            log.info("Calling API: {}", reqURL);
+            URL url = new URL(reqURL);
 
-        int responseCode = connection.getResponseCode();
-        log.info("Response Code: {}", responseCode);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Authorization", "bearer " + api);
+            conn.setRequestProperty("Accept", "application/json");
 
-        StringBuilder response = new StringBuilder();
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
+            // 응답 읽기
+            int responseCode = conn.getResponseCode();
+            InputStreamReader streamReader;
+
+            if (responseCode == 200) {
+                streamReader = new InputStreamReader(conn.getInputStream());
+            } else {
+                streamReader = new InputStreamReader(conn.getErrorStream());
             }
-        } catch (IOException e) {
-            log.error("InputStream 읽기 오류: {}", e.getMessage());
-            return; // 오류 발생 시 메서드 종료
-        }
+            BufferedReader br = new BufferedReader(streamReader);
+            String line;
+            StringBuilder result = new StringBuilder();
 
-        // 응답 내용 확인
-        String responseString = response.toString();
-        log.info("Response: {}", responseString);
-
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            if (responseString == null || responseString.isEmpty()) {
-                log.error("응답 본문이 비어 있습니다.");
-                return;
+            while ((line = br.readLine()) != null) {
+                result.append(line);
             }
+            br.close();
 
+            // 결과 출력 (디버그 용도)
+            log.info("Response Code: {}", responseCode);
+            log.info("Response: {}", result);
+
+            String responseString = result.toString();
             try {
                 JSONObject gemJson = new JSONObject(responseString);
 
-                // Gems 배열 확인
-                if (gemJson.has("Gems") && gemJson.getJSONArray("Gems").length() > 0) {
-                    JSONObject gem = gemJson.getJSONArray("Gems").getJSONObject(0);
+                // Effects 확인
+                if (gemJson.has("Effects")) {
+                    JSONObject effectsJson = gemJson.getJSONObject("Effects");
 
-                    // Name 확인
-                    String name = gem.getString("Name");
-                    if (name.contains("작열")) {
-                        System.out.println("[작열]이 이름에 포함되어 있습니다.");
-                    } else if (name.contains("겁화")) {
-                        System.out.println("[겁화]가 이름에 포함되어 있습니다.");
+                    // Skills 배열 확인
+                    if (effectsJson.has("Skills") && effectsJson.getJSONArray("Skills").length() > 0) {
+                        JSONArray skillsArray = effectsJson.getJSONArray("Skills");
+
+                        for (int j = 0; j < skillsArray.length(); j++) {
+                            JSONObject skill = skillsArray.getJSONObject(j);
+                            String skillName = skill.getString("Name");
+                            JSONArray descriptionArray = skill.getJSONArray("Description");
+
+                            // Description이 배열이므로 첫 번째 요소 가져오기
+                            String description = descriptionArray.length() > 0 ? descriptionArray.getString(0) : "";
+
+                            // 이름과 설명 검사
+                            if (description.contains("재사용")) {
+                                // "재사용"이 포함된 경우
+                                System.out.println("스킬 이름 (재사용): " + skillName);
+                                System.out.println("설명: " + description);
+                            } else if (description.contains("피해")) {
+                                // "피해"가 포함된 경우
+                                System.out.println("스킬 이름 (피해): " + skillName);
+                                System.out.println("설명: " + description);
+                            } else {
+                                System.out.println("스킬 이름 및 설명에 '재사용' 또는 '피해'가 포함되어 있지 않습니다.");
+                            }
+                        }
                     } else {
-                        System.out.println("[작열] 또는 [겁화]가 이름에 포함되어 있지 않습니다.");
+                        log.error("Skills 데이터가 없습니다.");
                     }
-
-                    // Tooltip 데이터 파싱
-                    String tooltipData = gem.getString("Tooltip");
-                    JSONObject tooltipJson = new JSONObject(tooltipData);
-
-                    // Element_001의 스킬 이름 추출
-                    String skillName = tooltipJson.getJSONObject("Element_001").getJSONObject("value").getString("leftStr0");
-                    System.out.println("스킬 이름: " + skillName);
                 } else {
-                    log.error("Gems 데이터가 없습니다.");
+                    log.error("Effects 데이터가 없습니다.");
                 }
             } catch (JSONException e) {
                 log.error("JSON 파싱 오류: {}", e.getMessage());
             }
-        } else {
-            log.error("Failed to fetch gems. Response Code: {}, Response: {}", responseCode, responseString);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to call API: " + e.getMessage(), e);
         }
     }
 }

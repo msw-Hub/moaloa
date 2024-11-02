@@ -1,4 +1,4 @@
-package moaloa.store.back_end.crawling;
+package moaloa.store.back_end.gemSearch.crawling;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +16,6 @@ public class CrawlingController {
     @GetMapping("/test")
     public String test() {
         crawlingService.crawlAndClick();
-        return "success";
-    }
-
-    @PostMapping("/loaAPI")
-    public String loaAPI(@RequestBody Map<String, String> requestBody) throws IOException {
-        String api = requestBody.get("api");
-        String userNickName = requestBody.get("userNickName");
-        crawlingService.loaAPI(api,userNickName);
         return "success";
     }
 }
