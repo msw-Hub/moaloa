@@ -37,4 +37,4 @@ out/
 .vscode/
 
 
-back-end/src/main/resources/application.yml
+*.yml
