@@ -1,18 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { toggleModal } from "../store/modal";
-import { useEffect, useState } from "react";
+import { setApiKey } from "../store/apiKey";
 
 export const Modal = () => {
   const ModalState = useSelector((state: RootState) => state.modal.isModal);
+  const apiKey = useSelector<RootState, string[]>((state) => state.apiKeys.apiKey);
+
   const dispatch = useDispatch();
-
-  // API KEY 저장
-  let [apiKey, setapiKey] = useState(() => (JSON.parse(window.localStorage.getItem("apiKey") as string) ? JSON.parse(window.localStorage.getItem("apiKey") as string) : ["", "", "", "", ""]));
-
-  useEffect(() => {
-    window.localStorage.setItem("apiKey", JSON.stringify(apiKey.map((a: string) => a.replaceAll(" ", ""))));
-  }, [apiKey]);
 
   const openModalHandler = () => {
     dispatch(toggleModal());
@@ -33,7 +28,7 @@ export const Modal = () => {
                   onChange={(e) => {
                     let copy = [...apiKey];
                     copy[i] = e.target.value;
-                    setapiKey(copy);
+                    dispatch(setApiKey(copy));
                   }}
                   value={key}
                   placeholder="API 키"
