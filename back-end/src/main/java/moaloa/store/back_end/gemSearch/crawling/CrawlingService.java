@@ -235,7 +235,7 @@ public class CrawlingService {
 
                     // 각인 버튼 클릭
                     clickEngraveButton(engraveId,driver,wait);
-                    Thread.sleep(3000); // 클릭 후 2초 대기 (화면 로딩)
+                    Thread.sleep(4000); // 클릭 후 대기 (화면 로딩)
 
                     // 상위 20명의 닉네임 db에 저장
                     for (int i = 1; i <= 20; i++) {
