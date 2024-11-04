@@ -10,7 +10,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <Provider store={store}>
-        <div className="w-full h-screen container-full flex justify-center items-start">
+        <div className="w-full h-screen container-full">
           <App />
         </div>
       </Provider>

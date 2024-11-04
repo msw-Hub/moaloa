@@ -18,7 +18,7 @@ export default {
     ({ addUtilities }) => {
       addUtilities({
         ".container-full": {
-          backgroundColor: "#ffffff", // bg-bglight
+          backgroundColor: "#f5f5f5", // bg-bglight
           color: "#303030", // text-bgdark
           transition: "all 0.3s ease",
           "@apply dark:bg-bgdark dark:text-light": {},
