@@ -12,7 +12,7 @@ function App() {
 
   return (
     <>
-      <div className="h-full flex flex-col justify-start items-center">
+      <div className="w-full h-full flex flex-col justify-start items-center">
         {/*네비게이션*/}
         <nav className="flex items-center justify-between fixed top-0 left-0 right-0 h-16 shadow-md bg-light dark:bg-bgdark">
           <div className="flex justify-center items-center">
