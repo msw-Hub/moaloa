@@ -2,12 +2,14 @@ package moaloa.store.back_end.gemSearch.crawling;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import moaloa.store.back_end.exception.custom.ClawlingClickException;
+import moaloa.store.back_end.exception.custom.CrawlingClickException;
+import moaloa.store.back_end.exception.custom.CrawlingRunningException;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -188,6 +190,7 @@ public class CrawlingService {
         return engraveMap;
     }
 
+    @Transactional
     public void crawlAndClick() {
         System.setProperty("webdriver.chrome.driver", "C://Users//swmoo//Downloads//chromedriver.exe"); // 여기에 실제 경로를 입력하세요.
         // WebDriver 인스턴스 생성
@@ -216,15 +219,10 @@ public class CrawlingService {
             for (String jobId : orderedJobIds) {
                 String jobName = jobMap.get(jobId);
 
-                if (jobName == null) {
-                    log.error("No job name found for ID: {}", jobId);
-                    continue;
-                }
                 log.info("Processing job: {} ({})", jobName, jobId);
 
                 // 직업 버튼 클릭
                 clickJobButton(jobId,driver,wait);
-
 
                 // 현재 직업에 맞는 각인 Map 가져오기
                 Map<String, String> currentEngraveMap = engraveMap.get(jobId);
@@ -256,12 +254,13 @@ public class CrawlingService {
                 driver.navigate().refresh(); // 페이지 새로고침
             }
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new CrawlingRunningException("크롤링 중 에러가 발생하였습니다");
         } finally {
             // 브라우저 닫기
             driver.quit();
         }
     }
+
     public void clickJobButton(String jobId,WebDriver driver,WebDriverWait wait) {
         try {
             // [전체] 직업 버튼 클릭 대기 (찾는중)
@@ -272,8 +271,11 @@ public class CrawlingService {
             // [특정 직업] 버튼 클릭 대기 - ID로 찾기 + 보일때까지 대기
             WebElement jobOption = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(jobId)));
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", jobOption); // javascript로 클릭
-        } catch (ClawlingClickException e) {
-            System.out.println("Timeout while trying to click the job button: " + e.getMessage());
+
+        } catch (NoSuchElementException e) {
+            throw new CrawlingClickException("크롤링 중 클릭할 것을 찾지 못하였습니다");
+        } catch (Exception e) {
+            throw new CrawlingClickException("크롤링 중 직업 버튼을 클릭에 실패하였습니다");
         }
     }
     public void clickEngraveButton(String engraveId,WebDriver driver,WebDriverWait wait){
@@ -286,8 +288,11 @@ public class CrawlingService {
             // [특정 각인] 버튼 클릭 대기 (찾는중)
             WebElement engraveOption = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(engraveId)));
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", engraveOption);    // javascript로 클릭
-        } catch (ClawlingClickException e) {
-            System.out.println("Timeout while trying to click the engrave button: " + e.getMessage());
+
+        } catch (NoSuchElementException e) {
+            throw new CrawlingClickException("크롤링 중 클릭할 것을 찾지 못하였습니다");
+        } catch (Exception e) {
+            throw new CrawlingClickException("크롤링 중 직업각인 버튼을 클릭에 실패하였습니다");
         }
     }
 

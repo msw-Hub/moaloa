@@ -1,4 +1,4 @@
-package moaloa.store.back_end.gemSearch.GemData.dto;
+package moaloa.store.back_end.gemSearch.gemData.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,5 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class GemDto {
     private String skillName;
-    private int count;
+    private double recruitmentRate;
 }

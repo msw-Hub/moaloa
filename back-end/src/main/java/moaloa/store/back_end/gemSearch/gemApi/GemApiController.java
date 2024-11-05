@@ -2,6 +2,8 @@ package moaloa.store.back_end.gemSearch.gemApi;
 
 import lombok.RequiredArgsConstructor;
 import moaloa.store.back_end.gemSearch.crawling.CrawlingService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -14,9 +16,10 @@ public class GemApiController {
     private final GemApiService gemApiService;
 
     @GetMapping("/test")
-    public String test() {
+    public ResponseEntity<?> test(
+    ) {
         gemApiService.loaAPI();
-
-        return "success";
+        return ResponseEntity.status(HttpStatus.OK).body("보석 API 호출에 성공하였습니다");
     }
+
 }

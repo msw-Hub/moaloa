@@ -2,6 +2,8 @@ package moaloa.store.back_end.gemSearch.gemApi;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import moaloa.store.back_end.exception.custom.UserNotFoundException;
+import moaloa.store.back_end.exception.custom.GemApiGetException;
 import moaloa.store.back_end.gemSearch.crawling.CrawlingEntity;
 import moaloa.store.back_end.gemSearch.crawling.CrawlingRepository;
 import org.json.JSONArray;
@@ -9,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -28,9 +31,15 @@ public class GemApiService {
 
     private final String[] api;
 
+    @Transactional
     public void loaAPI() {
         try {
             List<CrawlingEntity> users = crawlingRepository.findAll(); // 모든 사용자 가져오기
+            // users가 비었을 경우 예외 발생
+            if (users.isEmpty()) {
+                throw new UserNotFoundException("db에 크롤링 정보가 없습니다.");
+            }
+
             int apiIndex = 0;
             int userCount = 0;
 
@@ -45,6 +54,7 @@ public class GemApiService {
                         Thread.sleep(60000);  // 1분 대기
                     }
                 }
+
                 String apiKey = api[apiIndex];  // 현재 API 키 선택
                 String userNickName = user.getUserNickName();
                 String characterClassName = user.getCharacterClassName();
@@ -89,7 +99,7 @@ public class GemApiService {
                     JSONObject gemJson = new JSONObject(responseString);
                     if (gemJson.has("Effects")) {
                         JSONObject effectsJson = gemJson.getJSONObject("Effects");
-                        if (effectsJson.has("Skills") && effectsJson.getJSONArray("Skills").length() > 0) {
+                        if (effectsJson.has("Skills") && !effectsJson.getJSONArray("Skills").isEmpty()) {
                             JSONArray skillsArray = effectsJson.getJSONArray("Skills");
 
                             for (int j = 0; j < skillsArray.length(); j++) {
@@ -97,19 +107,20 @@ public class GemApiService {
                                 String skillName = skill.getString("Name");
                                 JSONArray descriptionArray = skill.getJSONArray("Description");
 
-                                String description = descriptionArray.length() > 0 ? descriptionArray.getString(0) : "";
+                                String description = !descriptionArray.isEmpty() ? descriptionArray.getString(0) : "";
                                 String gemType = null;
 
                                 if (description.contains("재사용")) {
-                                    System.out.println("스킬 이름 (재사용): " + skillName);
-                                    System.out.println("설명: " + description);
+                                    log.info("스킬 이름 (재사용): {}", skillName);
+                                    log.info("설명: {}", description);
                                     gemType = "작";
                                 } else if (description.contains("피해")||description.contains("지원")) {
-                                    System.out.println("스킬 이름 (피해): " + skillName);
-                                    System.out.println("설명: " + description);
+                                    log.info("스킬 이름 (피해 or 지원): {}", skillName);
+                                    log.info("설명: {}", description);
                                     gemType = "겁";
                                 } else {
-                                    System.out.println("스킬 이름 및 설명에 '재사용' 또는 '피해'가 포함되어 있지 않습니다.");
+                                    log.error("Unknown gem type: {}", description);
+                                    throw new GemApiGetException("알 수 없는 종류의 보석입니다" + description);
                                 }
 
                                 GemApiEntity gemApiEntity = gemApiRepository.findByCharacterClassNameAndSkillNameAndGemTypeAndEngraveType(characterClassName, skillName, gemType, engraveName);
@@ -134,12 +145,12 @@ public class GemApiService {
                     }
                 } catch (JSONException e) {
                     log.error("JSON 파싱 오류: {}", e.getMessage());
+                    throw new GemApiGetException("JSON 파싱 오류: " + e.getMessage());
                 }
-
                 userCount++;  // 요청 후 사용자 카운트 증가
             }
         } catch (Exception e) {
-            throw new RuntimeException("Failed to call API: " + e.getMessage(), e);
+            throw new GemApiGetException("로아 API 요청 중 오류 발생: " + e.getMessage());
         }
     }
 }

@@ -1,4 +1,4 @@
-package moaloa.store.back_end.gemSearch.GemData.dto;
+package moaloa.store.back_end.gemSearch.gemData.dto;
 
 import lombok.Data;
 

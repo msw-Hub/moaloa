@@ -1,10 +1,9 @@
 package moaloa.store.back_end.gemSearch.crawling;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -14,8 +13,10 @@ public class CrawlingController {
     private final CrawlingService crawlingService;
 
     @GetMapping("/test")
-    public String test() {
+    public ResponseEntity<?> test(
+    ) {
         crawlingService.crawlAndClick();
-        return "success";
+        return ResponseEntity.status(HttpStatus.OK).body("크롤링에 성공하였습니다");
     }
+
 }
