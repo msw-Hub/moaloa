@@ -12,9 +12,9 @@ function App() {
 
   return (
     <>
-      <div className="w-full h-full flex flex-col justify-start items-center">
+      <div className="min-h-screen flex flex-col justify-between items-center">
         {/*네비게이션*/}
-        <nav className="flex items-center justify-between fixed top-0 left-0 right-0 h-16 shadow-md bg-light dark:bg-bgdark">
+        <nav className="z-10 flex items-center justify-between fixed top-0 left-0 right-0 h-16 shadow-md bg-light dark:bg-bgdark">
           <div className="flex justify-center items-center">
             {/*로고*/}
             <div className="flex items-center justify-center h-full mx-6">
@@ -52,13 +52,15 @@ function App() {
           <Modal></Modal>
         </nav>
         {/*nav여백*/}
-        <div className="h-28"></div>
+        {/* <div className="h-10"></div> */}
         {/*라우터*/}
         <Routes>
           {/*보석 검색 페이지*/}
+          <Route path="/" element={<div></div>}></Route>
+          {/*보석 검색 페이지*/}
           <Route path="/gemSerch" element={<GemSearch></GemSearch>}></Route>
         </Routes>
-        <footer className="font-semibold absolute left-0 right-0 bottom-0 flex flex-col justify-center items-center py-6 ">
+        <footer className="font-semibold flex flex-col justify-center items-center py-6">
           <div>@2024 moaloa All rights reserved</div>
           <div>This site is not associated with Smilegate RPG & Smilegate Stove.</div>
         </footer>
