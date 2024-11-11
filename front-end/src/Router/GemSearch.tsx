@@ -279,8 +279,8 @@ function GemSearch() {
 
   return (
     <>
-      <div className="w-full max-w-[2000px] grid justify-center items-start gap-4 mt-20 px-20 grid-rows-responsive grid-cols-responsive">
-        <div className="flex flex-col gap-4 text-nowrap flex-grow-0 flex-shrink basis-[800px]">
+      <div className="h-full w-full max-w-[2000px] grid gap-4 mt-20 px-20 grid-rows-responsive grid-cols-responsive">
+        <div className="flex flex-col gap-4 text-nowrap">
           {/* class 선택 창 */}
           <div className="flex flex-row justify-center items-start py-4 px-4 gap-2 dark:border-bddark dark:bg-ctdark border rounded-md border-ctdark border-solid">
             {classOrder.map((className) => (
@@ -397,7 +397,7 @@ function GemSearch() {
           </div>
         </div>
         {/*검색된 보석 리스트 */}
-        <div className="flex-grow-0 flex-shrink basis-[800px] relative h-full flex flex-col justify-start items-center border border-solid border-bddark rounded-md text-nowrap">
+        <div className="flex flex-col justify-start items-center border border-solid border-bddark rounded-md text-nowrap">
           {/** 검색된 보석 리스트 table header */}
           <div className="w-full grid grid-cols-[1fr_1.5fr_3fr_1fr_1fr_12px] text-center">
             <div className="border border-bddark py-2 px-4">아이콘</div>
@@ -410,7 +410,7 @@ function GemSearch() {
           </div>
 
           {/** 검색된 보석 리스트 table */}
-          <div className=" custom-scrollbar w-full">
+          <div className="flex-grow-0 h-[740px] custom-scrollbar w-full">
             {sortedGemList.map((gem) => {
               if (showGemList === "available" && gem.price === 0) {
                 return null; // 조건에 맞지 않으면 null 반환

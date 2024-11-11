@@ -42,12 +42,12 @@ button {
 
 @media (max-width: 1500px) {
   .grid-rows-responsive {
-    @apply grid-rows-[1fr_1fr];
+    @apply grid-rows-[1fr_1fr] grid-cols-[1fr];
   }
 }
 
 @media (min-width: 1501px) {
   .grid-cols-responsive {
-    @apply grid-cols-[1.2fr_1fr];
+    @apply grid-cols-[1.2fr_1fr] grid-rows-[1fr];
   }
 }
