@@ -18,3 +18,36 @@ textarea,
 button {
   font-family: "Noto Sans KR", "Roboto", sans-serif;
 }
+
+.custom-scrollbar {
+  scrollbar-gutter: stable; /* 스크롤바 공간을 항상 차지 */
+  @apply overflow-y-auto;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 12px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  @apply bg-gray-200 dark:bg-bgdark;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 dark:bg-gray-600 rounded;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500 dark:bg-gray-700;
+}
+
+@media (max-width: 1500px) {
+  .grid-rows-responsive {
+    @apply grid-rows-[1fr_1fr];
+  }
+}
+
+@media (min-width: 1501px) {
+  .grid-cols-responsive {
+    @apply grid-cols-[1.2fr_1fr];
+  }
+}
