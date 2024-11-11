@@ -377,7 +377,7 @@ function GemSearch() {
                 </div>
                 {/* 가격 0원 제외, 매물없는것만 보기 버튼 둘다 input 총 3개의 버튼 선택해서 필터 */}
                 <div className="flex justify-between items-center w-full gap-4">
-                  <span>표시</span>
+                  <span>매물</span>
                   <div className="flex justify-center items-center gap-2">
                     <button onClick={() => setShowGemList("all")} className={"w-14 py-1 px-2 rounded-md hover:bg-[#373737] " + `${showGemList == "all" ? "bg-hover dark:bg-bgdark" : ""}`}>
                       전부
