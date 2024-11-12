@@ -10,13 +10,13 @@
 }
 
 body {
-  font-family: "Noto Sans KR", "Roboto", sans-serif;
+  font-family: "Roboto", "Noto Sans KR", sans-serif;
 }
 
 input,
 textarea,
 button {
-  font-family: "Noto Sans KR", "Roboto", sans-serif;
+  font-family: "Roboto", "Noto Sans KR", sans-serif;
 }
 
 .custom-scrollbar {
@@ -50,4 +50,33 @@ button {
   .grid-cols-responsive {
     @apply grid-cols-[1.2fr_1fr] grid-rows-[1fr];
   }
+}
+
+.gemBackground1 {
+  background: linear-gradient(135deg, #261331, #480d5d);
+}
+.gemBackground2 {
+  background: linear-gradient(135deg, #362003, #9e5f04);
+}
+.gemBackground3 {
+  background: linear-gradient(135deg, #341a09, #a24006);
+}
+.gemBackground4 {
+  background: linear-gradient(135deg, #3d3325, #dcc999);
+}
+
+.digits4 {
+  color: white;
+}
+
+.digits5 {
+  color: #ced49e;
+}
+
+.digits6 {
+  color: #a8b2d4;
+}
+
+.digits7 {
+  color: #b9b3ce;
 }
