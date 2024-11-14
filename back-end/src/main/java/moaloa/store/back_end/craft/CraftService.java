@@ -10,6 +10,7 @@ import moaloa.store.back_end.exception.custom.CraftDataException;
 import moaloa.store.back_end.exception.custom.GemDataException;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,6 +69,9 @@ public class CraftService {
         map.put(60500, List.of("신속 로브", "진군", "각성","아드로핀"));
         return map;
     }
+
+    @Value("${jsonFile.craftData}")
+    private String filePath;
 
     @Transactional
     public void getLoaApi() {
@@ -201,7 +205,7 @@ public class CraftService {
             jsonObject.put("시세", new JSONArray(jsonData)); // craftEntities 데이터
 
             // JSON 파일로 저장
-            Files.write(Paths.get("back-end/src/main/resources/craftData.json"), jsonObject.toString(4).getBytes());
+            Files.write(Paths.get(filePath), jsonObject.toString(4).getBytes());
         } catch (IOException e) {
             throw new CraftDataException("JSON 파일 저장 중 오류가 발생했습니다");
         }
@@ -209,7 +213,7 @@ public class CraftService {
 
     public String readJsonFromFile() {
         try {
-            return Files.readString(Paths.get("back-end/src/main/resources/craftData.json"));
+            return Files.readString(Paths.get(filePath));
         } catch (IOException e) {
             throw new CraftDataException("JSON 파일 읽기 중 오류가 발생했습니다");
         }

@@ -1,7 +1,10 @@
 package moaloa.store.back_end.gemSearch.gemApi;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import moaloa.store.back_end.exception.custom.CraftDataException;
 import moaloa.store.back_end.exception.custom.UserNotFoundException;
 import moaloa.store.back_end.exception.custom.GemApiGetException;
 import moaloa.store.back_end.gemSearch.crawling.CrawlingEntity;
@@ -9,16 +12,20 @@ import moaloa.store.back_end.gemSearch.crawling.CrawlingRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.io.*;
+import java.net.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -28,8 +35,15 @@ public class GemApiService {
 
     private final GemApiRepository gemApiRepository;
     private final CrawlingRepository crawlingRepository;
+    private final GemPriceRepository gemPriceRepository;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private final String[] api;
+    private final String[] craftApi;
+
+    @Value("${jsonFile.gemPrice}")
+    private String filePath;
 
     @Transactional
     public void loaAPI() {
@@ -151,6 +165,153 @@ public class GemApiService {
             }
         } catch (Exception e) {
             throw new GemApiGetException("로아 API 요청 중 오류 발생: " + e.getMessage());
+        }
+    }
+
+    private final String[] gemCategory = {"5레벨 멸", "6레벨 멸", "7레벨 멸", "8레벨 멸", "9레벨 멸", "10레벨 멸",
+            "5레벨 홍", "6레벨 홍", "7레벨 홍", "8레벨 홍", "9레벨 홍", "10레벨 홍","5레벨 겁", "6레벨 겁", "7레벨 겁", "8레벨 겁", "9레벨 겁", "10레벨 겁",
+            "5레벨 작", "6레벨 작", "7레벨 작", "8레벨 작", "9레벨 작", "10레벨 작"};
+
+    @Transactional
+    public void getGemPrice() {
+        String reqURL = "https://developer-lostark.game.onstove.com/auctions/items";
+
+        try {
+            for (String gemName : gemCategory) {
+                HttpURLConnection conn = (HttpURLConnection) new URL(reqURL).openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Authorization", "bearer " + craftApi[1]);
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setDoOutput(true);
+
+                String jsonInputString = createJsonInputString(gemName);
+
+                // JSON 데이터 전송
+                try (OutputStream os = conn.getOutputStream()) {
+                    byte[] input = jsonInputString.getBytes("utf-8");
+                    os.write(input, 0, input.length);
+                }
+
+                int responseCode = conn.getResponseCode();
+                InputStreamReader streamReader = (responseCode == 200) ?
+                        new InputStreamReader(conn.getInputStream()) : new InputStreamReader(conn.getErrorStream());
+
+                BufferedReader br = new BufferedReader(streamReader);
+                StringBuilder result = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    result.append(line);
+                }
+                br.close();
+
+                saveGemPrice(result);
+
+                // 연결을 명시적으로 닫음
+                conn.disconnect();
+            }
+            List<GemPriceEntity> gemPriceEntities = gemPriceRepository.findAll();
+            if(gemPriceEntities.isEmpty()) {
+                log.error("GemPriceEntity가 비어있습니다.");
+                throw new CraftDataException("보석 가격 엔티티가 비어있습니다");
+            }
+            String jsonResult = objectMapper.writeValueAsString(gemPriceEntities);
+            saveJsonToFile(jsonResult);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Transactional
+    protected void saveGemPrice(StringBuilder result){
+        String responseString = result.toString();
+        // JSON 응답 파싱
+        JSONObject responseJson = new JSONObject(responseString);
+        JSONArray itemsArray = responseJson.getJSONArray("Items");
+        if (!itemsArray.isEmpty()) {
+            JSONObject cheapestItem = itemsArray.getJSONObject(0);
+            String gemName = cheapestItem.getString("Name");
+            int tier = cheapestItem.getInt("Tier");
+            int buyPrice = cheapestItem.getJSONObject("AuctionInfo").getInt("BuyPrice");
+
+            GemPriceEntity gemPriceEntity = gemPriceRepository.findByGemName(gemName);
+            if (gemPriceEntity != null) {
+                gemPriceEntity.setBuyPrice(buyPrice);
+                gemPriceRepository.save(gemPriceEntity);
+            } else {
+                GemPriceEntity newGemPriceEntity = new GemPriceEntity();
+                newGemPriceEntity.setGemTier(tier);
+                newGemPriceEntity.setGemName(gemName);
+                newGemPriceEntity.setBuyPrice(buyPrice);
+                gemPriceRepository.save(newGemPriceEntity);
+            }
+        }
+    }
+
+    private String createJsonInputString(String gemName) {
+        return "{"
+                + "\"ItemLevelMin\": 0,"
+                + "\"ItemLevelMax\": 0,"
+                + "\"ItemGradeQuality\": null,"
+                + "\"ItemUpgradeLevel\": null,"
+                + "\"ItemTradeAllowCount\": null,"
+                + "\"SkillOptions\": ["
+                + "  {"
+                + "    \"FirstOption\": null,"
+                + "    \"SecondOption\": null,"
+                + "    \"MinValue\": null,"
+                + "    \"MaxValue\": null"
+                + "  }"
+                + "],"
+                + "\"EtcOptions\": ["
+                + "  {"
+                + "    \"FirstOption\": null,"
+                + "    \"SecondOption\": null,"
+                + "    \"MinValue\": null,"
+                + "    \"MaxValue\": null"
+                + "  }"
+                + "],"
+                + "\"Sort\": \"BUY_PRICE\","
+                + "\"CategoryCode\": 210000,"
+                + "\"CharacterClass\": null,"
+                + "\"ItemTier\":  null,"
+                + "\"ItemGrade\": null,"
+                + "\"ItemName\": \"" + gemName + "\","
+                + "\"PageNo\": 0,"
+                + "\"SortCondition\": \"ASC\""
+                + "}";
+
+    }
+
+    private void saveJsonToFile(String jsonData){
+        try {
+            // 현재 날짜와 시간을 얻음
+            String currentDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+            // 전체 데이터를 JSON 객체에 저장
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("갱신 시간", currentDateTime); // 날짜 및 시간 추가
+            jsonObject.put("시세", new JSONArray(jsonData)); // 실시간 보석 시세 데이터
+
+            // JSON 파일로 저장
+            Files.write(Paths.get(filePath), jsonObject.toString(4).getBytes());
+        } catch (IOException e) {
+            throw new CraftDataException("JSON 파일 저장 중 오류가 발생했습니다");
+        }
+    }
+    public String readJsonFromFile() {
+        try {
+            return Files.readString(Paths.get(filePath));
+        } catch (IOException e) {
+            throw new CraftDataException("JSON 파일 읽기 중 오류가 발생했습니다");
+        }
+    }
+
+    public Object parseJsonToObject(String jsonData){
+        try {
+            return objectMapper.readValue(jsonData, Object.class);
+        } catch (JsonProcessingException e) {
+            throw new CraftDataException("JSON 데이터를 객체로 변환 중 오류가 발생했습니다");
         }
     }
 }
