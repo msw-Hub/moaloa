@@ -1,10 +1,6 @@
 package moaloa.store.back_end.exception;
 
-import moaloa.store.back_end.exception.custom.CrawlingClickException;
-import moaloa.store.back_end.exception.custom.CrawlingRunningException;
-import moaloa.store.back_end.exception.custom.UserNotFoundException;
-import moaloa.store.back_end.exception.custom.GemApiGetException;
-import moaloa.store.back_end.exception.custom.GemDataException;
+import moaloa.store.back_end.exception.custom.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -52,6 +48,22 @@ public class GlobalExceptionHandler {
         Map<String, Object> response = new HashMap<>();
         response.put("status", 200); // OK
         response.put("errorCode", "GEM_DATA_ERROR");
+        response.put("message", e.getMessage());
+        return ResponseEntity.ok(response);
+    }
+    @ExceptionHandler(CraftApiGetException.class)
+    public ResponseEntity<Map<String, Object>> CraftApiGetException(CraftApiGetException e) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", 200); // OK
+        response.put("errorCode", "CRAFT_API_GET_ERROR");
+        response.put("message", e.getMessage());
+        return ResponseEntity.ok(response);
+    }
+    @ExceptionHandler(CraftDataException.class)
+    public ResponseEntity<Map<String, Object>> CraftDataException(CraftDataException e) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", 200); // OK
+        response.put("errorCode", "CRAFT_DATA_ERROR");
         response.put("message", e.getMessage());
         return ResponseEntity.ok(response);
     }

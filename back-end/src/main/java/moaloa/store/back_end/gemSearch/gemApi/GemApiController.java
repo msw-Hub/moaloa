@@ -22,4 +22,18 @@ public class GemApiController {
         return ResponseEntity.status(HttpStatus.OK).body("보석 API 호출에 성공하였습니다");
     }
 
+    @GetMapping("/gemPrice")
+    public ResponseEntity<?> getGemPrice(
+    ) {
+        gemApiService.getGemPrice();
+        return ResponseEntity.status(HttpStatus.OK).body("보석 가격 정보를 업데이트하였습니다");
+    }
+
+    @GetMapping("/nowGemPrice")
+    public ResponseEntity<?> getNowGemPrice(
+    ) {
+        String jsonData = gemApiService.readJsonFromFile();
+        Object data = gemApiService.parseJsonToObject(jsonData);
+        return ResponseEntity.ok(data);
+    }
 }
