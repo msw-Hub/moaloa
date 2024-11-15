@@ -29,8 +29,11 @@ public class GemDataService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private final double userCount = 40;   //클래스 직업별 max 채용인원
+
+
     @Value("${jsonFile.gemData}")
     private  String filePath;
+
 
     public void aggregateAndSaveGemData() {
         List<GemApiEntity> gems = gemApiRepository.findAll();
