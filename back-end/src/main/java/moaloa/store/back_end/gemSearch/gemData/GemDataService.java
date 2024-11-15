@@ -5,9 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moaloa.store.back_end.exception.custom.GemDataException;
-import moaloa.store.back_end.gemSearch.gemData.dto.GemDto;
 import moaloa.store.back_end.gemSearch.gemApi.GemApiEntity;
 import moaloa.store.back_end.gemSearch.gemApi.GemApiRepository;
+import moaloa.store.back_end.gemSearch.gemData.dto.GemDto;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -28,7 +29,8 @@ public class GemDataService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private final double userCount = 40;   //클래스 직업별 max 채용인원
-    private final String filePath = "back-end/src/main/resources/gemData.json";
+    @Value("${jsonFile.gemData}")
+    private  String filePath;
 
     public void aggregateAndSaveGemData() {
         List<GemApiEntity> gems = gemApiRepository.findAll();
