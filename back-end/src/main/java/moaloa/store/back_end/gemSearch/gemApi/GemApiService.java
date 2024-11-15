@@ -4,13 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import moaloa.store.back_end.exception.custom.CraftDataException;
 import moaloa.store.back_end.exception.custom.GemDataException;
 import moaloa.store.back_end.exception.custom.UserNotFoundException;
 import moaloa.store.back_end.exception.custom.GemApiGetException;
 import moaloa.store.back_end.gemSearch.crawling.CrawlingEntity;
 import moaloa.store.back_end.gemSearch.crawling.CrawlingRepository;
-import moaloa.store.back_end.gemSearch.gemData.GemDataCache;
+import moaloa.store.back_end.gemSearch.gemData.EngraveCountCache;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,9 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Service
@@ -44,7 +41,7 @@ public class GemApiService {
     private final String[] api;
     private final String[] craftApi;
 
-    private final GemDataCache gemDataCache;
+    private final EngraveCountCache engraveCountCache;
 
     @Value("${jsonFile.gemPrice}")
     private String filePath;
@@ -63,17 +60,18 @@ public class GemApiService {
             int userCount = 0;
 
             // 카운트 데이터 초기화
-            gemDataCache.reset();
+            engraveCountCache.reset2();
+            gemApiRepository.deleteAll();
 
             for (CrawlingEntity user : users) {
-                if (userCount >= 100) {  // 100명 검색 후 다음 API로 전환
+                if (userCount >= 80) {  // 80명 검색 후 다음 API로 전환
                     apiIndex++;
                     userCount = 0;
 
                     if (apiIndex >= api.length) {  // 모든 API 키를 사용했다면 1분 대기 후 다시 첫 번째 API로
                         apiIndex = 0;
-                        log.info("모든 API 키를 사용했습니다. 30초 동안 대기 중...");
-                        Thread.sleep(30000);  // 30초 대기
+                        log.info("모든 API 키를 사용했습니다. 60초 동안 대기 중...");
+                        Thread.sleep(60000);  // 60초 대기
                     }
                 }
 
@@ -82,6 +80,8 @@ public class GemApiService {
                 String characterClassName = user.getCharacterClassName();
                 String engraveName = user.getEngraveName();
 
+                log.info("=================================================================================");
+                log.info("userCount: {}", userCount);
                 log.info("User NickName: {}", userNickName);
                 log.info("Character Class Name: {}", characterClassName);
                 log.info("Engrave Name: {}", engraveName);
@@ -158,8 +158,8 @@ public class GemApiService {
                                     gemApiRepository.save(newGemApiEntity);
                                 }
                             }
-                            // 클래스 카운트 증가
-                            gemDataCache.updateClassCount(characterClassName, 1);
+                            // 직업각인 카운트 증가
+                            engraveCountCache.updateActualUserCount(engraveName, 1);
 
                         } else {
                             log.error("Skills 데이터가 없습니다.");
@@ -173,7 +173,7 @@ public class GemApiService {
                 }
                 userCount++;  // 요청 후 사용자 카운트 증가
             }
-            log.info("집계 결과: {}", gemDataCache.getClassCountMap());
+            log.info("집계 결과: {}", engraveCountCache.getActualUserCountMap());
         } catch (Exception e) {
             throw new GemApiGetException("로아 API 요청 중 오류 발생: " + e.getMessage());
         }
