@@ -11,6 +11,7 @@ export default {
         bddark: "#808080",
         light: "#f5f5f5",
         hover: "#f0f0f0",
+        hoverdark: "#373737",
       },
     },
   },
@@ -23,12 +24,19 @@ export default {
           transition: "all 0.3s ease",
           "@apply dark:bg-bgdark dark:text-light": {},
         },
-        ".btn": {
+        ".navBtn": {
           whiteSpace: "nowrap",
           fontWeight: "500",
           borderRadius: "0.25rem",
           transition: "all 0.3s ease",
           "@apply text-bgdark py-2 px-6 dark:border-ctdark dark:text-light hover:bg-hover dark:hover:bg-ctdark": {},
+        },
+        ".icon-filter": {
+          filter: "invert(82%) sepia(6%) saturate(0%) hue-rotate(233deg) brightness(92%) contrast(86%)",
+        },
+        ".btn": {
+          transition: "all 0.3s ease",
+          "@apply text-bgdark dark:text-gray-200 hover:bg-hover dark:hover:bg-hoverdark": {},
         },
       });
     },

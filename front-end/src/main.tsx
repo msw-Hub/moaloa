@@ -9,7 +9,7 @@ createRoot(document.getElementById("root")!).render(
   // <StrictMode>
   <BrowserRouter>
     <Provider store={store}>
-      <div className="container-full">
+      <div className="transition-all bg-light text-bgdark dark:bg-bgdark dark:text-light">
         <App />
       </div>
     </Provider>
