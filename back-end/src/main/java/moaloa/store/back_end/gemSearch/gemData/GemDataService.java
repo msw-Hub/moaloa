@@ -32,6 +32,7 @@ public class GemDataService {
     @Value("${jsonFile.gemData}")
     private  String filePath;
 
+
     public void aggregateAndSaveGemData() {
         List<GemApiEntity> gems = gemApiRepository.findAll();
         // gems가 비었을 경우 예외 발생
