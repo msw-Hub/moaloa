@@ -25,10 +25,10 @@ import java.util.stream.Collectors;
 public class GemDataService {
 
     private final GemApiRepository gemApiRepository;
+    private final GemDataCache gemDataCache;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private final double userCount = 40;   //클래스 직업별 max 채용인원
     @Value("${jsonFile.gemData}")
     private  String filePath;
 
@@ -38,6 +38,9 @@ public class GemDataService {
         if (gems.isEmpty()) {
             throw new GemDataException("데이터베이스에 보석 정보가 없어서 집계를 내릴 수 없습니다");
         }
+
+        //해당 직업군 집계 사용자 수
+        int classCount = gemDataCache.getClassCountMap().get(gems.get(0).getCharacterClassName());
 
         // 데이터 집계 및 채용률 계산
         Map<String, Map<String, Map<String, Double>>> aggregatedData = gems.stream()
@@ -49,7 +52,7 @@ public class GemDataService {
                                         GemApiEntity::getSkillName,
                                         Collectors.collectingAndThen(
                                                 Collectors.summingInt(GemApiEntity::getCount),
-                                                sum -> BigDecimal.valueOf(sum / userCount * 100)
+                                                sum -> BigDecimal.valueOf(sum / classCount * 100L)
                                                         .setScale(3, RoundingMode.HALF_UP)
                                                         .doubleValue() // 소수점 셋째 자리에서 반올림
                                         )
