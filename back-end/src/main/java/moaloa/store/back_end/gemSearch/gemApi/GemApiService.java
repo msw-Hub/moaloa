@@ -10,6 +10,7 @@ import moaloa.store.back_end.exception.custom.UserNotFoundException;
 import moaloa.store.back_end.exception.custom.GemApiGetException;
 import moaloa.store.back_end.gemSearch.crawling.CrawlingEntity;
 import moaloa.store.back_end.gemSearch.crawling.CrawlingRepository;
+import moaloa.store.back_end.gemSearch.gemData.GemDataCache;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,7 +25,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -41,8 +44,11 @@ public class GemApiService {
     private final String[] api;
     private final String[] craftApi;
 
+    private final GemDataCache gemDataCache;
+
     @Value("${jsonFile.gemPrice}")
     private String filePath;
+
 
     @Transactional
     public void loaAPI() {
@@ -56,6 +62,9 @@ public class GemApiService {
             int apiIndex = 0;
             int userCount = 0;
 
+            // 카운트 데이터 초기화
+            gemDataCache.reset();
+
             for (CrawlingEntity user : users) {
                 if (userCount >= 100) {  // 100명 검색 후 다음 API로 전환
                     apiIndex++;
@@ -63,8 +72,8 @@ public class GemApiService {
 
                     if (apiIndex >= api.length) {  // 모든 API 키를 사용했다면 1분 대기 후 다시 첫 번째 API로
                         apiIndex = 0;
-                        log.info("모든 API 키를 사용했습니다. 1분 동안 대기 중...");
-                        Thread.sleep(60000);  // 1분 대기
+                        log.info("모든 API 키를 사용했습니다. 30초 동안 대기 중...");
+                        Thread.sleep(30000);  // 30초 대기
                     }
                 }
 
@@ -115,6 +124,9 @@ public class GemApiService {
                         if (effectsJson.has("Skills") && !effectsJson.getJSONArray("Skills").isEmpty()) {
                             JSONArray skillsArray = effectsJson.getJSONArray("Skills");
 
+                            if(skillsArray.length()!=11) continue; // 보석이 11개가 아닌 경우 건너뜀
+
+
                             for (int j = 0; j < skillsArray.length(); j++) {
                                 JSONObject skill = skillsArray.getJSONObject(j);
                                 String skillName = skill.getString("Name");
@@ -124,12 +136,8 @@ public class GemApiService {
                                 String gemType = null;
 
                                 if (description.contains("재사용")) {
-                                    log.info("스킬 이름 (재사용): {}", skillName);
-                                    log.info("설명: {}", description);
                                     gemType = "작";
                                 } else if (description.contains("피해")||description.contains("지원")) {
-                                    log.info("스킬 이름 (피해 or 지원): {}", skillName);
-                                    log.info("설명: {}", description);
                                     gemType = "겁";
                                 } else {
                                     log.error("Unknown gem type: {}", description);
@@ -150,6 +158,9 @@ public class GemApiService {
                                     gemApiRepository.save(newGemApiEntity);
                                 }
                             }
+                            // 클래스 카운트 증가
+                            gemDataCache.updateClassCount(characterClassName, 1);
+
                         } else {
                             log.error("Skills 데이터가 없습니다.");
                         }
@@ -162,6 +173,7 @@ public class GemApiService {
                 }
                 userCount++;  // 요청 후 사용자 카운트 증가
             }
+            log.info("집계 결과: {}", gemDataCache.getClassCountMap());
         } catch (Exception e) {
             throw new GemApiGetException("로아 API 요청 중 오류 발생: " + e.getMessage());
         }
@@ -171,6 +183,9 @@ public class GemApiService {
             "5레벨 홍", "6레벨 홍", "7레벨 홍", "8레벨 홍", "9레벨 홍", "10레벨 홍","5레벨 겁", "6레벨 겁", "7레벨 겁", "8레벨 겁", "9레벨 겁", "10레벨 겁",
             "5레벨 작", "6레벨 작", "7레벨 작", "8레벨 작", "9레벨 작", "10레벨 작"};
 
+    /*
+        * 보석 시세를 가져오는 메서드
+     */
     @Transactional
     public void getGemPrice() {
         String reqURL = "https://developer-lostark.game.onstove.com/auctions/items";
@@ -315,6 +330,7 @@ public class GemApiService {
             throw new GemDataException("보석 시세 JSON 파일 저장 중 오류가 발생했습니다");
         }
     }
+
     public String readJsonFromFile() {
         try {
             return Files.readString(Paths.get(filePath));

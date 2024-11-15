@@ -35,7 +35,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	// 크롤링을 위한 Selinium 의존성
-	implementation 'org.seleniumhq.selenium:selenium-java:4.25.0'
+	implementation 'org.seleniumhq.selenium:selenium-java:4.26.0'
 	// 크롤링을 위한 json
 	implementation 'org.json:json:20211205'
 	//스케쥴링 의존성

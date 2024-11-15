@@ -215,6 +215,9 @@ public class CrawlingService {
             Map<String, String> jobMap = createJobMap();
             Map<String, Map<String, String>> engraveMap = createEngraveMap();
 
+            // 기존 데이터를 비우기 (삭제)
+            crawlingRepository.deleteAll(); // 기존 데이터를 삭제합니다.
+
             // 직업에 대해 반복
             for (String jobId : orderedJobIds) {
                 String jobName = jobMap.get(jobId);
@@ -223,6 +226,7 @@ public class CrawlingService {
 
                 // 직업 버튼 클릭
                 clickJobButton(jobId,driver,wait);
+                log.info("Clicked job: {} ({})", jobName, jobId);
 
                 // 현재 직업에 맞는 각인 Map 가져오기
                 Map<String, String> currentEngraveMap = engraveMap.get(jobId);
@@ -233,12 +237,43 @@ public class CrawlingService {
 
                     // 각인 버튼 클릭
                     clickEngraveButton(engraveId,driver,wait);
+                    log.info("Clicked engrave: {} ({})", engraveName, engraveId);
                     Thread.sleep(4000); // 클릭 후 대기 (화면 로딩)
 
-                    // 상위 20명의 닉네임 db에 저장
-                    for (int i = 1; i <= 20; i++) {
+                    String checkJobName = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                            By.xpath("//*[@id='content-container']/div/div/ul/li[1]/div/p[3]"))).getText();
+                    log.info("Check job: {} ({})", checkJobName, jobId);
+
+                    // 직업이 일치하지 않으면 재시도
+                    int retryCount = 0;
+                    while (!jobName.equals(checkJobName) && retryCount < 3) {
+                        log.warn("직업이 일치하지 않습니다. 재시도 중... ({} != {})", jobName, checkJobName);
+                        driver.navigate().refresh(); // 새로고침
+                        clickJobButton(jobId,driver,wait); // 다시 직업 버튼 클릭
+                        if (engraveId.equals("headlessui-listbox-option-:r13:")) {  //앞쪽 직업각인 문제면 다시 클릭
+                            clickEngraveButton(engraveId, driver, wait); // 다시 각인 버튼 클릭
+                        }
+                        else if (engraveId.equals("headlessui-listbox-option-:r17:")) { //뒷쪽 직업각인 문제면 앞선 직업각인 클릭 후 다시 클릭
+                            clickEngraveButton("headlessui-listbox-option-:r13:", driver, wait); // 앞쪽 각인 버튼 클릭
+                            clickEngraveButton(engraveId,driver,wait); // 다시 각인 버튼 클릭
+                        }
+                        Thread.sleep(4000); // 클릭 후 대기 (화면 로딩)
+
+                        checkJobName = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                                By.xpath("//*[@id='content-container']/div/div/ul/li[1]/div/p[3]"))).getText();
+                        retryCount++;
+                    }
+                    if (!jobName.equals(checkJobName)) {
+                        log.error("직업이 일치하지 않아 크롤링을 중단합니다. ({} != {})", jobName, checkJobName);
+                        throw new CrawlingRunningException("크롤링 중 해당 직업페이지가 지속적으로 로딩되지 않아 크롤링에 실패하였습니다 : " + jobName);
+                    }
+
+                    // 상위 50명의 닉네임 db에 저장
+                    int crawlingCount = 50;
+                    for (int i = 1; i <= crawlingCount; i++) {
                         // 닉네임이 위치한 XPath
                         String xpath = "//*[@id='content-container']/div/div/ul/li[" + i + "]/div/a";
+
 
                         // 닉네임 텍스트를 가져옴
                         String name = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath))).getText();
