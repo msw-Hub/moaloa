@@ -40,13 +40,13 @@ button {
   @apply bg-gray-500 dark:bg-gray-700;
 }
 
-@media (max-width: 1500px) {
+@media (max-width: 1650px) {
   .grid-rows-responsive {
     @apply grid-rows-[1fr_1fr] grid-cols-[1fr];
   }
 }
 
-@media (min-width: 1501px) {
+@media (min-width: 1651px) {
   .grid-cols-responsive {
     @apply grid-cols-[1.2fr_1fr] grid-rows-[1fr];
   }

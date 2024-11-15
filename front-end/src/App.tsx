@@ -24,20 +24,20 @@ function App() {
             </div>
             {/*메뉴*/}
             <div className="flex items-center justify-center h-full gap-4">
-              <button onClick={() => naivgate("/gemSerch")} className="btn flex items-center justify-center">
+              <button onClick={() => naivgate("/gemSerch")} className="navBtn flex items-center justify-center">
                 보석검색
               </button>
-              <button onClick={() => {}} className="btn flex items-center justify-center">
+              <button onClick={() => {}} className="navBtn flex items-center justify-center">
                 영지제작
               </button>
-              <button onClick={() => {}} className="btn flex items-center justify-center">
+              <button onClick={() => {}} className="navBtn flex items-center justify-center">
                 경매계산
               </button>
             </div>
           </div>
           {/*다크모드 / api키 버튼*/}
           <div className=" flex items-center justify-center mx-6 gap-5">
-            <button onClick={() => dispatch(toggleModal())} className="btn flex items-center justify-center">
+            <button onClick={() => dispatch(toggleModal())} className="navBtn flex items-center justify-center">
               API키
             </button>
             <button
