@@ -39,7 +39,7 @@ dependencies {
 	// 크롤링을 위한 json
 	implementation 'org.json:json:20211205'
 	//스케쥴링 의존성
-//	implementation 'org.springframework.boot:spring-boot-starter-scheduling'
+	implementation 'org.springframework.boot:spring-boot-starter-scheduling'
 }
 
 tasks.named('test') {
