@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moaloa.store.back_end.exception.custom.CraftDataException;
+import moaloa.store.back_end.exception.custom.GemDataException;
 import moaloa.store.back_end.exception.custom.UserNotFoundException;
 import moaloa.store.back_end.exception.custom.GemApiGetException;
 import moaloa.store.back_end.gemSearch.crawling.CrawlingEntity;
@@ -23,9 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Service
@@ -213,12 +212,12 @@ public class GemApiService {
             List<GemPriceEntity> gemPriceEntities = gemPriceRepository.findAll();
             if(gemPriceEntities.isEmpty()) {
                 log.error("GemPriceEntity가 비어있습니다.");
-                throw new CraftDataException("보석 가격 엔티티가 비어있습니다");
+                throw new GemDataException("GemPriceEntity가 비어있습니다.");
             }
             String jsonResult = objectMapper.writeValueAsString(gemPriceEntities);
             saveJsonToFile(jsonResult);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new GemApiGetException("로아 api 요청으로 보석 시세를 가져오는 중 오류가 발생했습니다");
         }
     }
 
@@ -245,7 +244,7 @@ public class GemApiService {
                 newGemPriceEntity.setBuyPrice(buyPrice);
                 gemPriceRepository.save(newGemPriceEntity);
             }
-        }
+        } else throw new GemApiGetException("로아 api 요청은 정상 처리되었으나, 보석 데이터가 없습니다.");
     }
 
     private String createJsonInputString(String gemName) {
@@ -283,27 +282,44 @@ public class GemApiService {
 
     }
 
-    private void saveJsonToFile(String jsonData){
+    private void saveJsonToFile(String jsonData) {
         try {
             // 현재 날짜와 시간을 얻음
             String currentDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-            // 전체 데이터를 JSON 객체에 저장
+            // 전체 데이터를 JSON 객체로 저장
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("갱신 시간", currentDateTime); // 날짜 및 시간 추가
-            jsonObject.put("시세", new JSONArray(jsonData)); // 실시간 보석 시세 데이터
+
+            // 데이터 변환
+            JSONArray jsonArray = new JSONArray(jsonData);
+            JSONObject Object = new JSONObject();
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject gem = jsonArray.getJSONObject(i);
+                String gemName = gem.getString("gemName");
+
+                JSONObject gemData = new JSONObject();
+                gemData.put("buyPrice", gem.getInt("buyPrice"));
+                gemData.put("gemTier", gem.getInt("gemTier"));
+
+                Object.put(gemName, gemData);
+            }
+
+            // JSON 데이터 완성
+            jsonObject.put("시세", Object);
 
             // JSON 파일로 저장
             Files.write(Paths.get(filePath), jsonObject.toString(4).getBytes());
         } catch (IOException e) {
-            throw new CraftDataException("JSON 파일 저장 중 오류가 발생했습니다");
+            throw new GemDataException("보석 시세 JSON 파일 저장 중 오류가 발생했습니다");
         }
     }
     public String readJsonFromFile() {
         try {
             return Files.readString(Paths.get(filePath));
         } catch (IOException e) {
-            throw new CraftDataException("JSON 파일 읽기 중 오류가 발생했습니다");
+            throw new GemDataException("보석 시세 JSON 파일 읽기 중 오류가 발생했습니다");
         }
     }
 
@@ -311,7 +327,7 @@ public class GemApiService {
         try {
             return objectMapper.readValue(jsonData, Object.class);
         } catch (JsonProcessingException e) {
-            throw new CraftDataException("JSON 데이터를 객체로 변환 중 오류가 발생했습니다");
+            throw new GemDataException("보석 시세 JSON 데이터를 객체로 변환 중 오류가 발생했습니다");
         }
     }
 }
