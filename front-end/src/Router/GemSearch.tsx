@@ -10,6 +10,7 @@ interface liveGemListTpye {
   name: string;
   price: number;
   Icon: string;
+  Grade: string;
 }
 
 interface ClassIcon {
@@ -30,6 +31,18 @@ interface Skill {
 
 interface ClassSkill {
   [key: string]: Skill[];
+}
+
+interface GemList {
+  skillValue: number;
+  price: number;
+  skillName: string;
+  className: string;
+  Icon: string;
+  skillUseRate: { skillName: string; recruitmentRate: number };
+  Tier: string;
+  gemLevel: string;
+  gemDamCol: string;
 }
 
 const classIconListTyped: ClassIconList = classIconList;
@@ -58,7 +71,7 @@ function GemSearch() {
   //아이템 티어
   const [itemTier, setItemTier] = useState<string>(() => JSON.parse(localStorage.getItem("itemTier") || '"3"'));
   //검색된 보석 리스트
-  const [gemListAll, setGemListAll] = useState<Array<Record<string, any>>>([]);
+  const [gemListAll, setGemListAll] = useState<GemList[]>([]);
   //채용률
   const [recruitmentRate, setRecruitmentRate] = useState<number>(30);
 
@@ -66,7 +79,7 @@ function GemSearch() {
   const [sort, setSort] = useState<string>("recruitmentRate");
 
   //검색된 보석 리스트 정렬
-  const [sortedGemList, setSortedGemList] = useState<Array<Record<string, any>>>([]);
+  const [sortedGemList, setSortedGemList] = useState<GemList[]>([]);
 
   //보여줄 리스트 체크박스 설정(price가 0인것, price가 있는것, 둘다보기)
   const [showGemList1, setShowGemList1] = useState<boolean>(true);
@@ -205,27 +218,26 @@ function GemSearch() {
           } else {
             gemSerchAPI(a, b, i + 1);
           }
+        } else {
+          let skillUseRateData = skillUseRate[b][gemDamCol == "딜" ? "겁" : "작"].find((c: { skillName: "string"; recruitmentRate: "number" }) => c.skillName == a.Text);
+          if (skillUseRateData === undefined) skillUseRateData = { skillName: b, recruitmentRate: 0 };
+          if (true) {
+            const apiSearchValue = {
+              skillValue: a.Value,
+              price: 0,
+              skillName: a.Text,
+              className: b,
+              Icon: a.Icon,
+              skillUseRate: skillUseRateData,
+              Tier: itemTier,
+              gemLevel: gemLevel.replace("레벨", ""),
+              gemDamCol: gemDamCol,
+            };
+            setGemListAll((prevList) => [...prevList, apiSearchValue]);
+            setNowClassSkillCount(count);
+            console.log(apiSearchValue);
+          }
         }
-        //  else {
-        //   let skillUseRateData = skillUseRate[b][gemDamCol == "딜" ? "겁" : "작"].find((c: { skillName: "string"; recruitmentRate: "number" }) => c.skillName == a.Text);
-        //   if (skillUseRateData === undefined) skillUseRateData = { skillName: b, recruitmentRate: 0 };
-        //   if (true) {
-        //     const apiSearchValue = {
-        //       skillValue: a.Value,
-        //       price: 0,
-        //       skillName: a.Text,
-        //       className: b,
-        //       Icon: a.Icon,
-        //       skillUseRate: skillUseRateData,
-        //       Tier: itemTier,
-        //       gemLevel: gemLevel.replace("레벨", ""),
-        //       gemDamCol: gemDamCol,
-        //     };
-        //     setGemListAll((prevList) => [...prevList, apiSearchValue]);
-        //     setNowClassSkillCount(count);
-        //     console.log(apiSearchValue);
-        //   }
-        // }
       });
   }
 
@@ -249,7 +261,7 @@ function GemSearch() {
       .get("/api/v1/gemApi/nowGemPrice")
       .then((response) => {
         const gemPrices = liveGemList.map((a) => {
-          return { name: a.name, price: response.data["시세"][a.name].buyPrice, Icon: a.icon };
+          return { name: a.name, price: response.data["시세"][a.name].buyPrice, Icon: a.icon, Grade: a.Grade };
         });
 
         setLiveGemPrice(gemPrices);
@@ -267,7 +279,7 @@ function GemSearch() {
 
   // 정렬 기준에 따른 리스트 업데이트(가격순, 채용률순)
   useEffect(() => {
-    const sortedList = [...gemListAll];
+    const sortedList: GemList[] = [...gemListAll];
     //가격순 정렬 (가격이 같을 경우 채용률순 정렬)
     if (sort === "price") {
       sortedList.sort((a, b) => {
@@ -429,25 +441,16 @@ function GemSearch() {
                   <span className="col-span-1 font-semibold">홍염</span>
                   <span className="col-span-1 font-semibold">겁화</span>
                   <span className="col-span-1 font-semibold">작열</span>
-
                   {[5, 6, 7, 8, 9, 10].map((level) => (
-                    <React.Fragment key={level}>
-                      <span className="flex justify-center items-center font-semibold">{level}레벨</span>
+                    <React.Fragment key={level}></React.Fragment>
+                  ))}
+
+                  {liveGemPrice.map((gem, index: number) => (
+                    <React.Fragment key={gem.Icon}>
+                      {index % 4 === 0 && <span className="flex justify-center items-center font-semibold">{Math.floor(index / 4) + 5}레벨</span>}
                       <div className="col-span-1 flex justify-end items-center gap-2">
-                        <span>{liveGemPrice[3]?.["딜"]?.[level - 5]?.Price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") || "N/A"}</span>
-                        <img className={`rounded-md p-0.5 w-10 h-10 ${liveGemPrice[3]?.["딜"]?.[level - 5]?.Grade}`} src={liveGemPrice[3]?.["딜"]?.[level - 5]?.Icon} />
-                      </div>
-                      <div className="col-span-1 flex justify-end items-center gap-2">
-                        <span>{liveGemPrice[3]?.["쿨감"]?.[level - 5]?.Price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") || "N/A"}</span>
-                        <img className={`rounded-md p-0.5 w-10 h-10 ${liveGemPrice[3]?.["쿨감"]?.[level - 5]?.Grade}`} src={liveGemPrice[3]?.["쿨감"]?.[level - 5]?.Icon} />
-                      </div>
-                      <div className="col-span-1 flex justify-end items-center gap-2">
-                        <span>{liveGemPrice[4]?.["딜"]?.[level - 5]?.Price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") || "N/A"}</span>
-                        <img className={`rounded-md p-0.5 w-10 h-10 ${liveGemPrice[4]?.["딜"]?.[level - 5]?.Grade}`} src={liveGemPrice[4]?.["딜"]?.[level - 5]?.Icon} />
-                      </div>
-                      <div className="col-span-1 flex justify-end items-center gap-2">
-                        <span>{liveGemPrice[4]?.["쿨감"]?.[level - 5]?.Price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") || "N/A"}</span>
-                        <img className={`rounded-md p-0.5 w-10 h-10 ${liveGemPrice[4]?.["쿨감"]?.[level - 5]?.Grade}`} src={liveGemPrice[4]?.["쿨감"]?.[level - 5]?.Icon} />
+                        <span>{gem.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") || "N/A"}</span>
+                        <img className={`rounded-md p-0.5 w-10 h-10 ${gem.Grade}`} src={gem.Icon} />
                       </div>
                     </React.Fragment>
                   ))}
@@ -525,7 +528,9 @@ function GemSearch() {
                     <div className="border border-bddark py-2  flex items-center justify-center">{gem.className}</div>
                     <div className="border border-bddark py-2 flex items-center justify-center">{gem.skillName}</div>
                     <div className="border border-bddark py-2 flex items-center justify-center">{gem?.price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
-                    <div className="border border-bddark py-2 flex items-center justify-center">{gem.price === 0 ? 0 : (gem.price - liveGemPrice[gem.Tier]?.[gem.gemDamCol]?.[gem.gemLevel - 5]?.Price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
+                    <div className="border border-bddark py-2 flex items-center justify-center">
+                      {gem.price === 0 ? 0 : (gem.price - Number(liveGemPrice[(Number(gem.gemLevel) - 5) * 4 + (gem.gemDamCol === "딜" ? 0 : 1) + (gem.Tier === "3" ? 0 : 1)]?.price ?? 0)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                    </div>
                     <div className="border border-bddark py-2 flex items-center justify-center">{gem.skillUseRate.recruitmentRate}</div>
                   </div>
                 );
