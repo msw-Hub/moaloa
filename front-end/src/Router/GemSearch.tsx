@@ -1,9 +1,16 @@
 import axios from "axios";
 import classIconList from "../data/classIcon.json"; // JSON 파일 경로
+import liveGemList from "../data/liveGemList.json"; // JSON 파일 경로
 import React, { useState, useEffect } from "react";
 import classSkillData from "../data/classSkill.json"; // classSkill.json 파일 경로
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
+
+interface liveGemListTpye {
+  name: string;
+  price: number;
+  Icon: string;
+}
 
 interface ClassIcon {
   Class: string;
@@ -222,125 +229,9 @@ function GemSearch() {
       });
   }
 
-  let liveGemApiCount = 0; // API 카운트
-
-  /**실시간 보석 시세 검색 api */
-  const [liveGemPrice, setLiveGemPrice] = useState<Record<string, any>>({
-    3: {
-      딜: [],
-      쿨감: [],
-    },
-    4: {
-      딜: [],
-      쿨감: [],
-    },
-  });
-
-  useEffect(() => {
-    // liveGemPriceAPISend 함수를 즉시 실행
-    liveGemPriceAPISend();
-
-    // 1분마다 liveGemPriceAPISend 함수를 실행
-    const intervalId = setInterval(() => {
-      liveGemPriceAPISend();
-    }, 600000); // 60000ms = 1분
-
-    // 컴포넌트가 언마운트될 때 인터벌을 정리
-    return () => clearInterval(intervalId);
-  }, []);
-
-  function liveGemPriceAPISend() {
-    //api 키가 없을 때 경고창 띄우기
-    if (apikeycount === 0) {
-      return;
-    }
-    //보석 레벨5~10까지 반복, 보석 티어 3,4 반복 , 보석 딜,쿨감 반복
-    for (let itemTier = 3; itemTier <= 4; itemTier++) {
-      for (let damCol of ["딜", "쿨감"]) {
-        for (let gemLevel = 5; gemLevel <= 10; gemLevel++) {
-          liveGemApiCount++;
-          if (Math.trunc(liveGemApiCount / 100) === apikeycount) liveGemApiCount = 0;
-          liveGemPriceAPI(gemLevel, itemTier, damCol, Math.trunc(liveGemApiCount / 100));
-        }
-      }
-    }
-  }
-
-  function liveGemPriceAPI(gemLevel: number, itemTier: number, gemDamCol: string, i: number) {
-    axios
-      .post(
-        "https://developer-lostark.game.onstove.com/auctions/items",
-        {
-          ItemLevelMin: 0,
-          ItemLevelMax: 0,
-          ItemGradeQuality: null,
-          SkillOptions: [
-            {
-              FirstOption: null,
-              SecondOption: null,
-              MinValue: null,
-              MaxValue: null,
-            },
-          ],
-          EtcOptions: [
-            {
-              FirstOption: null,
-              SecondOption: null,
-              MinValue: null,
-              MaxValue: null,
-            },
-          ],
-          Sort: "BUY_PRICE",
-          CategoryCode: 210000,
-          CharacterClass: null,
-          ItemTier: itemTier,
-          ItemGrade: null,
-          ItemName: `${gemLevel}레벨 ${itemTier === 3 ? (gemDamCol === "딜" ? "멸화" : "홍염") : gemDamCol === "딜" ? "겁화" : "작열"}`,
-          PageNo: 0,
-          SortCondition: "ASC",
-        },
-        {
-          headers: {
-            accept: "application/json",
-            authorization: `bearer ${apiKey[i].trim()}`,
-            "content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        const liveGem = {
-          Price: response.data.Items[0].AuctionInfo.BuyPrice,
-          Icon: response.data.Items[0].Icon,
-          Name: gemLevel + "레벨",
-          Grade: response.data.Items[0].Grade == "영웅" ? "gemBackground1" : response.data.Items[0].Grade == "전설" ? "gemBackground2" : response.data.Items[0].Grade == "유물" ? "gemBackground3" : response.data.Items[0].Grade == "고대" ? "gemBackground4" : null,
-        };
-
-        setLiveGemPrice((prevPrices) => ({
-          ...prevPrices,
-          [itemTier]: {
-            ...(prevPrices[itemTier] || {}),
-            [gemDamCol]: {
-              ...(prevPrices[itemTier]?.[gemDamCol] || {}),
-              [gemLevel - 5]: liveGem,
-            },
-          },
-        }));
-      })
-      .catch((error) => {
-        if (error.response && error.response.status === 429) {
-          // 429 Too Many Requests - 재시도 로직 추가
-          setTimeout(() => {
-            liveGemPriceAPI(gemLevel, itemTier, gemDamCol, i);
-          }, 22000); // 22초 후에 재시도
-        } else {
-          console.error("API request failed:", error.message);
-        }
-      });
-  }
-
   //스킬 채용률 api
   const [skillUseRate, setSkillUseRate] = useState<Record<string, any>>({});
-  useEffect(() => {
+  function skillUseRateSerchAPI() {
     axios
       .get("/api/v1/gemData/readData")
       .then((response) => {
@@ -349,6 +240,29 @@ function GemSearch() {
       .catch((error) => {
         console.error("API request failed:", error.message);
       });
+  }
+
+  /**실시간 보석 시세 검색 api */
+  const [liveGemPrice, setLiveGemPrice] = useState<liveGemListTpye[]>([]);
+  function liveGemPriceSerchAPI() {
+    axios
+      .get("/api/v1/gemApi/nowGemPrice")
+      .then((response) => {
+        const gemPrices = liveGemList.map((a) => {
+          return { name: a.name, price: response.data["시세"][a.name].buyPrice, Icon: a.icon };
+        });
+
+        setLiveGemPrice(gemPrices);
+      })
+      .catch((error) => {
+        console.error("API request failed:", error.message);
+      });
+  }
+
+  //페이지 로드시 실행
+  useEffect(() => {
+    liveGemPriceSerchAPI();
+    skillUseRateSerchAPI();
   }, []);
 
   // 정렬 기준에 따른 리스트 업데이트(가격순, 채용률순)
@@ -469,12 +383,11 @@ function GemSearch() {
                 </div>
               </div>
             </div>
-            {/*필터 설정창*/}
-            <div className="basis-full flex justify-start items-start py-6 px-6 bg-gray-50 dark:bg-ctdark rounded-sm shadow-md">
+
+            {/* <div className="basis-full flex justify-start items-start py-6 px-6 bg-gray-50 dark:bg-ctdark rounded-sm shadow-md">
               <div className="h-full w-full flex flex-col justify-start items-start gap-4 ">
                 <div className="font-semibold">검색 필터</div>
                 <div className="grid grid-cols-[1.5fr_1fr_1fr] grid-rows-3 gap-2 text-sm font-semibold">
-                  {/* 정렬 기준 선택 */}
                   <span className="col-start-1 flex justify-center items-center">정렬 기준</span>
                   <select className="col-start-2 col-end-4 rounded-md bg-[#e3e3e3] dark:bg-bgdark text-center " onChange={(e) => setSort(e.target.value)} defaultValue={sort}>
                     <option className="font-semibold" value="recruitmentRate">
@@ -485,19 +398,14 @@ function GemSearch() {
                     </option>
                   </select>
 
-                  {/*채용률 조정해서 보이기 type = range */}
-
                   <div className="col-start-1 col-end-2 flex justify-center items-center gap-2">
                     <span>채용률</span>
                     <span className="w-10 flex justify-center items-center ">{recruitmentRate}%</span>
                   </div>
                   <input className="col-start-2 col-end-4 ml-2" onChange={(e) => setRecruitmentRate(Number(e.target.value))} type="range" min="0" max="100" step="5" defaultValue={30} />
 
-                  {/* 가격 0원 제외, 매물없는것만 보기 버튼 둘다 input 총 3개의 버튼 선택해서 필터 */}
                   <span className="row-start-3 flex justify-center items-center">매물</span>
-                  {/* <button onClick={() => setShowGemList("all")} className={"row-start-3 w-14 py-1 px-2 rounded-md hover:bg-[#373737] " + `${showGemList == "all" ? "bg-hover dark:bg-bgdark" : ""}`}>
-                    전부
-                  </button> */}
+
                   <button onClick={() => setShowGemList1(!showGemList1)} className={"btn row-start-3 w-14 py-1 px-2 rounded-md " + `${showGemList1 == true ? "bg-[#e3e3e3] dark:bg-bgdark dark:text-white" : ""}`}>
                     있음
                   </button>
@@ -506,7 +414,7 @@ function GemSearch() {
                   </button>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div className="row-start-1 row-end-3 col-start-2 py-6 px-6 bg-gray-50 dark:bg-ctdark rounded-sm shadow-md">
               <div className="font-semibold mb-4">실시간 보석 시세</div>
