@@ -31,7 +31,7 @@ export default {
           transition: "all 0.3s ease",
           "@apply text-bgdark py-2 px-6 dark:border-ctdark dark:text-light hover:bg-hover dark:hover:bg-ctdark": {},
         },
-        ".icon-filter": {
+        ".white-Mode-icon-filter": {
           filter: "invert(82%) sepia(6%) saturate(0%) hue-rotate(233deg) brightness(92%) contrast(86%)",
         },
         ".btn": {

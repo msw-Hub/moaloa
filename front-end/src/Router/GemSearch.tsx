@@ -76,7 +76,7 @@ function GemSearch() {
   const [recruitmentRate, setRecruitmentRate] = useState<number>(30);
 
   //정렬 기준 설정
-  const [sort, setSort] = useState<string>("recruitmentRate");
+  const [sort, setSort] = useState<string>("price");
 
   //검색된 보석 리스트 정렬
   const [sortedGemList, setSortedGemList] = useState<GemList[]>([]);
@@ -256,6 +256,8 @@ function GemSearch() {
 
   /**실시간 보석 시세 검색 api */
   const [liveGemPrice, setLiveGemPrice] = useState<liveGemListTpye[]>([]);
+  //갱신시간
+  const [liveGemLastUpdateTime, setLiveGemLastUpdateTime] = useState<string>("");
   function liveGemPriceSerchAPI() {
     axios
       .get("/api/v1/gemApi/nowGemPrice")
@@ -263,6 +265,7 @@ function GemSearch() {
         const gemPrices = liveGemList.map((a) => {
           return { name: a.name, price: response.data["시세"][a.name].buyPrice, Icon: a.icon, Grade: a.Grade };
         });
+        setLiveGemLastUpdateTime(response.data["갱신 시간"]);
 
         setLiveGemPrice(gemPrices);
       })
@@ -328,7 +331,7 @@ function GemSearch() {
                       <input className="hidden" value={classIcon.Class} id={classIcon.Class} type="checkbox" checked={checked.includes(classIcon.Class)} onChange={handleCheck} />
                       <div className={`btn transition-all cursor-pointer w-full flex justify-start items-center gap-2 py-2 px-5 rounded-md  ${checked.includes(classIcon.Class) ? "bg-[#e3e3e3] dark:bg-bgdark text-white" : ""}`}>
                         {/* class 이미지 아이콘 */}
-                        <img className={`w-7 h-7 ${darkMode === false ? " icon-filter" : null}`} src={classIcon.Icon} alt={classIcon.Class} />
+                        <img className={`w-7 h-7 ${darkMode === false ? " white-Mode-icon-filter" : null}`} src={classIcon.Icon} alt={classIcon.Class} />
                         {/* class 이름 */}
                         <span className="font-semibold ">{classIcon.Class}</span>
                       </div>
@@ -429,7 +432,13 @@ function GemSearch() {
             </div> */}
 
             <div className="row-start-1 row-end-3 col-start-2 py-6 px-6 bg-gray-50 dark:bg-ctdark rounded-sm shadow-md">
-              <div className="font-semibold mb-4">실시간 보석 시세</div>
+              <div className="flex justify-between font-semibold mb-4">
+                <div className="">실시간 보석 시세</div>
+                <div className="flex justify-center items-center text-gray-400 gap-2">
+                  <i className="xi-clock-o xi-x"></i>
+                  <div className="h-auto">{liveGemLastUpdateTime}</div>
+                </div>
+              </div>
               {apikeycount === 0 ? (
                 <div className="h-3/4 flex justify-center items-center">API키를 등록해야 확인가능합니다.</div>
               ) : (
@@ -467,12 +476,12 @@ function GemSearch() {
               {/* 정렬 기준 선택 */}
               <div className="flex justify-center items-center gap-3">
                 <span className="flex justify-center items-center">정렬 기준</span>
-                <select className="col-end-4 rounded-md px-4 py-1 bg-[#e3e3e3] dark:bg-bgdark text-center " onChange={(e) => setSort(e.target.value)} defaultValue={sort}>
+                <select className="w-20 py-1 rounded-md bg-[#e3e3e3] dark:bg-bgdark text-center " onChange={(e) => setSort(e.target.value)} defaultValue={sort}>
                   <option className="font-semibold" value="recruitmentRate">
                     채용률
                   </option>
                   <option className="font-semibold" value="price">
-                    가격
+                    차익
                   </option>
                 </select>
               </div>
@@ -529,7 +538,7 @@ function GemSearch() {
                     <div className="border border-bddark py-2 flex items-center justify-center">{gem.skillName}</div>
                     <div className="border border-bddark py-2 flex items-center justify-center">{gem?.price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
                     <div className="border border-bddark py-2 flex items-center justify-center">
-                      {gem.price === 0 ? 0 : (gem.price - Number(liveGemPrice[(Number(gem.gemLevel) - 5) * 4 + (gem.gemDamCol === "딜" ? 0 : 1) + (gem.Tier === "3" ? 0 : 1)]?.price ?? 0)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                      {gem.price === 0 ? 0 : (gem.price - Number(liveGemPrice[(Number(gem.gemLevel) - 5) * 4 + (gem.gemDamCol === "딜" ? 0 : 1) + (gem.Tier === "3" ? 0 : 2)]?.price ?? 0)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                     </div>
                     <div className="border border-bddark py-2 flex items-center justify-center">{gem.skillUseRate.recruitmentRate}</div>
                   </div>
