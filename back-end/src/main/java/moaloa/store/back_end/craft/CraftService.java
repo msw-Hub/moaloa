@@ -251,7 +251,7 @@ public class CraftService {
         // JSON 객체 생성
         Map<String, Object> jsonMap = new HashMap<>();
         jsonMap.put("갱신시간", currentDateTime);
-        jsonMap.put("cratfItemList", craftRecipeDtos);
+        jsonMap.put("craftItemList", craftRecipeDtos);
 
         // ObjectMapper를 사용하여 Map을 JSON으로 변환
         ObjectMapper objectMapper = new ObjectMapper();
