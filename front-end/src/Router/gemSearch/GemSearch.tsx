@@ -1,10 +1,10 @@
 import axios from "axios";
-import classIconList from "../data/classIcon.json"; // JSON 파일 경로
-import liveGemList from "../data/liveGemList.json"; // JSON 파일 경로
+import classIconList from "../../data/classIcon.json"; // JSON 파일 경로
+import liveGemList from "../../data/liveGemList.json"; // JSON 파일 경로
 import React, { useState, useEffect } from "react";
-import classSkillData from "../data/classSkill.json"; // classSkill.json 파일 경로
+import classSkillData from "../../data/classSkill.json"; // classSkill.json 파일 경로
 import { useSelector } from "react-redux";
-import { RootState } from "../store/store";
+import { RootState } from "../../store/store";
 
 interface liveGemListTpye {
   name: string;
@@ -317,7 +317,7 @@ function GemSearch() {
 
   return (
     <>
-      <div className="h-full w-full max-w-[2000px] grid gap-4 mt-20 px-20 grid-rows-responsive grid-cols-responsive">
+      <div className="h-full w-full max-w-[2000px] grid gap-4 px-20 grid-rows-responsive grid-cols-responsive">
         <div className="flex flex-col gap-4 text-nowrap">
           {/* class 선택 창 */}
           <div className="flex flex-row justify-center items-start py-4 px-4 gap-2 bg-gray-50 dark:bg-ctdark border rounded-sm shadow-md">

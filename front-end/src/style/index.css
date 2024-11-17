@@ -52,31 +52,24 @@ button {
   }
 }
 
-.gemBackground1 {
-  background: linear-gradient(135deg, #261331, #480d5d);
+.imgBackground1 {
+  background: linear-gradient(135deg, #313131, #585858);
 }
-.gemBackground2 {
-  background: linear-gradient(135deg, #362003, #9e5f04);
+.imgBackground2 {
+  background: linear-gradient(135deg, #1e2d0b, #304911);
 }
-.gemBackground3 {
-  background: linear-gradient(135deg, #341a09, #a24006);
+.imgBackground3 {
+  background: linear-gradient(135deg, #102739, #113d5d);
 }
-.gemBackground4 {
-  background: linear-gradient(135deg, #3d3325, #dcc999);
+.imgBackground4 {
+  background: linear-gradient(135deg, #2e113c, #480d5d);
 }
-
-.digits4 {
-  color: white;
+.imgBackground5 {
+  background: linear-gradient(135deg, #452b05, #9e5f04);
 }
-
-.digits5 {
-  color: #ced49e;
+.imgBackground6 {
+  background: linear-gradient(135deg, #48220a, #a24006);
 }
-
-.digits6 {
-  color: #a8b2d4;
-}
-
-.digits7 {
-  color: #b9b3ce;
+.imgBackground7 {
+  background: linear-gradient(135deg, #3d3325, #dbc899);
 }

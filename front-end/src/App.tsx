@@ -1,14 +1,19 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
 import useDarkMode from "./hooks/useDarkMode";
-import GemSearch from "./Router/GemSearch";
-import { useDispatch } from "react-redux";
-import { toggleModal } from "./store/modal";
+import GemSearch from "./Router/gemSearch/GemSearch";
+import { useSelector } from "react-redux";
 import { Modal } from "./components/modal";
+import Craft from "./Router/craft/Craft";
+import CraftDetail from "./Router/craft/CraftDetail";
+import { RootState } from "./store/store";
+import { setApiKey } from "./store/apiKey";
+import { useState } from "react";
 
 function App() {
   const [darkMode, setDarkMode] = useDarkMode();
-  const dispatch = useDispatch();
-  const naivgate = useNavigate();
+  const navigate = useNavigate();
+  const [apiKeyModalOpen, setApiKeyModalOpen] = useState(false); //api모달
+  const apiKey = useSelector<RootState, string[]>((state) => state.apiKeys.apiKey);
 
   return (
     <>
@@ -18,16 +23,16 @@ function App() {
           <div className="flex justify-center items-center">
             {/*로고*/}
             <div className="flex items-center justify-center h-full mx-6">
-              <button onClick={() => naivgate("/")} className="text-2xl font-extrabold">
+              <button onClick={() => navigate("/")} className="text-2xl font-extrabold">
                 MoaLoa
               </button>
             </div>
             {/*메뉴*/}
             <div className="flex items-center justify-center h-full gap-4">
-              <button onClick={() => naivgate("/gemSerch")} className="navBtn flex items-center justify-center">
+              <button onClick={() => navigate("/gemSerch")} className="navBtn flex items-center justify-center">
                 보석검색
               </button>
-              <button onClick={() => {}} className="navBtn flex items-center justify-center">
+              <button onClick={() => navigate("/craft")} className="navBtn flex items-center justify-center">
                 영지제작
               </button>
               <button onClick={() => {}} className="navBtn flex items-center justify-center">
@@ -37,7 +42,7 @@ function App() {
           </div>
           {/*다크모드 / api키 버튼*/}
           <div className=" flex items-center justify-center mx-6 gap-5">
-            <button onClick={() => dispatch(toggleModal())} className="navBtn flex items-center justify-center">
+            <button onClick={() => setApiKeyModalOpen(true)} className="navBtn flex items-center justify-center">
               API키
             </button>
             <button
@@ -49,16 +54,44 @@ function App() {
             </button>
           </div>
           {/*api모달*/}
-          <Modal></Modal>
+          <Modal isOpen={apiKeyModalOpen} onClose={() => setApiKeyModalOpen(false)}>
+            <div className="flex flex-col items-center bg-light dark:bg-ctdark rounded-md p-8 w-[500px] gap-2">
+              {/* API KEY 입력 5칸 */}
+              <div className="w-full flex justify-between items-center">
+                <span className="font-semibold">API키 입력</span>
+                <button onClick={() => window.open("https://developer-lostark.game.onstove.com/", "_blank")} className="font-medium text-sm py-2 px-4 bg-light dark:bg-ctdark dark:border-bddark border-bddark border border-solid rounded-md">
+                  API키 발급
+                </button>
+              </div>
+              {apiKey.map((key: string, i: number) => (
+                <input
+                  className="bg-light dark:bg-ctdark dark:border-bddark border-bddark border border-solid rounded-md p-2 w-full"
+                  key={i}
+                  type="text"
+                  onChange={(e) => {
+                    let copy = [...apiKey];
+                    copy[i] = e.target.value;
+                    setApiKey(copy);
+                  }}
+                  value={key}
+                  placeholder="API 키"
+                />
+              ))}
+            </div>
+          </Modal>
         </nav>
         {/*nav여백*/}
-        {/* <div className="h-10"></div> */}
+        <div className="mt-20"></div>
         {/*라우터*/}
         <Routes>
-          {/*보석 검색 페이지*/}
+          {/*메인페이지*/}
           <Route path="/" element={<div></div>}></Route>
           {/*보석 검색 페이지*/}
           <Route path="/gemSerch" element={<GemSearch></GemSearch>}></Route>
+          {/*영지 제작 페이지*/}
+          <Route path="/craft" element={<Craft></Craft>}></Route>
+          {/*영지 제작 페이지 detail*/}
+          <Route path="/craft/:id" element={<CraftDetail></CraftDetail>}></Route>
         </Routes>
         <footer className="font-semibold flex flex-col justify-center items-center py-6">
           <div>@2024 moaloa All rights reserved</div>

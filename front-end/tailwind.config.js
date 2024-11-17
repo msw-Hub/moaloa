@@ -38,6 +38,9 @@ export default {
           transition: "all 0.3s ease",
           "@apply text-bgdark dark:text-gray-200 hover:bg-hover dark:hover:bg-hoverdark": {},
         },
+        ".content-box": {
+          "@apply rounded-sm shadow-md bg-gray-50 dark:bg-ctdark text-bgdark dark:text-light": {},
+        },
       });
     },
   ],
