@@ -173,7 +173,6 @@ public class CraftService {
                             || (code == 60500 && (marketName.equals("신속 로브") || marketName.equals("진군의 깃발")) && !marketName.contains("빛나는"))
                     ) {
                         log.info("제작 재료에 해당되는 아이템입니다");
-//                        CraftMaterialEntity craftMaterialEntity = craftMaterialRepository.findByMarketIdAndMarketName(marketId, marketName);
                         CraftMaterialEntity craftMaterialEntity = craftMaterialRepository.findByMarketId(marketId);
                         if (craftMaterialEntity == null) {
                             throw new CraftDataException("DB에 존재하지 않는 아이템입니다");

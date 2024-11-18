@@ -18,8 +18,9 @@ public class CraftController {
     private final CraftService craftService;
 
     @GetMapping("/loaApi")
-    public void getLoaApi(){
+    public ResponseEntity<?> getLoaApi() {
         craftService.getLoaApi();
+        return ResponseEntity.ok("json 파일 생성 완료");
     }
 
     @GetMapping("/readData")

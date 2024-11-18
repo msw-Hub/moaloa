@@ -16,7 +16,7 @@ public class CraftItemEntity {
     private int marketId; // 거래소내 아이템 ID
     private String craftName; // 제작품 이름
     private String marketName; // 거래소내 아이템 이름
-    private int subCode; // 카테고리
+    private int category; // 카테고리 { 0:전체 , 1:특수, 2:물약, 3:폭탄, 4:슈류탄, 5:로브, 6:기타, 7:요리 }
     private int craftQuantity; // 1회 생산량
     private int bundleCount; // 거래소 묶음 수량
     private int craftPrice; // 제작 초기 비용
