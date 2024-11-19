@@ -173,7 +173,7 @@ public class CraftService {
                     //제작 재료 아이템에 해당되는 아이템만 업데이트
                     if ((code > 90000 && !marketName.contains("결정"))
                             || (code == 60300 && !marketName.contains("빛나는"))
-                            || (code == 60200 && marketId == 101036)
+                            || (code == 60200 && marketId == 101063)
                             || (code == 60400 && (marketName.equals("신호탄") || marketName.equals("만능 물약") || marketName.equals("성스러운 부적")) && !marketName.contains("빛나는"))
                             || (code == 60500 && (marketName.equals("신속 로브") || marketName.equals("진군의 깃발")) && !marketName.contains("빛나는"))
                     ) {
