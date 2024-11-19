@@ -63,7 +63,7 @@ INSERT INTO craft_material_entity (id, market_id, market_name, sub_code, bundle_
 (2, 6882104, '수줍은 들꽃', 90200, 100, 'https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_4_14.png', '고급', 167, 167, 162.9),
 (3, 6882107, '화사한 들꽃', 90200, 100, 'https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_47.png', '희귀', 85, 85, 85.3),
 (4, 6882109, '아비도스 들꽃', 90200, 100, 'https://cdn-lostark.game.onstove.com/efui_iconatlas/lifelevel/lifelevel_02_47.png', '희귀', 634, 634, 639.7),
-(5, 6882301, '목재', 90200, 100, 'https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_252.png', '일반', 51, 51, 52),
+(5, 6882301, '목재', 90300, 100, 'https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_252.png', '일반', 51, 51, 52),
 (6, 6882304, '부드러운 목재', 90300, 100, 'https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_253.png', '고급', 107, 107, 104.2),
 (7, 6884307, '튼튼한 목재', 90300, 100, 'https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_4_4.png', '희귀', 508, 510, 515.3),
 (8, 6884308, '아비도스 목재', 90300, 100, 'https://cdn-lostark.game.onstove.com/efui_iconatlas/lifelevel/lifelevel_02_48.png', '희귀', 655, 662, 664.8),
