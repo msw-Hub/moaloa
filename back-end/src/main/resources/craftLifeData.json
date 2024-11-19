@@ -1,0 +1,141 @@
+{
+  "생활재료시세" : {
+    "식물채집" : [ {
+      "marketId" : 6882101,
+      "marketName" : "들꽃",
+      "currentMinPrice" : 60.0,
+      "grade" : "일반"
+    }, {
+      "marketId" : 6882104,
+      "marketName" : "수줍은 들꽃",
+      "currentMinPrice" : 151.0,
+      "grade" : "고급"
+    }, {
+      "marketId" : 6882107,
+      "marketName" : "화사한 들꽃",
+      "currentMinPrice" : 71.0,
+      "grade" : "희귀"
+    }, {
+      "marketId" : 6882109,
+      "marketName" : "아비도스 들꽃",
+      "currentMinPrice" : 690.0,
+      "grade" : "희귀"
+    }, {
+      "marketId" : 6882301,
+      "marketName" : "목재",
+      "currentMinPrice" : 54.0,
+      "grade" : "일반"
+    } ],
+    "채광" : [ {
+      "marketId" : 6882401,
+      "marketName" : "철광석",
+      "currentMinPrice" : 60.0,
+      "grade" : "일반"
+    }, {
+      "marketId" : 6882404,
+      "marketName" : "묵직한 철광석",
+      "currentMinPrice" : 165.0,
+      "grade" : "고급"
+    }, {
+      "marketId" : 6884407,
+      "marketName" : "단단한 철광석",
+      "currentMinPrice" : 533.0,
+      "grade" : "희귀"
+    }, {
+      "marketId" : 6884408,
+      "marketName" : "아비도스 철광석",
+      "currentMinPrice" : 678.0,
+      "grade" : "희귀"
+    } ],
+    "낚시" : [ {
+      "marketId" : 6882601,
+      "marketName" : "생선",
+      "currentMinPrice" : 57.0,
+      "grade" : "일반"
+    }, {
+      "marketId" : 6882604,
+      "marketName" : "붉은 살 생선",
+      "currentMinPrice" : 110.0,
+      "grade" : "고급"
+    }, {
+      "marketId" : 6885608,
+      "marketName" : "오레하 태양 잉어",
+      "currentMinPrice" : 543.0,
+      "grade" : "희귀"
+    }, {
+      "marketId" : 6885609,
+      "marketName" : "아비도스 태양 잉어",
+      "currentMinPrice" : 714.0,
+      "grade" : "희귀"
+    } ],
+    "수렵" : [ {
+      "marketId" : 6882501,
+      "marketName" : "두툼한 생고기",
+      "currentMinPrice" : 66.0,
+      "grade" : "일반"
+    }, {
+      "marketId" : 6882504,
+      "marketName" : "다듬은 생고기",
+      "currentMinPrice" : 123.0,
+      "grade" : "고급"
+    }, {
+      "marketId" : 6885508,
+      "marketName" : "오레하 두툼한 생고기",
+      "currentMinPrice" : 515.0,
+      "grade" : "희귀"
+    }, {
+      "marketId" : 6885509,
+      "marketName" : "아비도스 두툼한 생고기",
+      "currentMinPrice" : 782.0,
+      "grade" : "희귀"
+    }, {
+      "marketId" : 6885505,
+      "marketName" : "진귀한 가죽",
+      "currentMinPrice" : 3.0,
+      "grade" : "희귀"
+    } ],
+    "고고학" : [ {
+      "marketId" : 6882701,
+      "marketName" : "고대 유물",
+      "currentMinPrice" : 54.0,
+      "grade" : "일반"
+    }, {
+      "marketId" : 6882704,
+      "marketName" : "희귀한 유물",
+      "currentMinPrice" : 104.0,
+      "grade" : "고급"
+    }, {
+      "marketId" : 6885708,
+      "marketName" : "오레하 유물",
+      "currentMinPrice" : 634.0,
+      "grade" : "희귀"
+    }, {
+      "marketId" : 6885709,
+      "marketName" : "아비도스 유물",
+      "currentMinPrice" : 706.0,
+      "grade" : "희귀"
+    }, {
+      "marketId" : 6885705,
+      "marketName" : "진귀한 유물",
+      "currentMinPrice" : 4.0,
+      "grade" : "희귀"
+    } ],
+    "벌목" : [ {
+      "marketId" : 6882304,
+      "marketName" : "부드러운 목재",
+      "currentMinPrice" : 109.0,
+      "grade" : "고급"
+    }, {
+      "marketId" : 6884307,
+      "marketName" : "튼튼한 목재",
+      "currentMinPrice" : 532.0,
+      "grade" : "희귀"
+    }, {
+      "marketId" : 6884308,
+      "marketName" : "아비도스 목재",
+      "currentMinPrice" : 683.0,
+      "grade" : "희귀"
+    } ]
+  },
+  "갱신시간" : "2024-11-19 19:46:35"
+}

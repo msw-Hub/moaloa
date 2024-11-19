@@ -23,9 +23,16 @@ public class CraftController {
         return ResponseEntity.ok("json 파일 생성 완료");
     }
 
-    @GetMapping("/readData")
+    @GetMapping("/readDataAll")
     public ResponseEntity<?> getCraftData() {
-        String jsonData = craftService.readJsonFromFile(); // 파일에서 JSON 읽기
+        String jsonData = craftService.readJsonFromFile(0); // 파일에서 JSON 읽기
+        Object data = craftService.parseJsonToObject(jsonData); // JSON을 객체로 변환
+        return ResponseEntity.ok(data);
+    }
+
+    @GetMapping("/readLifeData")
+    public ResponseEntity<?> getCraftLifeData() {
+        String jsonData = craftService.readJsonFromFile(1); // 파일에서 JSON 읽기
         Object data = craftService.parseJsonToObject(jsonData); // JSON을 객체로 변환
         return ResponseEntity.ok(data);
     }

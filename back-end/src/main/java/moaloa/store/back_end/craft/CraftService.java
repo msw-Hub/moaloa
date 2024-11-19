@@ -2,16 +2,15 @@ package moaloa.store.back_end.craft;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import moaloa.store.back_end.craft.Dto.CraftMaterialDto;
+import moaloa.store.back_end.craft.Dto.CraftMaterialLifeDto;
 import moaloa.store.back_end.craft.Dto.CraftRecipeDto;
 import moaloa.store.back_end.craft.Entity.CraftItemEntity;
 import moaloa.store.back_end.craft.Entity.CraftMaterialEntity;
 import moaloa.store.back_end.craft.Entity.CraftRecipeEntity;
-import moaloa.store.back_end.craft.Entity.CraftRecipeMaterialEntity;
 import moaloa.store.back_end.craft.Repositoy.CraftItemRepository;
 import moaloa.store.back_end.craft.Repositoy.CraftMaterialRepository;
 import moaloa.store.back_end.craft.Repositoy.CraftRecipeMaterialRepository;
@@ -38,6 +37,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.Arrays.stream;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -48,7 +49,6 @@ public class CraftService {
     private final CraftItemRepository craftItemRepository;
     private final CraftMaterialRepository craftMaterialRepository;
     private final CraftRecipeRepository craftRecipeRepository;
-    private final CraftRecipeMaterialRepository craftRecipeMaterialRepository;
    /*
         "Subs" 항목 코드들
             90200: 식물채집 전리품
@@ -83,6 +83,9 @@ public class CraftService {
     }
     @Value("${jsonFile.craftData}")
     private String filePath;
+
+    @Value("${jsonFile.craftLifeData}")
+    private String filePath2;
 
     int count = 0;
 
@@ -134,6 +137,8 @@ public class CraftService {
             }
             //시세 갱신된 데이터를 json 파일로 저장. 이때, json 구조를 변경해야함
             saveJsonToFile();
+            //생활재료만 모여있는 추가 데이터 저장
+            saveJsonToFile2();
         } catch (Exception e) {
             log.error("Craft API 호출 중 오류가 발생했습니다", e);
             throw new CraftApiGetException("로스트아크 API 호출 중 오류가 발생했습니다.");
@@ -247,10 +252,13 @@ public class CraftService {
                 .map(craftRecipeEntity -> new CraftRecipeDto(craftRecipeEntity, craftRecipeEntity.getCraftItem())) // CraftRecipeDto 생성 시 필요한 Entity 추가
                 .collect(Collectors.toList());
 
+
+
         // JSON 객체 생성
         Map<String, Object> jsonMap = new HashMap<>();
         jsonMap.put("갱신시간", currentDateTime);
         jsonMap.put("craftItemList", craftRecipeDtos);
+        jsonMap.put("생활재료시세", lifeMap());
 
         // ObjectMapper를 사용하여 Map을 JSON으로 변환
         ObjectMapper objectMapper = new ObjectMapper();
@@ -260,9 +268,57 @@ public class CraftService {
         Files.write(Paths.get(filePath), jsonString.getBytes());
     }
 
-    public String readJsonFromFile() {
+    //추가 데이터 저장
+    private void saveJsonToFile2() throws IOException {
+        String currentDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        Map<String, Object> jsonMap = new HashMap<>();
+        jsonMap.put("갱신시간", currentDateTime);
+        jsonMap.put("생활재료시세", lifeMap());
+
+        // ObjectMapper를 사용하여 Map을 JSON으로 변환
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonString = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonMap);
+
+        // JSON 파일로 저장
+        Files.write(Paths.get(filePath2), jsonString.getBytes());
+    }
+    private Map<String, Object> lifeMap(){
+        Map<String, Object> lifeMap = new HashMap<>();
+        int[] subCodes = {90200, 90300, 90400, 90500, 90600, 90700};
+        for (int subCode : subCodes) {
+            List<CraftMaterialLifeDto> craftMaterialDtos = craftMaterialRepository.findBySubCode(subCode).stream()
+                    .map(CraftMaterialLifeDto::new)
+                    .toList();
+            switch (subCode) {
+                case 90200:
+                    lifeMap.put("식물채집", craftMaterialDtos);
+                    break;
+                case 90300:
+                    lifeMap.put("벌목", craftMaterialDtos);
+                    break;
+                case 90400:
+                    lifeMap.put("채광", craftMaterialDtos);
+                    break;
+                case 90500:
+                    lifeMap.put("수렵", craftMaterialDtos);
+                    break;
+                case 90600:
+                    lifeMap.put("낚시", craftMaterialDtos);
+                    break;
+                case 90700:
+                    lifeMap.put("고고학", craftMaterialDtos);
+                    break;
+            }
+        }
+        return lifeMap;
+    }
+
+
+    public String readJsonFromFile(int code) {
         try {
-            return Files.readString(Paths.get(filePath));
+            if(code == 0) return Files.readString(Paths.get(filePath));
+            else return Files.readString(Paths.get(filePath2));
         } catch (IOException e) {
             throw new CraftDataException("JSON 파일 읽기 중 오류가 발생했습니다");
         }
