@@ -1014,7 +1014,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <CollationName>utf8mb4_unicode_ci</CollationName>
     </schema>
     <schema id="279" parent="1" name="moaloa">
-      <LastIntrospectionLocalTimestamp>2024-11-18.13:24:23</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2024-11-19.13:17:12</LastIntrospectionLocalTimestamp>
       <CollationName>utf8mb4_bin</CollationName>
     </schema>
     <user id="280" parent="1" name="root">
