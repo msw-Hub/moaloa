@@ -152,9 +152,12 @@ function Craft() {
         const material = updatedMaterials[materialKey];
 
         //아비도스 교환 비율 계산 후 저장
+        //생활 가루 구입 탭
         let grade1 = (material[0].currentMinPrice / 8) * 100; //일반 100개 -> 가루 80개
         let grade2 = (material[1].currentMinPrice / 8) * 50; //고급 50개 -> 가루 80개
-        //단단한 철광석, 튼튼한 목재 변환 비율 계산 후 저장
+
+        //생활 재료 교환 탭
+        //희귀 1개 -> 일반 10개
         if (materialKey === "채광" || materialKey === "벌목") {
           if (material[0].currentMinPrice * 10 > material[2].currentMinPrice) {
             grade1 = (material[2].currentMinPrice / 8) * 10; //단단한 철광석 1개 -> 철광석 10개 , 튼튼한 목재 1개 -> 목재 10개
@@ -162,6 +165,16 @@ function Craft() {
               ...material[0],
               convertMaterial: material[2], //단단한 철광석
               convertPrice: material[2].currentMinPrice / 10,
+            };
+          }
+
+          //고급 재료 25개 -> 일반 재료 50개
+          if (material[0].currentMinPrice * 2 > material[1].currentMinPrice) {
+            grade1 = (material[1].currentMinPrice / 8) * 50;
+            updatedMaterials[materialKey][0] = {
+              ...material[0],
+              convertMaterial: material[1],
+              convertPrice: material[1].currentMinPrice / 2,
             };
           }
         }
@@ -221,16 +234,15 @@ function Craft() {
     // 제작수수료 감소 효과 적용
     const totalCraftCost = totalMaterialCost + craftItem.craftPrice * (1 - 0.01 * (craftEffect["제작수수료 감소"][0] + craftEffect["제작수수료 감소"][craftItem.category]));
     craftPriceAll = Math.ceil(totalCraftCost * 100) / 100;
-
-    // 판매 차익 계산 수수료 5% 포함 소수점은 무조건 올림
+    // if (craftItem.craftName === "아비도스 융화 재료(벌목)") console.log(totalCraftCost, totalMaterialCost, craftItem.craftPrice, craftEffect["제작수수료 감소"][0], craftEffect["제작수수료 감소"][craftItem.category]);
+    // if (craftItem.craftName === "아비도스 융화 재료(벌목)") console.log(craftItem.craftPrice * (1 - 0.01 * (craftEffect["제작수수료 감소"][0] + craftEffect["제작수수료 감소"][craftItem.category])));
+    // // 판매 차익 계산 수수료 5% 포함 소수점은 무조건 올림
     const priceStandardValue = Math.round(craftItem[priceStandard as keyof CraftItem] as number);
     if (typeof priceStandardValue === "number") {
       const sellPrice = priceStandardValue - Math.ceil(priceStandardValue * 0.05);
       const craftSellPrice = Math.ceil((craftItem.craftQuantity * (sellPrice / craftItem.bundleCount) - craftPriceAll) * 100) / 100;
-
       // 원가이익률 계산
       const craftCostMargin = Math.round((craftSellPrice / (priceStandardValue * craftItem.craftQuantity - craftSellPrice)) * 10000) / 100;
-
       return {
         craftPriceAll, // 제작 비용
         craftSellPrice, // 판매 차익
@@ -356,8 +368,11 @@ function Craft() {
             return (
               <React.Fragment key={craft.id}>
                 {/* 이미지 및 제작 이름  */}
-                <div className="flex justify-start items-center gap-4">
-                  <img src={craft.iconLink} alt={craft.craftName} className={"w-10 h-10 " + `${grade[craft.grade]}`} />
+                <div className=" flex justify-start items-center gap-4">
+                  <div className="relative">
+                    <img src={craft.iconLink} alt={craft.craftName} className={"w-10 h-10 " + `${grade[craft.grade]}`} />
+                    <div className="text-xs font-semibold absolute right-0 bottom-0">{craft.craftQuantity}</div>
+                  </div>
                   <span className="text-sm font-semibold">{craft.craftName}</span>
                 </div>
                 {/* 최저가 */}
