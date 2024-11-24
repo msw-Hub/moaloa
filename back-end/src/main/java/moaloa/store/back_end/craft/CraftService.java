@@ -354,7 +354,7 @@ public class CraftService {
             // 결과 데이터 구성
             Map<String, Object> craftItemData = new HashMap<>();
             craftItemData.put("갱신시간", date);
-            craftItemData.put("craftItem", matchedItem.toMap()); // JSONObject를 Map으로 변환
+            craftItemData.put("제작아이템", matchedItem.toMap()); // JSONObject를 Map으로 변환
 
             return craftItemData;
         } catch (JSONException e) {
