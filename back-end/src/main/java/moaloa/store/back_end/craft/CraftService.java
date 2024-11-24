@@ -87,8 +87,6 @@ public class CraftService {
     @Value("${jsonFile.craftLifeData}")
     private String filePath2;
 
-    int count = 0;
-
     @Transactional
     public void getLoaApi() {
         String reqURL = "https://developer-lostark.game.onstove.com/markets/items";
@@ -167,8 +165,6 @@ public class CraftService {
 
                     log.info("marketId: {}, marketName: {}, currentMinPrice: {}, recentPrice: {}, yDayAvgPrice: {}, code: {}",
                             marketId, marketName, currentMinPrice, recentPrice, yDayAvgPrice, code);
-                    count++;
-                    log.info("count: {}", count);
 
                     //제작 재료 아이템에 해당되는 아이템만 업데이트
                     if ((code > 90000 && !marketName.contains("결정"))
@@ -329,6 +325,106 @@ public class CraftService {
             return objectMapper.readValue(jsonData, Object.class);
         } catch (JsonProcessingException e) {
             throw new CraftDataException("JSON 데이터를 객체로 변환 중 오류가 발생했습니다");
+        }
+    }
+    public Map<String, Object> reParseJsonToObject(String jsonData, int craftItemId) {
+        try {
+            // JSON 데이터를 파싱
+            JSONObject jsonObject = new JSONObject(jsonData);
+
+            // 갱신시간 추출
+            String date = jsonObject.getString("갱신시간");
+
+            // 특정 craftItemId의 데이터를 객체로 추출
+            JSONArray jsonArray = jsonObject.getJSONArray("craftItemList");
+            JSONObject matchedItem = null;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject item = jsonArray.getJSONObject(i);
+                if (item.getInt("id") == craftItemId) {
+                    matchedItem = item;
+                    break;
+                }
+            }
+
+            // 만약 해당 아이템이 없다면 예외 처리
+            if (matchedItem == null) {
+                throw new CraftDataException("해당 아이템 ID를 찾을 수 없습니다: " + craftItemId);
+            }
+
+            // 결과 데이터 구성
+            Map<String, Object> craftItemData = new HashMap<>();
+            craftItemData.put("갱신시간", date);
+            craftItemData.put("craftItem", matchedItem.toMap()); // JSONObject를 Map으로 변환
+
+            return craftItemData;
+        } catch (JSONException e) {
+            throw new CraftDataException("JSON 데이터를 객체로 변환 중 오류가 발생했습니다");
+        }
+    }
+
+    @Transactional
+    public void renewTradeCount() {
+        String reqURL = "https://developer-lostark.game.onstove.com/markets/items/";
+
+        List<CraftItemEntity> craftItemEntities = craftItemRepository.findAll();
+        for (CraftItemEntity craftItemEntity : craftItemEntities) {
+            HttpURLConnection conn = null;
+            try {
+                conn = (HttpURLConnection) new URL(reqURL + craftItemEntity.getMarketId()).openConnection();
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty("Authorization", "bearer " + craftApi[2]);
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setDoOutput(true);
+
+                int responseCode = conn.getResponseCode();
+                InputStreamReader streamReader;
+
+                if (responseCode == 200) {
+                    streamReader = new InputStreamReader(conn.getInputStream());
+                } else {
+                    streamReader = new InputStreamReader(conn.getErrorStream());
+                }
+                BufferedReader br = new BufferedReader(streamReader);
+                StringBuilder result = new StringBuilder();
+                String line;
+
+                while ((line = br.readLine()) != null) {
+                    result.append(line);
+                }
+                br.close();
+
+                log.info("Response Code: {}", responseCode);
+                log.info("Response: {}", result);
+
+                String responseString = result.toString();
+
+                // JSON 파싱
+                JSONArray responseArray = new JSONArray(result.toString());
+                if (!responseArray.isEmpty()) {
+                    JSONObject firstItem = responseArray.getJSONObject(0); // 배열의 첫 번째 객체
+                    if (firstItem.has("Stats")) {
+                        JSONArray statsArray = firstItem.getJSONArray("Stats");
+                        if (!statsArray.isEmpty()) {
+                            JSONObject firstStat = statsArray.getJSONObject(0); // Stats의 첫 번째 객체
+                            if (firstStat.has("TradeCount")) {
+                                int tradeCount = firstStat.getInt("TradeCount");
+                                log.info("Item ID: {}, First TradeCount: {}", craftItemEntity.getMarketId(), tradeCount);
+
+                                // 엔티티에 TradeCount 업데이트
+                                craftItemEntity.setTradeCount(tradeCount);
+                                craftItemRepository.save(craftItemEntity);
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                log.error("Error processing item ID: {}", craftItemEntity.getMarketId(), e);
+            } finally {
+                if (conn != null) {
+                    conn.disconnect();
+                }
+            }
         }
     }
 }

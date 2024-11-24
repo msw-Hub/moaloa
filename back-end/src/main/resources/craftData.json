@@ -3,96 +3,96 @@
     "식물채집" : [ {
       "marketId" : 6882101,
       "marketName" : "들꽃",
-      "currentMinPrice" : 60.0,
+      "currentMinPrice" : 61.0,
       "grade" : "일반"
     }, {
       "marketId" : 6882104,
       "marketName" : "수줍은 들꽃",
-      "currentMinPrice" : 154.0,
+      "currentMinPrice" : 157.0,
       "grade" : "고급"
     }, {
       "marketId" : 6882107,
       "marketName" : "화사한 들꽃",
-      "currentMinPrice" : 68.0,
+      "currentMinPrice" : 71.0,
       "grade" : "희귀"
     }, {
       "marketId" : 6882109,
       "marketName" : "아비도스 들꽃",
-      "currentMinPrice" : 666.0,
+      "currentMinPrice" : 677.0,
       "grade" : "희귀"
     } ],
     "채광" : [ {
       "marketId" : 6882401,
       "marketName" : "철광석",
-      "currentMinPrice" : 54.0,
+      "currentMinPrice" : 59.0,
       "grade" : "일반"
     }, {
       "marketId" : 6882404,
       "marketName" : "묵직한 철광석",
-      "currentMinPrice" : 143.0,
+      "currentMinPrice" : 142.0,
       "grade" : "고급"
     }, {
       "marketId" : 6884407,
       "marketName" : "단단한 철광석",
-      "currentMinPrice" : 540.0,
+      "currentMinPrice" : 565.0,
       "grade" : "희귀"
     }, {
       "marketId" : 6884408,
       "marketName" : "아비도스 철광석",
-      "currentMinPrice" : 665.0,
+      "currentMinPrice" : 677.0,
       "grade" : "희귀"
     } ],
     "낚시" : [ {
       "marketId" : 6882601,
       "marketName" : "생선",
-      "currentMinPrice" : 57.0,
+      "currentMinPrice" : 53.0,
       "grade" : "일반"
     }, {
       "marketId" : 6882604,
       "marketName" : "붉은 살 생선",
-      "currentMinPrice" : 112.0,
+      "currentMinPrice" : 108.0,
       "grade" : "고급"
     }, {
       "marketId" : 6885608,
       "marketName" : "오레하 태양 잉어",
-      "currentMinPrice" : 547.0,
+      "currentMinPrice" : 568.0,
       "grade" : "희귀"
     }, {
       "marketId" : 6885609,
       "marketName" : "아비도스 태양 잉어",
-      "currentMinPrice" : 738.0,
+      "currentMinPrice" : 699.0,
       "grade" : "희귀"
     } ],
     "수렵" : [ {
       "marketId" : 6882501,
       "marketName" : "두툼한 생고기",
-      "currentMinPrice" : 62.0,
+      "currentMinPrice" : 67.0,
       "grade" : "일반"
     }, {
       "marketId" : 6882504,
       "marketName" : "다듬은 생고기",
-      "currentMinPrice" : 123.0,
+      "currentMinPrice" : 136.0,
       "grade" : "고급"
     }, {
       "marketId" : 6885508,
       "marketName" : "오레하 두툼한 생고기",
-      "currentMinPrice" : 510.0,
+      "currentMinPrice" : 497.0,
       "grade" : "희귀"
     }, {
       "marketId" : 6885509,
       "marketName" : "아비도스 두툼한 생고기",
-      "currentMinPrice" : 783.0,
+      "currentMinPrice" : 848.0,
       "grade" : "희귀"
     }, {
       "marketId" : 6885505,
       "marketName" : "진귀한 가죽",
-      "currentMinPrice" : 3.0,
+      "currentMinPrice" : 7.0,
       "grade" : "희귀"
     } ],
     "고고학" : [ {
       "marketId" : 6882701,
       "marketName" : "고대 유물",
-      "currentMinPrice" : 55.0,
+      "currentMinPrice" : 56.0,
       "grade" : "일반"
     }, {
       "marketId" : 6882704,
@@ -102,38 +102,38 @@
     }, {
       "marketId" : 6885708,
       "marketName" : "오레하 유물",
-      "currentMinPrice" : 632.0,
+      "currentMinPrice" : 653.0,
       "grade" : "희귀"
     }, {
       "marketId" : 6885709,
       "marketName" : "아비도스 유물",
-      "currentMinPrice" : 700.0,
+      "currentMinPrice" : 708.0,
       "grade" : "희귀"
     }, {
       "marketId" : 6885705,
       "marketName" : "진귀한 유물",
-      "currentMinPrice" : 2.0,
+      "currentMinPrice" : 5.0,
       "grade" : "희귀"
     } ],
     "벌목" : [ {
       "marketId" : 6882301,
       "marketName" : "목재",
-      "currentMinPrice" : 54.0,
+      "currentMinPrice" : 56.0,
       "grade" : "일반"
     }, {
       "marketId" : 6882304,
       "marketName" : "부드러운 목재",
-      "currentMinPrice" : 106.0,
+      "currentMinPrice" : 113.0,
       "grade" : "고급"
     }, {
       "marketId" : 6884307,
       "marketName" : "튼튼한 목재",
-      "currentMinPrice" : 520.0,
+      "currentMinPrice" : 555.0,
       "grade" : "희귀"
     }, {
       "marketId" : 6884308,
       "marketName" : "아비도스 목재",
-      "currentMinPrice" : 675.0,
+      "currentMinPrice" : 698.0,
       "grade" : "희귀"
     } ]
   },
@@ -151,34 +151,35 @@
     "craftTime" : 10,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_4.png",
     "grade" : "고급",
-    "currentMinPrice" : 5.0,
-    "recentPrice" : 5.0,
+    "currentMinPrice" : 4.0,
+    "recentPrice" : 4.0,
+    "tradeCount" : 116,
     "craftMaterials" : [ {
       "id" : 6,
       "marketName" : "부드러운 목재",
       "grade" : "고급",
-      "currentMinPrice" : 106.0,
-      "recentPrice" : 106.0,
+      "currentMinPrice" : 113.0,
+      "recentPrice" : 113.0,
       "marketId" : 6882304,
       "subCode" : 90300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_253.png",
       "bundleCount" : 100,
       "quantity" : 20,
-      "ydayAvgPrice" : 108.6
+      "ydayAvgPrice" : 110.5
     }, {
       "id" : 9,
       "marketName" : "철광석",
       "grade" : "일반",
-      "currentMinPrice" : 54.0,
-      "recentPrice" : 54.0,
+      "currentMinPrice" : 59.0,
+      "recentPrice" : 59.0,
       "marketId" : 6882401,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_243.png",
       "bundleCount" : 100,
       "quantity" : 36,
-      "ydayAvgPrice" : 57.8
+      "ydayAvgPrice" : 59.0
     } ],
-    "ydayAvgPrice" : 3.1
+    "ydayAvgPrice" : 5.0
   }, {
     "id" : 2,
     "marketId" : 101935,
@@ -194,31 +195,32 @@
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_98.png",
     "grade" : "고급",
     "currentMinPrice" : 19.0,
-    "recentPrice" : 18.0,
+    "recentPrice" : 17.0,
+    "tradeCount" : 0,
     "craftMaterials" : [ {
       "id" : 10,
       "marketName" : "묵직한 철광석",
       "grade" : "고급",
-      "currentMinPrice" : 143.0,
-      "recentPrice" : 144.0,
+      "currentMinPrice" : 142.0,
+      "recentPrice" : 143.0,
       "marketId" : 6882404,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_239.png",
       "bundleCount" : 100,
       "quantity" : 20,
-      "ydayAvgPrice" : 139.8
+      "ydayAvgPrice" : 129.8
     }, {
       "id" : 39,
       "marketName" : "신호탄",
       "grade" : "고급",
-      "currentMinPrice" : 5.0,
-      "recentPrice" : 5.0,
+      "currentMinPrice" : 4.0,
+      "recentPrice" : 4.0,
       "marketId" : 101042,
       "subCode" : 60400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_4.png",
       "bundleCount" : 1,
       "quantity" : 3,
-      "ydayAvgPrice" : 3.1
+      "ydayAvgPrice" : 5.0
     } ],
     "ydayAvgPrice" : 0.0
   }, {
@@ -235,46 +237,47 @@
     "craftTime" : 1800,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_17.png",
     "grade" : "희귀",
-    "currentMinPrice" : 14.0,
-    "recentPrice" : 15.0,
+    "currentMinPrice" : 16.0,
+    "recentPrice" : 18.0,
+    "tradeCount" : 0,
     "craftMaterials" : [ {
       "id" : 26,
       "marketName" : "진귀한 유물",
       "grade" : "희귀",
-      "currentMinPrice" : 2.0,
-      "recentPrice" : 3.0,
+      "currentMinPrice" : 5.0,
+      "recentPrice" : 6.0,
       "marketId" : 6885705,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/lifelevel/lifelevel_02_54.png",
       "bundleCount" : 100,
       "quantity" : 5,
-      "ydayAvgPrice" : 4.0
+      "ydayAvgPrice" : 5.4
     }, {
       "id" : 22,
       "marketName" : "희귀한 유물",
       "grade" : "고급",
       "currentMinPrice" : 108.0,
-      "recentPrice" : 109.0,
+      "recentPrice" : 108.0,
       "marketId" : 6882704,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_4.png",
       "bundleCount" : 100,
       "quantity" : 19,
-      "ydayAvgPrice" : 109.6
+      "ydayAvgPrice" : 110.8
     }, {
       "id" : 21,
       "marketName" : "고대 유물",
       "grade" : "일반",
-      "currentMinPrice" : 55.0,
-      "recentPrice" : 55.0,
+      "currentMinPrice" : 56.0,
+      "recentPrice" : 56.0,
       "marketId" : 6882701,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_3.png",
       "bundleCount" : 100,
       "quantity" : 38,
-      "ydayAvgPrice" : 54.9
+      "ydayAvgPrice" : 55.3
     } ],
-    "ydayAvgPrice" : 13.1
+    "ydayAvgPrice" : 18.0
   }, {
     "id" : 4,
     "marketId" : 101929,
@@ -289,34 +292,35 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_92.png",
     "grade" : "희귀",
-    "currentMinPrice" : 30.0,
-    "recentPrice" : 30.0,
+    "currentMinPrice" : 32.0,
+    "recentPrice" : 33.0,
+    "tradeCount" : 328,
     "craftMaterials" : [ {
       "id" : 26,
       "marketName" : "진귀한 유물",
       "grade" : "희귀",
-      "currentMinPrice" : 2.0,
-      "recentPrice" : 3.0,
+      "currentMinPrice" : 5.0,
+      "recentPrice" : 6.0,
       "marketId" : 6885705,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/lifelevel/lifelevel_02_54.png",
       "bundleCount" : 100,
       "quantity" : 10,
-      "ydayAvgPrice" : 4.0
+      "ydayAvgPrice" : 5.4
     }, {
       "id" : 27,
       "marketName" : "만능 물약",
       "grade" : "희귀",
-      "currentMinPrice" : 14.0,
-      "recentPrice" : 15.0,
+      "currentMinPrice" : 16.0,
+      "recentPrice" : 18.0,
       "marketId" : 101015,
       "subCode" : 60400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_17.png",
       "bundleCount" : 1,
       "quantity" : 3,
-      "ydayAvgPrice" : 13.1
+      "ydayAvgPrice" : 18.0
     } ],
-    "ydayAvgPrice" : 29.7
+    "ydayAvgPrice" : 34.8
   }, {
     "id" : 5,
     "marketId" : 101916,
@@ -331,46 +335,47 @@
     "craftTime" : 1800,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_78.png",
     "grade" : "희귀",
-    "currentMinPrice" : 6.0,
-    "recentPrice" : 7.0,
+    "currentMinPrice" : 10.0,
+    "recentPrice" : 10.0,
+    "tradeCount" : 16,
     "craftMaterials" : [ {
       "id" : 25,
       "marketName" : "진귀한 가죽",
       "grade" : "희귀",
-      "currentMinPrice" : 3.0,
-      "recentPrice" : 4.0,
+      "currentMinPrice" : 7.0,
+      "recentPrice" : 9.0,
       "marketId" : 6885505,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/lifelevel/lifelevel_02_50.png",
       "bundleCount" : 100,
       "quantity" : 4,
-      "ydayAvgPrice" : 4.4
+      "ydayAvgPrice" : 5.4
     }, {
       "id" : 14,
       "marketName" : "다듬은 생고기",
       "grade" : "고급",
-      "currentMinPrice" : 123.0,
-      "recentPrice" : 123.0,
+      "currentMinPrice" : 136.0,
+      "recentPrice" : 137.0,
       "marketId" : 6882504,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_2_196.png",
       "bundleCount" : 100,
       "quantity" : 15,
-      "ydayAvgPrice" : 123.2
+      "ydayAvgPrice" : 142.7
     }, {
       "id" : 21,
       "marketName" : "고대 유물",
       "grade" : "일반",
-      "currentMinPrice" : 55.0,
-      "recentPrice" : 55.0,
+      "currentMinPrice" : 56.0,
+      "recentPrice" : 56.0,
       "marketId" : 6882701,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_3.png",
       "bundleCount" : 100,
       "quantity" : 30,
-      "ydayAvgPrice" : 54.9
+      "ydayAvgPrice" : 55.3
     } ],
-    "ydayAvgPrice" : 14.9
+    "ydayAvgPrice" : 10.3
   }, {
     "id" : 6,
     "marketId" : 101915,
@@ -385,58 +390,59 @@
     "craftTime" : 3600,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_76.png",
     "grade" : "영웅",
-    "currentMinPrice" : 11.0,
-    "recentPrice" : 14.0,
+    "currentMinPrice" : 17.0,
+    "recentPrice" : 17.0,
+    "tradeCount" : 53,
     "craftMaterials" : [ {
       "id" : 26,
       "marketName" : "진귀한 유물",
       "grade" : "희귀",
-      "currentMinPrice" : 2.0,
-      "recentPrice" : 3.0,
+      "currentMinPrice" : 5.0,
+      "recentPrice" : 6.0,
       "marketId" : 6885705,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/lifelevel/lifelevel_02_54.png",
       "bundleCount" : 100,
       "quantity" : 5,
-      "ydayAvgPrice" : 4.0
+      "ydayAvgPrice" : 5.4
     }, {
       "id" : 22,
       "marketName" : "희귀한 유물",
       "grade" : "고급",
       "currentMinPrice" : 108.0,
-      "recentPrice" : 109.0,
+      "recentPrice" : 108.0,
       "marketId" : 6882704,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_4.png",
       "bundleCount" : 100,
       "quantity" : 19,
-      "ydayAvgPrice" : 109.6
+      "ydayAvgPrice" : 110.8
     }, {
       "id" : 21,
       "marketName" : "고대 유물",
       "grade" : "일반",
-      "currentMinPrice" : 55.0,
-      "recentPrice" : 55.0,
+      "currentMinPrice" : 56.0,
+      "recentPrice" : 56.0,
       "marketId" : 6882701,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_3.png",
       "bundleCount" : 100,
       "quantity" : 38,
-      "ydayAvgPrice" : 54.9
+      "ydayAvgPrice" : 55.3
     }, {
       "id" : 6,
       "marketName" : "부드러운 목재",
       "grade" : "고급",
-      "currentMinPrice" : 106.0,
-      "recentPrice" : 106.0,
+      "currentMinPrice" : 113.0,
+      "recentPrice" : 113.0,
       "marketId" : 6882304,
       "subCode" : 90300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_253.png",
       "bundleCount" : 100,
       "quantity" : 19,
-      "ydayAvgPrice" : 108.6
+      "ydayAvgPrice" : 110.5
     } ],
-    "ydayAvgPrice" : 10.6
+    "ydayAvgPrice" : 20.3
   }, {
     "id" : 7,
     "marketId" : 101191,
@@ -451,46 +457,47 @@
     "craftTime" : 1800,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_51.png",
     "grade" : "희귀",
-    "currentMinPrice" : 25.0,
-    "recentPrice" : 22.0,
+    "currentMinPrice" : 28.0,
+    "recentPrice" : 28.0,
+    "tradeCount" : 4851,
     "craftMaterials" : [ {
       "id" : 11,
       "marketName" : "단단한 철광석",
       "grade" : "희귀",
-      "currentMinPrice" : 540.0,
-      "recentPrice" : 540.0,
+      "currentMinPrice" : 565.0,
+      "recentPrice" : 565.0,
       "marketId" : 6884407,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_5_76.png",
       "bundleCount" : 100,
       "quantity" : 4,
-      "ydayAvgPrice" : 570.7
+      "ydayAvgPrice" : 563.7
     }, {
       "id" : 10,
       "marketName" : "묵직한 철광석",
       "grade" : "고급",
-      "currentMinPrice" : 143.0,
-      "recentPrice" : 144.0,
+      "currentMinPrice" : 142.0,
+      "recentPrice" : 143.0,
       "marketId" : 6882404,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_239.png",
       "bundleCount" : 100,
       "quantity" : 14,
-      "ydayAvgPrice" : 139.8
+      "ydayAvgPrice" : 129.8
     }, {
       "id" : 9,
       "marketName" : "철광석",
       "grade" : "일반",
-      "currentMinPrice" : 54.0,
-      "recentPrice" : 54.0,
+      "currentMinPrice" : 59.0,
+      "recentPrice" : 59.0,
       "marketId" : 6882401,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_243.png",
       "bundleCount" : 100,
       "quantity" : 28,
-      "ydayAvgPrice" : 57.8
+      "ydayAvgPrice" : 59.0
     } ],
-    "ydayAvgPrice" : 25.5
+    "ydayAvgPrice" : 27.4
   }, {
     "id" : 8,
     "marketId" : 101938,
@@ -507,32 +514,33 @@
     "grade" : "희귀",
     "currentMinPrice" : 60.0,
     "recentPrice" : 60.0,
+    "tradeCount" : 8768,
     "craftMaterials" : [ {
       "id" : 11,
       "marketName" : "단단한 철광석",
       "grade" : "희귀",
-      "currentMinPrice" : 540.0,
-      "recentPrice" : 540.0,
+      "currentMinPrice" : 565.0,
+      "recentPrice" : 565.0,
       "marketId" : 6884407,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_5_76.png",
       "bundleCount" : 100,
       "quantity" : 4,
-      "ydayAvgPrice" : 570.7
+      "ydayAvgPrice" : 563.7
     }, {
       "id" : 28,
       "marketName" : "성스러운 부적",
       "grade" : "희귀",
-      "currentMinPrice" : 25.0,
-      "recentPrice" : 22.0,
+      "currentMinPrice" : 28.0,
+      "recentPrice" : 28.0,
       "marketId" : 101191,
       "subCode" : 60400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_51.png",
       "bundleCount" : 1,
       "quantity" : 3,
-      "ydayAvgPrice" : 25.5
+      "ydayAvgPrice" : 27.4
     } ],
-    "ydayAvgPrice" : 59.5
+    "ydayAvgPrice" : 64.9
   }, {
     "id" : 9,
     "marketId" : 101940,
@@ -547,22 +555,23 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_115.png",
     "grade" : "희귀",
-    "currentMinPrice" : 49.0,
-    "recentPrice" : 50.0,
+    "currentMinPrice" : 51.0,
+    "recentPrice" : 52.0,
+    "tradeCount" : 6376,
     "craftMaterials" : [ {
       "id" : 28,
       "marketName" : "성스러운 부적",
       "grade" : "희귀",
-      "currentMinPrice" : 25.0,
-      "recentPrice" : 22.0,
+      "currentMinPrice" : 28.0,
+      "recentPrice" : 28.0,
       "marketId" : 101191,
       "subCode" : 60400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_51.png",
       "bundleCount" : 1,
       "quantity" : 3,
-      "ydayAvgPrice" : 25.5
+      "ydayAvgPrice" : 27.4
     } ],
-    "ydayAvgPrice" : 50.4
+    "ydayAvgPrice" : 51.7
   }, {
     "id" : 10,
     "marketId" : 6854020,
@@ -577,82 +586,83 @@
     "craftTime" : 3600,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_216.png",
     "grade" : "희귀",
-    "currentMinPrice" : 1458.0,
-    "recentPrice" : 1458.0,
+    "currentMinPrice" : 1538.0,
+    "recentPrice" : 1538.0,
+    "tradeCount" : 207,
     "craftMaterials" : [ {
       "id" : 20,
       "marketName" : "아비도스 태양 잉어",
       "grade" : "희귀",
-      "currentMinPrice" : 738.0,
-      "recentPrice" : 739.0,
+      "currentMinPrice" : 699.0,
+      "recentPrice" : 690.0,
       "marketId" : 6885609,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/lifelevel/lifelevel_02_53.png",
       "bundleCount" : 100,
       "quantity" : 75,
-      "ydayAvgPrice" : 743.9
+      "ydayAvgPrice" : 730.9
     }, {
       "id" : 18,
       "marketName" : "붉은 살 생선",
       "grade" : "고급",
-      "currentMinPrice" : 112.0,
-      "recentPrice" : 112.0,
+      "currentMinPrice" : 108.0,
+      "recentPrice" : 108.0,
       "marketId" : 6882604,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_4_49.png",
       "bundleCount" : 100,
       "quantity" : 97,
-      "ydayAvgPrice" : 111.0
+      "ydayAvgPrice" : 109.6
     }, {
       "id" : 17,
       "marketName" : "생선",
       "grade" : "일반",
-      "currentMinPrice" : 57.0,
-      "recentPrice" : 54.0,
+      "currentMinPrice" : 53.0,
+      "recentPrice" : 53.0,
       "marketId" : 6882601,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_1_142.png",
       "bundleCount" : 100,
       "quantity" : 129,
-      "ydayAvgPrice" : 56.7
+      "ydayAvgPrice" : 55.9
     }, {
       "id" : 16,
       "marketName" : "아비도스 두툼한 생고기",
       "grade" : "희귀",
-      "currentMinPrice" : 783.0,
-      "recentPrice" : 783.0,
+      "currentMinPrice" : 848.0,
+      "recentPrice" : 859.0,
       "marketId" : 6885509,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/lifelevel/lifelevel_02_51.png",
       "bundleCount" : 100,
       "quantity" : 65,
-      "ydayAvgPrice" : 784.5
+      "ydayAvgPrice" : 912.8
     }, {
       "id" : 14,
       "marketName" : "다듬은 생고기",
       "grade" : "고급",
-      "currentMinPrice" : 123.0,
-      "recentPrice" : 123.0,
+      "currentMinPrice" : 136.0,
+      "recentPrice" : 137.0,
       "marketId" : 6882504,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_2_196.png",
       "bundleCount" : 100,
       "quantity" : 84,
-      "ydayAvgPrice" : 123.2
+      "ydayAvgPrice" : 142.7
     }, {
       "id" : 13,
       "marketName" : "두툼한 생고기",
       "grade" : "일반",
-      "currentMinPrice" : 62.0,
-      "recentPrice" : 62.0,
+      "currentMinPrice" : 67.0,
+      "recentPrice" : 67.0,
       "marketId" : 6882501,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_2_192.png",
       "bundleCount" : 100,
       "quantity" : 112,
-      "ydayAvgPrice" : 62.6
+      "ydayAvgPrice" : 70.8
     } ],
-    "ydayAvgPrice" : 1541.4
+    "ydayAvgPrice" : 1543.3
   }, {
     "id" : 11,
     "marketId" : 6854016,
@@ -667,82 +677,83 @@
     "craftTime" : 3600,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_208.png",
     "grade" : "희귀",
-    "currentMinPrice" : 906.0,
-    "recentPrice" : 907.0,
+    "currentMinPrice" : 1000.0,
+    "recentPrice" : 1026.0,
+    "tradeCount" : 17,
     "craftMaterials" : [ {
       "id" : 19,
       "marketName" : "오레하 태양 잉어",
       "grade" : "희귀",
-      "currentMinPrice" : 547.0,
-      "recentPrice" : 548.0,
+      "currentMinPrice" : 568.0,
+      "recentPrice" : 568.0,
       "marketId" : 6885608,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_74.png",
       "bundleCount" : 100,
       "quantity" : 60,
-      "ydayAvgPrice" : 550.3
+      "ydayAvgPrice" : 563.7
     }, {
       "id" : 18,
       "marketName" : "붉은 살 생선",
       "grade" : "고급",
-      "currentMinPrice" : 112.0,
-      "recentPrice" : 112.0,
+      "currentMinPrice" : 108.0,
+      "recentPrice" : 108.0,
       "marketId" : 6882604,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_4_49.png",
       "bundleCount" : 100,
       "quantity" : 77,
-      "ydayAvgPrice" : 111.0
+      "ydayAvgPrice" : 109.6
     }, {
       "id" : 17,
       "marketName" : "생선",
       "grade" : "일반",
-      "currentMinPrice" : 57.0,
-      "recentPrice" : 54.0,
+      "currentMinPrice" : 53.0,
+      "recentPrice" : 53.0,
       "marketId" : 6882601,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_1_142.png",
       "bundleCount" : 100,
       "quantity" : 103,
-      "ydayAvgPrice" : 56.7
+      "ydayAvgPrice" : 55.9
     }, {
       "id" : 15,
       "marketName" : "오레하 두툼한 생고기",
       "grade" : "희귀",
-      "currentMinPrice" : 510.0,
-      "recentPrice" : 510.0,
+      "currentMinPrice" : 497.0,
+      "recentPrice" : 498.0,
       "marketId" : 6885508,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_67.png",
       "bundleCount" : 100,
       "quantity" : 53,
-      "ydayAvgPrice" : 528.7
+      "ydayAvgPrice" : 500.2
     }, {
       "id" : 14,
       "marketName" : "다듬은 생고기",
       "grade" : "고급",
-      "currentMinPrice" : 123.0,
-      "recentPrice" : 123.0,
+      "currentMinPrice" : 136.0,
+      "recentPrice" : 137.0,
       "marketId" : 6882504,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_2_196.png",
       "bundleCount" : 100,
       "quantity" : 68,
-      "ydayAvgPrice" : 123.2
+      "ydayAvgPrice" : 142.7
     }, {
       "id" : 13,
       "marketName" : "두툼한 생고기",
       "grade" : "일반",
-      "currentMinPrice" : 62.0,
-      "recentPrice" : 62.0,
+      "currentMinPrice" : 67.0,
+      "recentPrice" : 67.0,
       "marketId" : 6882501,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_2_192.png",
       "bundleCount" : 100,
       "quantity" : 90,
-      "ydayAvgPrice" : 62.6
+      "ydayAvgPrice" : 70.8
     } ],
-    "ydayAvgPrice" : 912.2
+    "ydayAvgPrice" : 1050.0
   }, {
     "id" : 12,
     "marketId" : 6854012,
@@ -757,82 +768,83 @@
     "craftTime" : 3600,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_215.png",
     "grade" : "희귀",
-    "currentMinPrice" : 424.0,
-    "recentPrice" : 424.0,
+    "currentMinPrice" : 441.0,
+    "recentPrice" : 441.0,
+    "tradeCount" : 362,
     "craftMaterials" : [ {
       "id" : 19,
       "marketName" : "오레하 태양 잉어",
       "grade" : "희귀",
-      "currentMinPrice" : 547.0,
-      "recentPrice" : 548.0,
+      "currentMinPrice" : 568.0,
+      "recentPrice" : 568.0,
       "marketId" : 6885608,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_74.png",
       "bundleCount" : 100,
       "quantity" : 13,
-      "ydayAvgPrice" : 550.3
+      "ydayAvgPrice" : 563.7
     }, {
       "id" : 18,
       "marketName" : "붉은 살 생선",
       "grade" : "고급",
-      "currentMinPrice" : 112.0,
-      "recentPrice" : 112.0,
+      "currentMinPrice" : 108.0,
+      "recentPrice" : 108.0,
       "marketId" : 6882604,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_4_49.png",
       "bundleCount" : 100,
       "quantity" : 50,
-      "ydayAvgPrice" : 111.0
+      "ydayAvgPrice" : 109.6
     }, {
       "id" : 17,
       "marketName" : "생선",
       "grade" : "일반",
-      "currentMinPrice" : 57.0,
-      "recentPrice" : 54.0,
+      "currentMinPrice" : 53.0,
+      "recentPrice" : 53.0,
       "marketId" : 6882601,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_1_142.png",
       "bundleCount" : 100,
       "quantity" : 100,
-      "ydayAvgPrice" : 56.7
+      "ydayAvgPrice" : 55.9
     }, {
       "id" : 15,
       "marketName" : "오레하 두툼한 생고기",
       "grade" : "희귀",
-      "currentMinPrice" : 510.0,
-      "recentPrice" : 510.0,
+      "currentMinPrice" : 497.0,
+      "recentPrice" : 498.0,
       "marketId" : 6885508,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_67.png",
       "bundleCount" : 100,
       "quantity" : 12,
-      "ydayAvgPrice" : 528.7
+      "ydayAvgPrice" : 500.2
     }, {
       "id" : 14,
       "marketName" : "다듬은 생고기",
       "grade" : "고급",
-      "currentMinPrice" : 123.0,
-      "recentPrice" : 123.0,
+      "currentMinPrice" : 136.0,
+      "recentPrice" : 137.0,
       "marketId" : 6882504,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_2_196.png",
       "bundleCount" : 100,
       "quantity" : 44,
-      "ydayAvgPrice" : 123.2
+      "ydayAvgPrice" : 142.7
     }, {
       "id" : 13,
       "marketName" : "두툼한 생고기",
       "grade" : "일반",
-      "currentMinPrice" : 62.0,
-      "recentPrice" : 62.0,
+      "currentMinPrice" : 67.0,
+      "recentPrice" : 67.0,
       "marketId" : 6882501,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_2_192.png",
       "bundleCount" : 100,
       "quantity" : 88,
-      "ydayAvgPrice" : 62.6
+      "ydayAvgPrice" : 70.8
     } ],
-    "ydayAvgPrice" : 424.4
+    "ydayAvgPrice" : 445.3
   }, {
     "id" : 13,
     "marketId" : 6854018,
@@ -847,82 +859,83 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_126.png",
     "grade" : "고급",
-    "currentMinPrice" : 749.0,
-    "recentPrice" : 749.0,
+    "currentMinPrice" : 798.0,
+    "recentPrice" : 400.0,
+    "tradeCount" : 9,
     "craftMaterials" : [ {
       "id" : 20,
       "marketName" : "아비도스 태양 잉어",
       "grade" : "희귀",
-      "currentMinPrice" : 738.0,
-      "recentPrice" : 739.0,
+      "currentMinPrice" : 699.0,
+      "recentPrice" : 690.0,
       "marketId" : 6885609,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/lifelevel/lifelevel_02_53.png",
       "bundleCount" : 100,
       "quantity" : 27,
-      "ydayAvgPrice" : 743.9
+      "ydayAvgPrice" : 730.9
     }, {
       "id" : 18,
       "marketName" : "붉은 살 생선",
       "grade" : "고급",
-      "currentMinPrice" : 112.0,
-      "recentPrice" : 112.0,
+      "currentMinPrice" : 108.0,
+      "recentPrice" : 108.0,
       "marketId" : 6882604,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_4_49.png",
       "bundleCount" : 100,
       "quantity" : 81,
-      "ydayAvgPrice" : 111.0
+      "ydayAvgPrice" : 109.6
     }, {
       "id" : 17,
       "marketName" : "생선",
       "grade" : "일반",
-      "currentMinPrice" : 57.0,
-      "recentPrice" : 54.0,
+      "currentMinPrice" : 53.0,
+      "recentPrice" : 53.0,
       "marketId" : 6882601,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_1_142.png",
       "bundleCount" : 100,
       "quantity" : 107,
-      "ydayAvgPrice" : 56.7
+      "ydayAvgPrice" : 55.9
     }, {
       "id" : 16,
       "marketName" : "아비도스 두툼한 생고기",
       "grade" : "희귀",
-      "currentMinPrice" : 783.0,
-      "recentPrice" : 783.0,
+      "currentMinPrice" : 848.0,
+      "recentPrice" : 859.0,
       "marketId" : 6885509,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/lifelevel/lifelevel_02_51.png",
       "bundleCount" : 100,
       "quantity" : 24,
-      "ydayAvgPrice" : 784.5
+      "ydayAvgPrice" : 912.8
     }, {
       "id" : 14,
       "marketName" : "다듬은 생고기",
       "grade" : "고급",
-      "currentMinPrice" : 123.0,
-      "recentPrice" : 123.0,
+      "currentMinPrice" : 136.0,
+      "recentPrice" : 137.0,
       "marketId" : 6882504,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_2_196.png",
       "bundleCount" : 100,
       "quantity" : 71,
-      "ydayAvgPrice" : 123.2
+      "ydayAvgPrice" : 142.7
     }, {
       "id" : 13,
       "marketName" : "두툼한 생고기",
       "grade" : "일반",
-      "currentMinPrice" : 62.0,
-      "recentPrice" : 62.0,
+      "currentMinPrice" : 67.0,
+      "recentPrice" : 67.0,
       "marketId" : 6882501,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_2_192.png",
       "bundleCount" : 100,
       "quantity" : 94,
-      "ydayAvgPrice" : 62.6
+      "ydayAvgPrice" : 70.8
     } ],
-    "ydayAvgPrice" : 745.5
+    "ydayAvgPrice" : 882.0
   }, {
     "id" : 14,
     "marketId" : 6854009,
@@ -937,82 +950,83 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_171.png",
     "grade" : "고급",
-    "currentMinPrice" : 230.0,
-    "recentPrice" : 230.0,
+    "currentMinPrice" : 242.0,
+    "recentPrice" : 243.0,
+    "tradeCount" : 1224,
     "craftMaterials" : [ {
       "id" : 19,
       "marketName" : "오레하 태양 잉어",
       "grade" : "희귀",
-      "currentMinPrice" : 547.0,
-      "recentPrice" : 548.0,
+      "currentMinPrice" : 568.0,
+      "recentPrice" : 568.0,
       "marketId" : 6885608,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_74.png",
       "bundleCount" : 100,
       "quantity" : 7,
-      "ydayAvgPrice" : 550.3
+      "ydayAvgPrice" : 563.7
     }, {
       "id" : 18,
       "marketName" : "붉은 살 생선",
       "grade" : "고급",
-      "currentMinPrice" : 112.0,
-      "recentPrice" : 112.0,
+      "currentMinPrice" : 108.0,
+      "recentPrice" : 108.0,
       "marketId" : 6882604,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_4_49.png",
       "bundleCount" : 100,
       "quantity" : 26,
-      "ydayAvgPrice" : 111.0
+      "ydayAvgPrice" : 109.6
     }, {
       "id" : 17,
       "marketName" : "생선",
       "grade" : "일반",
-      "currentMinPrice" : 57.0,
-      "recentPrice" : 54.0,
+      "currentMinPrice" : 53.0,
+      "recentPrice" : 53.0,
       "marketId" : 6882601,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_1_142.png",
       "bundleCount" : 100,
       "quantity" : 53,
-      "ydayAvgPrice" : 56.7
+      "ydayAvgPrice" : 55.9
     }, {
       "id" : 5,
       "marketName" : "목재",
       "grade" : "일반",
-      "currentMinPrice" : 54.0,
-      "recentPrice" : 54.0,
+      "currentMinPrice" : 56.0,
+      "recentPrice" : 56.0,
       "marketId" : 6882301,
       "subCode" : 90300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_252.png",
       "bundleCount" : 100,
       "quantity" : 6,
-      "ydayAvgPrice" : 54.2
+      "ydayAvgPrice" : 54.9
     }, {
       "id" : 14,
       "marketName" : "다듬은 생고기",
       "grade" : "고급",
-      "currentMinPrice" : 123.0,
-      "recentPrice" : 123.0,
+      "currentMinPrice" : 136.0,
+      "recentPrice" : 137.0,
       "marketId" : 6882504,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_2_196.png",
       "bundleCount" : 100,
       "quantity" : 22,
-      "ydayAvgPrice" : 123.2
+      "ydayAvgPrice" : 142.7
     }, {
       "id" : 13,
       "marketName" : "두툼한 생고기",
       "grade" : "일반",
-      "currentMinPrice" : 62.0,
-      "recentPrice" : 62.0,
+      "currentMinPrice" : 67.0,
+      "recentPrice" : 67.0,
       "marketId" : 6882501,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_2_192.png",
       "bundleCount" : 100,
       "quantity" : 45,
-      "ydayAvgPrice" : 62.6
+      "ydayAvgPrice" : 70.8
     } ],
-    "ydayAvgPrice" : 227.1
+    "ydayAvgPrice" : 257.4
   }, {
     "id" : 15,
     "marketId" : 101211,
@@ -1028,45 +1042,46 @@
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_52.png",
     "grade" : "희귀",
     "currentMinPrice" : 19.0,
-    "recentPrice" : 19.0,
+    "recentPrice" : 20.0,
+    "tradeCount" : 130,
     "craftMaterials" : [ {
       "id" : 25,
       "marketName" : "진귀한 가죽",
       "grade" : "희귀",
-      "currentMinPrice" : 3.0,
-      "recentPrice" : 4.0,
+      "currentMinPrice" : 7.0,
+      "recentPrice" : 9.0,
       "marketId" : 6885505,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/lifelevel/lifelevel_02_50.png",
       "bundleCount" : 100,
       "quantity" : 4,
-      "ydayAvgPrice" : 4.4
+      "ydayAvgPrice" : 5.4
     }, {
       "id" : 14,
       "marketName" : "다듬은 생고기",
       "grade" : "고급",
-      "currentMinPrice" : 123.0,
-      "recentPrice" : 123.0,
+      "currentMinPrice" : 136.0,
+      "recentPrice" : 137.0,
       "marketId" : 6882504,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_2_196.png",
       "bundleCount" : 100,
       "quantity" : 15,
-      "ydayAvgPrice" : 123.2
+      "ydayAvgPrice" : 142.7
     }, {
       "id" : 13,
       "marketName" : "두툼한 생고기",
       "grade" : "일반",
-      "currentMinPrice" : 62.0,
-      "recentPrice" : 62.0,
+      "currentMinPrice" : 67.0,
+      "recentPrice" : 67.0,
       "marketId" : 6882501,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_2_192.png",
       "bundleCount" : 100,
       "quantity" : 30,
-      "ydayAvgPrice" : 62.6
+      "ydayAvgPrice" : 70.8
     } ],
-    "ydayAvgPrice" : 19.0
+    "ydayAvgPrice" : 19.6
   }, {
     "id" : 16,
     "marketId" : 101934,
@@ -1081,34 +1096,35 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_97.png",
     "grade" : "희귀",
-    "currentMinPrice" : 30.0,
-    "recentPrice" : 32.0,
+    "currentMinPrice" : 28.0,
+    "recentPrice" : 28.0,
+    "tradeCount" : 0,
     "craftMaterials" : [ {
       "id" : 25,
       "marketName" : "진귀한 가죽",
       "grade" : "희귀",
-      "currentMinPrice" : 3.0,
-      "recentPrice" : 4.0,
+      "currentMinPrice" : 7.0,
+      "recentPrice" : 9.0,
       "marketId" : 6885505,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/lifelevel/lifelevel_02_50.png",
       "bundleCount" : 100,
       "quantity" : 3,
-      "ydayAvgPrice" : 4.4
+      "ydayAvgPrice" : 5.4
     }, {
       "id" : 29,
       "marketName" : "신속 로브",
       "grade" : "희귀",
       "currentMinPrice" : 19.0,
-      "recentPrice" : 19.0,
+      "recentPrice" : 20.0,
       "marketId" : 101211,
       "subCode" : 60500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_52.png",
       "bundleCount" : 1,
       "quantity" : 3,
-      "ydayAvgPrice" : 19.0
+      "ydayAvgPrice" : 19.6
     } ],
-    "ydayAvgPrice" : 32.7
+    "ydayAvgPrice" : 0.0
   }, {
     "id" : 17,
     "marketId" : 101101,
@@ -1123,46 +1139,47 @@
     "craftTime" : 1800,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_14.png",
     "grade" : "희귀",
-    "currentMinPrice" : 23.0,
+    "currentMinPrice" : 24.0,
     "recentPrice" : 24.0,
+    "tradeCount" : 322,
     "craftMaterials" : [ {
       "id" : 6,
       "marketName" : "부드러운 목재",
       "grade" : "고급",
-      "currentMinPrice" : 106.0,
-      "recentPrice" : 106.0,
+      "currentMinPrice" : 113.0,
+      "recentPrice" : 113.0,
       "marketId" : 6882304,
       "subCode" : 90300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_253.png",
       "bundleCount" : 100,
       "quantity" : 12,
-      "ydayAvgPrice" : 108.6
+      "ydayAvgPrice" : 110.5
     }, {
       "id" : 11,
       "marketName" : "단단한 철광석",
       "grade" : "희귀",
-      "currentMinPrice" : 540.0,
-      "recentPrice" : 540.0,
+      "currentMinPrice" : 565.0,
+      "recentPrice" : 565.0,
       "marketId" : 6884407,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_5_76.png",
       "bundleCount" : 100,
       "quantity" : 3,
-      "ydayAvgPrice" : 570.7
+      "ydayAvgPrice" : 563.7
     }, {
       "id" : 9,
       "marketName" : "철광석",
       "grade" : "일반",
-      "currentMinPrice" : 54.0,
-      "recentPrice" : 54.0,
+      "currentMinPrice" : 59.0,
+      "recentPrice" : 59.0,
       "marketId" : 6882401,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_243.png",
       "bundleCount" : 100,
       "quantity" : 25,
-      "ydayAvgPrice" : 57.8
+      "ydayAvgPrice" : 59.0
     } ],
-    "ydayAvgPrice" : 23.1
+    "ydayAvgPrice" : 23.7
   }, {
     "id" : 18,
     "marketId" : 101939,
@@ -1177,34 +1194,35 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_102.png",
     "grade" : "희귀",
-    "currentMinPrice" : 56.0,
-    "recentPrice" : 56.0,
+    "currentMinPrice" : 55.0,
+    "recentPrice" : 55.0,
+    "tradeCount" : 11,
     "craftMaterials" : [ {
       "id" : 11,
       "marketName" : "단단한 철광석",
       "grade" : "희귀",
-      "currentMinPrice" : 540.0,
-      "recentPrice" : 540.0,
+      "currentMinPrice" : 565.0,
+      "recentPrice" : 565.0,
       "marketId" : 6884407,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_5_76.png",
       "bundleCount" : 100,
       "quantity" : 4,
-      "ydayAvgPrice" : 570.7
+      "ydayAvgPrice" : 563.7
     }, {
       "id" : 30,
       "marketName" : "진군의 깃발",
       "grade" : "희귀",
-      "currentMinPrice" : 23.0,
+      "currentMinPrice" : 24.0,
       "recentPrice" : 24.0,
       "marketId" : 101101,
       "subCode" : 60500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_14.png",
       "bundleCount" : 1,
       "quantity" : 3,
-      "ydayAvgPrice" : 23.1
+      "ydayAvgPrice" : 23.7
     } ],
-    "ydayAvgPrice" : 56.0
+    "ydayAvgPrice" : 55.0
   }, {
     "id" : 19,
     "marketId" : 101072,
@@ -1221,44 +1239,45 @@
     "grade" : "영웅",
     "currentMinPrice" : 25.0,
     "recentPrice" : 25.0,
+    "tradeCount" : 9260,
     "craftMaterials" : [ {
       "id" : 26,
       "marketName" : "진귀한 유물",
       "grade" : "희귀",
-      "currentMinPrice" : 2.0,
-      "recentPrice" : 3.0,
+      "currentMinPrice" : 5.0,
+      "recentPrice" : 6.0,
       "marketId" : 6885705,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/lifelevel/lifelevel_02_54.png",
       "bundleCount" : 100,
       "quantity" : 8,
-      "ydayAvgPrice" : 4.0
+      "ydayAvgPrice" : 5.4
     }, {
       "id" : 22,
       "marketName" : "희귀한 유물",
       "grade" : "고급",
       "currentMinPrice" : 108.0,
-      "recentPrice" : 109.0,
+      "recentPrice" : 108.0,
       "marketId" : 6882704,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_4.png",
       "bundleCount" : 100,
       "quantity" : 24,
-      "ydayAvgPrice" : 109.6
+      "ydayAvgPrice" : 110.8
     }, {
       "id" : 21,
       "marketName" : "고대 유물",
       "grade" : "일반",
-      "currentMinPrice" : 55.0,
-      "recentPrice" : 55.0,
+      "currentMinPrice" : 56.0,
+      "recentPrice" : 56.0,
       "marketId" : 6882701,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_3.png",
       "bundleCount" : 100,
       "quantity" : 32,
-      "ydayAvgPrice" : 54.9
+      "ydayAvgPrice" : 55.3
     } ],
-    "ydayAvgPrice" : 24.5
+    "ydayAvgPrice" : 25.0
   }, {
     "id" : 20,
     "marketId" : 101291,
@@ -1273,58 +1292,59 @@
     "craftTime" : 3600,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_72.png",
     "grade" : "영웅",
-    "currentMinPrice" : 31.0,
-    "recentPrice" : 31.0,
+    "currentMinPrice" : 33.0,
+    "recentPrice" : 33.0,
+    "tradeCount" : 9474,
     "craftMaterials" : [ {
       "id" : 26,
       "marketName" : "진귀한 유물",
       "grade" : "희귀",
-      "currentMinPrice" : 2.0,
-      "recentPrice" : 3.0,
+      "currentMinPrice" : 5.0,
+      "recentPrice" : 6.0,
       "marketId" : 6885705,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/lifelevel/lifelevel_02_54.png",
       "bundleCount" : 100,
       "quantity" : 6,
-      "ydayAvgPrice" : 4.0
+      "ydayAvgPrice" : 5.4
     }, {
       "id" : 22,
       "marketName" : "희귀한 유물",
       "grade" : "고급",
       "currentMinPrice" : 108.0,
-      "recentPrice" : 109.0,
+      "recentPrice" : 108.0,
       "marketId" : 6882704,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_4.png",
       "bundleCount" : 100,
       "quantity" : 17,
-      "ydayAvgPrice" : 109.6
+      "ydayAvgPrice" : 110.8
     }, {
       "id" : 21,
       "marketName" : "고대 유물",
       "grade" : "일반",
-      "currentMinPrice" : 55.0,
-      "recentPrice" : 55.0,
+      "currentMinPrice" : 56.0,
+      "recentPrice" : 56.0,
       "marketId" : 6882701,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_3.png",
       "bundleCount" : 100,
       "quantity" : 75,
-      "ydayAvgPrice" : 54.9
+      "ydayAvgPrice" : 55.3
     }, {
       "id" : 2,
       "marketName" : "수줍은 들꽃",
       "grade" : "고급",
-      "currentMinPrice" : 154.0,
-      "recentPrice" : 153.0,
+      "currentMinPrice" : 157.0,
+      "recentPrice" : 157.0,
       "marketId" : 6882104,
       "subCode" : 90200,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_4_14.png",
       "bundleCount" : 100,
       "quantity" : 8,
-      "ydayAvgPrice" : 153.3
+      "ydayAvgPrice" : 158.6
     } ],
-    "ydayAvgPrice" : 30.9
+    "ydayAvgPrice" : 33.2
   }, {
     "id" : 21,
     "marketId" : 6861008,
@@ -1339,44 +1359,45 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_71.png",
     "grade" : "희귀",
-    "currentMinPrice" : 10.0,
-    "recentPrice" : 10.0,
+    "currentMinPrice" : 9.0,
+    "recentPrice" : 11.0,
+    "tradeCount" : 141869,
     "craftMaterials" : [ {
       "id" : 23,
       "marketName" : "오레하 유물",
       "grade" : "희귀",
-      "currentMinPrice" : 632.0,
-      "recentPrice" : 634.0,
+      "currentMinPrice" : 653.0,
+      "recentPrice" : 658.0,
       "marketId" : 6885708,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_11.png",
       "bundleCount" : 100,
       "quantity" : 8,
-      "ydayAvgPrice" : 640.4
+      "ydayAvgPrice" : 653.0
     }, {
       "id" : 22,
       "marketName" : "희귀한 유물",
       "grade" : "고급",
       "currentMinPrice" : 108.0,
-      "recentPrice" : 109.0,
+      "recentPrice" : 108.0,
       "marketId" : 6882704,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_4.png",
       "bundleCount" : 100,
       "quantity" : 26,
-      "ydayAvgPrice" : 109.6
+      "ydayAvgPrice" : 110.8
     }, {
       "id" : 21,
       "marketName" : "고대 유물",
       "grade" : "일반",
-      "currentMinPrice" : 55.0,
-      "recentPrice" : 55.0,
+      "currentMinPrice" : 56.0,
+      "recentPrice" : 56.0,
       "marketId" : 6882701,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_3.png",
       "bundleCount" : 100,
       "quantity" : 64,
-      "ydayAvgPrice" : 54.9
+      "ydayAvgPrice" : 55.3
     } ],
     "ydayAvgPrice" : 10.9
   }, {
@@ -1393,46 +1414,47 @@
     "craftTime" : 3600,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_12_86.png",
     "grade" : "희귀",
-    "currentMinPrice" : 69.0,
+    "currentMinPrice" : 70.0,
     "recentPrice" : 70.0,
+    "tradeCount" : 1487795,
     "craftMaterials" : [ {
       "id" : 24,
       "marketName" : "아비도스 유물",
       "grade" : "희귀",
-      "currentMinPrice" : 700.0,
-      "recentPrice" : 700.0,
+      "currentMinPrice" : 708.0,
+      "recentPrice" : 709.0,
       "marketId" : 6885709,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/lifelevel/lifelevel_02_55.png",
       "bundleCount" : 100,
       "quantity" : 33,
-      "ydayAvgPrice" : 711.9
+      "ydayAvgPrice" : 712.2
     }, {
       "id" : 22,
       "marketName" : "희귀한 유물",
       "grade" : "고급",
       "currentMinPrice" : 108.0,
-      "recentPrice" : 109.0,
+      "recentPrice" : 108.0,
       "marketId" : 6882704,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_4.png",
       "bundleCount" : 100,
       "quantity" : 45,
-      "ydayAvgPrice" : 109.6
+      "ydayAvgPrice" : 110.8
     }, {
       "id" : 21,
       "marketName" : "고대 유물",
       "grade" : "일반",
-      "currentMinPrice" : 55.0,
-      "recentPrice" : 55.0,
+      "currentMinPrice" : 56.0,
+      "recentPrice" : 56.0,
       "marketId" : 6882701,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_3.png",
       "bundleCount" : 100,
       "quantity" : 86,
-      "ydayAvgPrice" : 54.9
+      "ydayAvgPrice" : 55.3
     } ],
-    "ydayAvgPrice" : 70.7
+    "ydayAvgPrice" : 70.6
   }, {
     "id" : 23,
     "marketId" : 6861009,
@@ -1448,45 +1470,46 @@
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_109.png",
     "grade" : "영웅",
     "currentMinPrice" : 22.0,
-    "recentPrice" : 22.0,
+    "recentPrice" : 23.0,
+    "tradeCount" : 108165,
     "craftMaterials" : [ {
       "id" : 23,
       "marketName" : "오레하 유물",
       "grade" : "희귀",
-      "currentMinPrice" : 632.0,
-      "recentPrice" : 634.0,
+      "currentMinPrice" : 653.0,
+      "recentPrice" : 658.0,
       "marketId" : 6885708,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_11.png",
       "bundleCount" : 100,
       "quantity" : 16,
-      "ydayAvgPrice" : 640.4
+      "ydayAvgPrice" : 653.0
     }, {
       "id" : 22,
       "marketName" : "희귀한 유물",
       "grade" : "고급",
       "currentMinPrice" : 108.0,
-      "recentPrice" : 109.0,
+      "recentPrice" : 108.0,
       "marketId" : 6882704,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_4.png",
       "bundleCount" : 100,
       "quantity" : 29,
-      "ydayAvgPrice" : 109.6
+      "ydayAvgPrice" : 110.8
     }, {
       "id" : 21,
       "marketName" : "고대 유물",
       "grade" : "일반",
-      "currentMinPrice" : 55.0,
-      "recentPrice" : 55.0,
+      "currentMinPrice" : 56.0,
+      "recentPrice" : 56.0,
       "marketId" : 6882701,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_3.png",
       "bundleCount" : 100,
       "quantity" : 94,
-      "ydayAvgPrice" : 54.9
+      "ydayAvgPrice" : 55.3
     } ],
-    "ydayAvgPrice" : 21.8
+    "ydayAvgPrice" : 22.7
   }, {
     "id" : 24,
     "marketId" : 6861011,
@@ -1501,44 +1524,45 @@
     "craftTime" : 4500,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_11_29.png",
     "grade" : "영웅",
-    "currentMinPrice" : 50.0,
-    "recentPrice" : 50.0,
+    "currentMinPrice" : 49.0,
+    "recentPrice" : 49.0,
+    "tradeCount" : 246962,
     "craftMaterials" : [ {
       "id" : 23,
       "marketName" : "오레하 유물",
       "grade" : "희귀",
-      "currentMinPrice" : 632.0,
-      "recentPrice" : 634.0,
+      "currentMinPrice" : 653.0,
+      "recentPrice" : 658.0,
       "marketId" : 6885708,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_11.png",
       "bundleCount" : 100,
       "quantity" : 52,
-      "ydayAvgPrice" : 640.4
+      "ydayAvgPrice" : 653.0
     }, {
       "id" : 22,
       "marketName" : "희귀한 유물",
       "grade" : "고급",
       "currentMinPrice" : 108.0,
-      "recentPrice" : 109.0,
+      "recentPrice" : 108.0,
       "marketId" : 6882704,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_4.png",
       "bundleCount" : 100,
       "quantity" : 51,
-      "ydayAvgPrice" : 109.6
+      "ydayAvgPrice" : 110.8
     }, {
       "id" : 21,
       "marketName" : "고대 유물",
       "grade" : "일반",
-      "currentMinPrice" : 55.0,
-      "recentPrice" : 55.0,
+      "currentMinPrice" : 56.0,
+      "recentPrice" : 56.0,
       "marketId" : 6882701,
       "subCode" : 90700,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_3.png",
       "bundleCount" : 100,
       "quantity" : 107,
-      "ydayAvgPrice" : 54.9
+      "ydayAvgPrice" : 55.3
     } ],
     "ydayAvgPrice" : 49.7
   }, {
@@ -1555,46 +1579,47 @@
     "craftTime" : 1800,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_54.png",
     "grade" : "희귀",
-    "currentMinPrice" : 15.0,
-    "recentPrice" : 15.0,
+    "currentMinPrice" : 21.0,
+    "recentPrice" : 23.0,
+    "tradeCount" : 0,
     "craftMaterials" : [ {
       "id" : 7,
       "marketName" : "튼튼한 목재",
       "grade" : "희귀",
-      "currentMinPrice" : 520.0,
-      "recentPrice" : 519.0,
+      "currentMinPrice" : 555.0,
+      "recentPrice" : 555.0,
       "marketId" : 6884307,
       "subCode" : 90300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_4_4.png",
       "bundleCount" : 100,
       "quantity" : 4,
-      "ydayAvgPrice" : 541.2
+      "ydayAvgPrice" : 548.8
     }, {
       "id" : 6,
       "marketName" : "부드러운 목재",
       "grade" : "고급",
-      "currentMinPrice" : 106.0,
-      "recentPrice" : 106.0,
+      "currentMinPrice" : 113.0,
+      "recentPrice" : 113.0,
       "marketId" : 6882304,
       "subCode" : 90300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_253.png",
       "bundleCount" : 100,
       "quantity" : 12,
-      "ydayAvgPrice" : 108.6
+      "ydayAvgPrice" : 110.5
     }, {
       "id" : 5,
       "marketName" : "목재",
       "grade" : "일반",
-      "currentMinPrice" : 54.0,
-      "recentPrice" : 54.0,
+      "currentMinPrice" : 56.0,
+      "recentPrice" : 56.0,
       "marketId" : 6882301,
       "subCode" : 90300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_252.png",
       "bundleCount" : 100,
       "quantity" : 17,
-      "ydayAvgPrice" : 54.2
+      "ydayAvgPrice" : 54.9
     } ],
-    "ydayAvgPrice" : 15.1
+    "ydayAvgPrice" : 22.7
   }, {
     "id" : 26,
     "marketId" : 101922,
@@ -1609,34 +1634,35 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_85.png",
     "grade" : "희귀",
-    "currentMinPrice" : 39.0,
-    "recentPrice" : 49.0,
+    "currentMinPrice" : 56.0,
+    "recentPrice" : 59.0,
+    "tradeCount" : 0,
     "craftMaterials" : [ {
       "id" : 7,
       "marketName" : "튼튼한 목재",
       "grade" : "희귀",
-      "currentMinPrice" : 520.0,
-      "recentPrice" : 519.0,
+      "currentMinPrice" : 555.0,
+      "recentPrice" : 555.0,
       "marketId" : 6884307,
       "subCode" : 90300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_4_4.png",
       "bundleCount" : 100,
       "quantity" : 4,
-      "ydayAvgPrice" : 541.2
+      "ydayAvgPrice" : 548.8
     }, {
       "id" : 31,
       "marketName" : "점토 수류탄",
       "grade" : "희귀",
-      "currentMinPrice" : 15.0,
-      "recentPrice" : 15.0,
+      "currentMinPrice" : 21.0,
+      "recentPrice" : 23.0,
       "marketId" : 101231,
       "subCode" : 60300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_54.png",
       "bundleCount" : 1,
       "quantity" : 3,
-      "ydayAvgPrice" : 15.1
+      "ydayAvgPrice" : 22.7
     } ],
-    "ydayAvgPrice" : 0.0
+    "ydayAvgPrice" : 59.0
   }, {
     "id" : 27,
     "marketId" : 101011,
@@ -1651,46 +1677,47 @@
     "craftTime" : 1800,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_1.png",
     "grade" : "희귀",
-    "currentMinPrice" : 20.0,
-    "recentPrice" : 21.0,
+    "currentMinPrice" : 18.0,
+    "recentPrice" : 18.0,
+    "tradeCount" : 213,
     "craftMaterials" : [ {
       "id" : 7,
       "marketName" : "튼튼한 목재",
       "grade" : "희귀",
-      "currentMinPrice" : 520.0,
-      "recentPrice" : 519.0,
+      "currentMinPrice" : 555.0,
+      "recentPrice" : 555.0,
       "marketId" : 6884307,
       "subCode" : 90300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_4_4.png",
       "bundleCount" : 100,
       "quantity" : 4,
-      "ydayAvgPrice" : 541.2
+      "ydayAvgPrice" : 548.8
     }, {
       "id" : 6,
       "marketName" : "부드러운 목재",
       "grade" : "고급",
-      "currentMinPrice" : 106.0,
-      "recentPrice" : 106.0,
+      "currentMinPrice" : 113.0,
+      "recentPrice" : 113.0,
       "marketId" : 6882304,
       "subCode" : 90300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_253.png",
       "bundleCount" : 100,
       "quantity" : 12,
-      "ydayAvgPrice" : 108.6
+      "ydayAvgPrice" : 110.5
     }, {
       "id" : 5,
       "marketName" : "목재",
       "grade" : "일반",
-      "currentMinPrice" : 54.0,
-      "recentPrice" : 54.0,
+      "currentMinPrice" : 56.0,
+      "recentPrice" : 56.0,
       "marketId" : 6882301,
       "subCode" : 90300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_252.png",
       "bundleCount" : 100,
       "quantity" : 17,
-      "ydayAvgPrice" : 54.2
+      "ydayAvgPrice" : 54.9
     } ],
-    "ydayAvgPrice" : 17.6
+    "ydayAvgPrice" : 17.9
   }, {
     "id" : 28,
     "marketId" : 101919,
@@ -1705,34 +1732,35 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_82.png",
     "grade" : "희귀",
-    "currentMinPrice" : 39.0,
-    "recentPrice" : 52.0,
+    "currentMinPrice" : 47.0,
+    "recentPrice" : 50.0,
+    "tradeCount" : 0,
     "craftMaterials" : [ {
       "id" : 7,
       "marketName" : "튼튼한 목재",
       "grade" : "희귀",
-      "currentMinPrice" : 520.0,
-      "recentPrice" : 519.0,
+      "currentMinPrice" : 555.0,
+      "recentPrice" : 555.0,
       "marketId" : 6884307,
       "subCode" : 90300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_4_4.png",
       "bundleCount" : 100,
       "quantity" : 4,
-      "ydayAvgPrice" : 541.2
+      "ydayAvgPrice" : 548.8
     }, {
       "id" : 32,
       "marketName" : "화염 수류탄",
       "grade" : "희귀",
-      "currentMinPrice" : 20.0,
-      "recentPrice" : 21.0,
+      "currentMinPrice" : 18.0,
+      "recentPrice" : 18.0,
       "marketId" : 101011,
       "subCode" : 60300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_1.png",
       "bundleCount" : 1,
       "quantity" : 3,
-      "ydayAvgPrice" : 17.6
+      "ydayAvgPrice" : 17.9
     } ],
-    "ydayAvgPrice" : 52.0
+    "ydayAvgPrice" : 50.5
   }, {
     "id" : 29,
     "marketId" : 101151,
@@ -1747,46 +1775,47 @@
     "craftTime" : 1800,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_47.png",
     "grade" : "희귀",
-    "currentMinPrice" : 18.0,
-    "recentPrice" : 18.0,
+    "currentMinPrice" : 21.0,
+    "recentPrice" : 21.0,
+    "tradeCount" : 8069,
     "craftMaterials" : [ {
       "id" : 7,
       "marketName" : "튼튼한 목재",
       "grade" : "희귀",
-      "currentMinPrice" : 520.0,
-      "recentPrice" : 519.0,
+      "currentMinPrice" : 555.0,
+      "recentPrice" : 555.0,
       "marketId" : 6884307,
       "subCode" : 90300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_4_4.png",
       "bundleCount" : 100,
       "quantity" : 4,
-      "ydayAvgPrice" : 541.2
+      "ydayAvgPrice" : 548.8
     }, {
       "id" : 6,
       "marketName" : "부드러운 목재",
       "grade" : "고급",
-      "currentMinPrice" : 106.0,
-      "recentPrice" : 106.0,
+      "currentMinPrice" : 113.0,
+      "recentPrice" : 113.0,
       "marketId" : 6882304,
       "subCode" : 90300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_253.png",
       "bundleCount" : 100,
       "quantity" : 12,
-      "ydayAvgPrice" : 108.6
+      "ydayAvgPrice" : 110.5
     }, {
       "id" : 5,
       "marketName" : "목재",
       "grade" : "일반",
-      "currentMinPrice" : 54.0,
-      "recentPrice" : 54.0,
+      "currentMinPrice" : 56.0,
+      "recentPrice" : 56.0,
       "marketId" : 6882301,
       "subCode" : 90300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_252.png",
       "bundleCount" : 100,
       "quantity" : 17,
-      "ydayAvgPrice" : 54.2
+      "ydayAvgPrice" : 54.9
     } ],
-    "ydayAvgPrice" : 20.5
+    "ydayAvgPrice" : 20.6
   }, {
     "id" : 30,
     "marketId" : 101924,
@@ -1801,34 +1830,35 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_87.png",
     "grade" : "희귀",
-    "currentMinPrice" : 49.0,
-    "recentPrice" : 48.0,
+    "currentMinPrice" : 51.0,
+    "recentPrice" : 52.0,
+    "tradeCount" : 2622,
     "craftMaterials" : [ {
       "id" : 7,
       "marketName" : "튼튼한 목재",
       "grade" : "희귀",
-      "currentMinPrice" : 520.0,
-      "recentPrice" : 519.0,
+      "currentMinPrice" : 555.0,
+      "recentPrice" : 555.0,
       "marketId" : 6884307,
       "subCode" : 90300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_4_4.png",
       "bundleCount" : 100,
       "quantity" : 4,
-      "ydayAvgPrice" : 541.2
+      "ydayAvgPrice" : 548.8
     }, {
       "id" : 33,
       "marketName" : "암흑 수류탄",
       "grade" : "희귀",
-      "currentMinPrice" : 18.0,
-      "recentPrice" : 18.0,
+      "currentMinPrice" : 21.0,
+      "recentPrice" : 21.0,
       "marketId" : 101151,
       "subCode" : 60300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_47.png",
       "bundleCount" : 1,
       "quantity" : 3,
-      "ydayAvgPrice" : 20.5
+      "ydayAvgPrice" : 20.6
     } ],
-    "ydayAvgPrice" : 50.5
+    "ydayAvgPrice" : 50.9
   }, {
     "id" : 31,
     "marketId" : 101221,
@@ -1843,46 +1873,47 @@
     "craftTime" : 1800,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_53.png",
     "grade" : "희귀",
-    "currentMinPrice" : 20.0,
-    "recentPrice" : 20.0,
+    "currentMinPrice" : 21.0,
+    "recentPrice" : 21.0,
+    "tradeCount" : 1179,
     "craftMaterials" : [ {
       "id" : 7,
       "marketName" : "튼튼한 목재",
       "grade" : "희귀",
-      "currentMinPrice" : 520.0,
-      "recentPrice" : 519.0,
+      "currentMinPrice" : 555.0,
+      "recentPrice" : 555.0,
       "marketId" : 6884307,
       "subCode" : 90300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_4_4.png",
       "bundleCount" : 100,
       "quantity" : 4,
-      "ydayAvgPrice" : 541.2
+      "ydayAvgPrice" : 548.8
     }, {
       "id" : 6,
       "marketName" : "부드러운 목재",
       "grade" : "고급",
-      "currentMinPrice" : 106.0,
-      "recentPrice" : 106.0,
+      "currentMinPrice" : 113.0,
+      "recentPrice" : 113.0,
       "marketId" : 6882304,
       "subCode" : 90300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_253.png",
       "bundleCount" : 100,
       "quantity" : 12,
-      "ydayAvgPrice" : 108.6
+      "ydayAvgPrice" : 110.5
     }, {
       "id" : 5,
       "marketName" : "목재",
       "grade" : "일반",
-      "currentMinPrice" : 54.0,
-      "recentPrice" : 54.0,
+      "currentMinPrice" : 56.0,
+      "recentPrice" : 56.0,
       "marketId" : 6882301,
       "subCode" : 90300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_252.png",
       "bundleCount" : 100,
       "quantity" : 17,
-      "ydayAvgPrice" : 54.2
+      "ydayAvgPrice" : 54.9
     } ],
-    "ydayAvgPrice" : 18.4
+    "ydayAvgPrice" : 23.5
   }, {
     "id" : 32,
     "marketId" : 101923,
@@ -1897,34 +1928,35 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_86.png",
     "grade" : "희귀",
-    "currentMinPrice" : 42.0,
-    "recentPrice" : 42.0,
+    "currentMinPrice" : 62.0,
+    "recentPrice" : 62.0,
+    "tradeCount" : 101,
     "craftMaterials" : [ {
       "id" : 7,
       "marketName" : "튼튼한 목재",
       "grade" : "희귀",
-      "currentMinPrice" : 520.0,
-      "recentPrice" : 519.0,
+      "currentMinPrice" : 555.0,
+      "recentPrice" : 555.0,
       "marketId" : 6884307,
       "subCode" : 90300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_4_4.png",
       "bundleCount" : 100,
       "quantity" : 4,
-      "ydayAvgPrice" : 541.2
+      "ydayAvgPrice" : 548.8
     }, {
       "id" : 34,
       "marketName" : "회오리 수류탄",
       "grade" : "희귀",
-      "currentMinPrice" : 20.0,
-      "recentPrice" : 20.0,
+      "currentMinPrice" : 21.0,
+      "recentPrice" : 21.0,
       "marketId" : 101221,
       "subCode" : 60300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_53.png",
       "bundleCount" : 1,
       "quantity" : 3,
-      "ydayAvgPrice" : 18.4
+      "ydayAvgPrice" : 23.5
     } ],
-    "ydayAvgPrice" : 45.9
+    "ydayAvgPrice" : 49.0
   }, {
     "id" : 33,
     "marketId" : 101912,
@@ -1939,46 +1971,47 @@
     "craftTime" : 1800,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_21.png",
     "grade" : "희귀",
-    "currentMinPrice" : 22.0,
-    "recentPrice" : 23.0,
+    "currentMinPrice" : 25.0,
+    "recentPrice" : 25.0,
+    "tradeCount" : 343,
     "craftMaterials" : [ {
       "id" : 11,
       "marketName" : "단단한 철광석",
       "grade" : "희귀",
-      "currentMinPrice" : 540.0,
-      "recentPrice" : 540.0,
+      "currentMinPrice" : 565.0,
+      "recentPrice" : 565.0,
       "marketId" : 6884407,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_5_76.png",
       "bundleCount" : 100,
       "quantity" : 4,
-      "ydayAvgPrice" : 570.7
+      "ydayAvgPrice" : 563.7
     }, {
       "id" : 10,
       "marketName" : "묵직한 철광석",
       "grade" : "고급",
-      "currentMinPrice" : 143.0,
-      "recentPrice" : 144.0,
+      "currentMinPrice" : 142.0,
+      "recentPrice" : 143.0,
       "marketId" : 6882404,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_239.png",
       "bundleCount" : 100,
       "quantity" : 15,
-      "ydayAvgPrice" : 139.8
+      "ydayAvgPrice" : 129.8
     }, {
       "id" : 9,
       "marketName" : "철광석",
       "grade" : "일반",
-      "currentMinPrice" : 54.0,
-      "recentPrice" : 54.0,
+      "currentMinPrice" : 59.0,
+      "recentPrice" : 59.0,
       "marketId" : 6882401,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_243.png",
       "bundleCount" : 100,
       "quantity" : 30,
-      "ydayAvgPrice" : 57.8
+      "ydayAvgPrice" : 59.0
     } ],
-    "ydayAvgPrice" : 21.7
+    "ydayAvgPrice" : 25.8
   }, {
     "id" : 34,
     "marketId" : 101171,
@@ -1993,46 +2026,47 @@
     "craftTime" : 1800,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_49.png",
     "grade" : "희귀",
-    "currentMinPrice" : 27.0,
-    "recentPrice" : 27.0,
+    "currentMinPrice" : 26.0,
+    "recentPrice" : 26.0,
+    "tradeCount" : 378,
     "craftMaterials" : [ {
       "id" : 11,
       "marketName" : "단단한 철광석",
       "grade" : "희귀",
-      "currentMinPrice" : 540.0,
-      "recentPrice" : 540.0,
+      "currentMinPrice" : 565.0,
+      "recentPrice" : 565.0,
       "marketId" : 6884407,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_5_76.png",
       "bundleCount" : 100,
       "quantity" : 4,
-      "ydayAvgPrice" : 570.7
+      "ydayAvgPrice" : 563.7
     }, {
       "id" : 10,
       "marketName" : "묵직한 철광석",
       "grade" : "고급",
-      "currentMinPrice" : 143.0,
-      "recentPrice" : 144.0,
+      "currentMinPrice" : 142.0,
+      "recentPrice" : 143.0,
       "marketId" : 6882404,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_239.png",
       "bundleCount" : 100,
       "quantity" : 15,
-      "ydayAvgPrice" : 139.8
+      "ydayAvgPrice" : 129.8
     }, {
       "id" : 9,
       "marketName" : "철광석",
       "grade" : "일반",
-      "currentMinPrice" : 54.0,
-      "recentPrice" : 54.0,
+      "currentMinPrice" : 59.0,
+      "recentPrice" : 59.0,
       "marketId" : 6882401,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_243.png",
       "bundleCount" : 100,
       "quantity" : 30,
-      "ydayAvgPrice" : 57.8
+      "ydayAvgPrice" : 59.0
     } ],
-    "ydayAvgPrice" : 25.2
+    "ydayAvgPrice" : 25.9
   }, {
     "id" : 35,
     "marketId" : 101261,
@@ -2048,45 +2082,46 @@
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_69.png",
     "grade" : "희귀",
     "currentMinPrice" : 27.0,
-    "recentPrice" : 27.0,
+    "recentPrice" : 28.0,
+    "tradeCount" : 155,
     "craftMaterials" : [ {
       "id" : 11,
       "marketName" : "단단한 철광석",
       "grade" : "희귀",
-      "currentMinPrice" : 540.0,
-      "recentPrice" : 540.0,
+      "currentMinPrice" : 565.0,
+      "recentPrice" : 565.0,
       "marketId" : 6884407,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_5_76.png",
       "bundleCount" : 100,
       "quantity" : 4,
-      "ydayAvgPrice" : 570.7
+      "ydayAvgPrice" : 563.7
     }, {
       "id" : 10,
       "marketName" : "묵직한 철광석",
       "grade" : "고급",
-      "currentMinPrice" : 143.0,
-      "recentPrice" : 144.0,
+      "currentMinPrice" : 142.0,
+      "recentPrice" : 143.0,
       "marketId" : 6882404,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_239.png",
       "bundleCount" : 100,
       "quantity" : 15,
-      "ydayAvgPrice" : 139.8
+      "ydayAvgPrice" : 129.8
     }, {
       "id" : 9,
       "marketName" : "철광석",
       "grade" : "일반",
-      "currentMinPrice" : 54.0,
-      "recentPrice" : 54.0,
+      "currentMinPrice" : 59.0,
+      "recentPrice" : 59.0,
       "marketId" : 6882401,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_243.png",
       "bundleCount" : 100,
       "quantity" : 30,
-      "ydayAvgPrice" : 57.8
+      "ydayAvgPrice" : 59.0
     } ],
-    "ydayAvgPrice" : 23.9
+    "ydayAvgPrice" : 27.2
   }, {
     "id" : 36,
     "marketId" : 101271,
@@ -2101,46 +2136,47 @@
     "craftTime" : 1800,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_70.png",
     "grade" : "희귀",
-    "currentMinPrice" : 18.0,
-    "recentPrice" : 18.0,
+    "currentMinPrice" : 27.0,
+    "recentPrice" : 27.0,
+    "tradeCount" : 210,
     "craftMaterials" : [ {
       "id" : 11,
       "marketName" : "단단한 철광석",
       "grade" : "희귀",
-      "currentMinPrice" : 540.0,
-      "recentPrice" : 540.0,
+      "currentMinPrice" : 565.0,
+      "recentPrice" : 565.0,
       "marketId" : 6884407,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_5_76.png",
       "bundleCount" : 100,
       "quantity" : 4,
-      "ydayAvgPrice" : 570.7
+      "ydayAvgPrice" : 563.7
     }, {
       "id" : 10,
       "marketName" : "묵직한 철광석",
       "grade" : "고급",
-      "currentMinPrice" : 143.0,
-      "recentPrice" : 144.0,
+      "currentMinPrice" : 142.0,
+      "recentPrice" : 143.0,
       "marketId" : 6882404,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_239.png",
       "bundleCount" : 100,
       "quantity" : 15,
-      "ydayAvgPrice" : 139.8
+      "ydayAvgPrice" : 129.8
     }, {
       "id" : 9,
       "marketName" : "철광석",
       "grade" : "일반",
-      "currentMinPrice" : 54.0,
-      "recentPrice" : 54.0,
+      "currentMinPrice" : 59.0,
+      "recentPrice" : 59.0,
       "marketId" : 6882401,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_243.png",
       "bundleCount" : 100,
       "quantity" : 30,
-      "ydayAvgPrice" : 57.8
+      "ydayAvgPrice" : 59.0
     } ],
-    "ydayAvgPrice" : 21.8
+    "ydayAvgPrice" : 25.8
   }, {
     "id" : 37,
     "marketId" : 101925,
@@ -2155,34 +2191,35 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_88.png",
     "grade" : "희귀",
-    "currentMinPrice" : 56.0,
-    "recentPrice" : 60.0,
+    "currentMinPrice" : 48.0,
+    "recentPrice" : 49.0,
+    "tradeCount" : 0,
     "craftMaterials" : [ {
       "id" : 11,
       "marketName" : "단단한 철광석",
       "grade" : "희귀",
-      "currentMinPrice" : 540.0,
-      "recentPrice" : 540.0,
+      "currentMinPrice" : 565.0,
+      "recentPrice" : 565.0,
       "marketId" : 6884407,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_5_76.png",
       "bundleCount" : 100,
       "quantity" : 3,
-      "ydayAvgPrice" : 570.7
+      "ydayAvgPrice" : 563.7
     }, {
       "id" : 37,
       "marketName" : "수면 폭탄",
       "grade" : "희귀",
       "currentMinPrice" : 27.0,
-      "recentPrice" : 27.0,
+      "recentPrice" : 28.0,
       "marketId" : 101261,
       "subCode" : 60300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_69.png",
       "bundleCount" : 1,
       "quantity" : 3,
-      "ydayAvgPrice" : 23.9
+      "ydayAvgPrice" : 27.2
     } ],
-    "ydayAvgPrice" : 0.0
+    "ydayAvgPrice" : 48.6
   }, {
     "id" : 38,
     "marketId" : 101926,
@@ -2197,34 +2234,35 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_89.png",
     "grade" : "희귀",
-    "currentMinPrice" : 43.0,
-    "recentPrice" : 43.0,
+    "currentMinPrice" : 37.0,
+    "recentPrice" : 38.0,
+    "tradeCount" : 0,
     "craftMaterials" : [ {
       "id" : 11,
       "marketName" : "단단한 철광석",
       "grade" : "희귀",
-      "currentMinPrice" : 540.0,
-      "recentPrice" : 540.0,
+      "currentMinPrice" : 565.0,
+      "recentPrice" : 565.0,
       "marketId" : 6884407,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_5_76.png",
       "bundleCount" : 100,
       "quantity" : 3,
-      "ydayAvgPrice" : 570.7
+      "ydayAvgPrice" : 563.7
     }, {
       "id" : 35,
       "marketName" : "파괴 폭탄",
       "grade" : "희귀",
-      "currentMinPrice" : 22.0,
-      "recentPrice" : 23.0,
+      "currentMinPrice" : 25.0,
+      "recentPrice" : 25.0,
       "marketId" : 101912,
       "subCode" : 60300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_21.png",
       "bundleCount" : 1,
       "quantity" : 3,
-      "ydayAvgPrice" : 21.7
+      "ydayAvgPrice" : 25.8
     } ],
-    "ydayAvgPrice" : 37.9
+    "ydayAvgPrice" : 37.8
   }, {
     "id" : 39,
     "marketId" : 101927,
@@ -2239,34 +2277,35 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_90.png",
     "grade" : "희귀",
-    "currentMinPrice" : 56.0,
-    "recentPrice" : 56.0,
+    "currentMinPrice" : 59.0,
+    "recentPrice" : 59.0,
+    "tradeCount" : 1021,
     "craftMaterials" : [ {
       "id" : 11,
       "marketName" : "단단한 철광석",
       "grade" : "희귀",
-      "currentMinPrice" : 540.0,
-      "recentPrice" : 540.0,
+      "currentMinPrice" : 565.0,
+      "recentPrice" : 565.0,
       "marketId" : 6884407,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_5_76.png",
       "bundleCount" : 100,
       "quantity" : 3,
-      "ydayAvgPrice" : 570.7
+      "ydayAvgPrice" : 563.7
     }, {
       "id" : 36,
       "marketName" : "부식 폭탄",
       "grade" : "희귀",
-      "currentMinPrice" : 27.0,
-      "recentPrice" : 27.0,
+      "currentMinPrice" : 26.0,
+      "recentPrice" : 26.0,
       "marketId" : 101171,
       "subCode" : 60300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_49.png",
       "bundleCount" : 1,
       "quantity" : 3,
-      "ydayAvgPrice" : 25.2
+      "ydayAvgPrice" : 25.9
     } ],
-    "ydayAvgPrice" : 58.6
+    "ydayAvgPrice" : 59.9
   }, {
     "id" : 40,
     "marketId" : 101928,
@@ -2281,34 +2320,35 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_91.png",
     "grade" : "희귀",
-    "currentMinPrice" : 52.0,
-    "recentPrice" : 52.0,
+    "currentMinPrice" : 63.0,
+    "recentPrice" : 63.0,
+    "tradeCount" : 345,
     "craftMaterials" : [ {
       "id" : 11,
       "marketName" : "단단한 철광석",
       "grade" : "희귀",
-      "currentMinPrice" : 540.0,
-      "recentPrice" : 540.0,
+      "currentMinPrice" : 565.0,
+      "recentPrice" : 565.0,
       "marketId" : 6884407,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_5_76.png",
       "bundleCount" : 100,
       "quantity" : 3,
-      "ydayAvgPrice" : 570.7
+      "ydayAvgPrice" : 563.7
     }, {
       "id" : 38,
       "marketName" : "성스러운 폭탄",
       "grade" : "희귀",
-      "currentMinPrice" : 18.0,
-      "recentPrice" : 18.0,
+      "currentMinPrice" : 27.0,
+      "recentPrice" : 27.0,
       "marketId" : 101271,
       "subCode" : 60300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_70.png",
       "bundleCount" : 1,
       "quantity" : 3,
-      "ydayAvgPrice" : 21.8
+      "ydayAvgPrice" : 25.8
     } ],
-    "ydayAvgPrice" : 54.1
+    "ydayAvgPrice" : 63.4
   }, {
     "id" : 41,
     "marketId" : 101061,
@@ -2325,32 +2365,33 @@
     "grade" : "고급",
     "currentMinPrice" : 3.0,
     "recentPrice" : 4.0,
+    "tradeCount" : 523,
     "craftMaterials" : [ {
       "id" : 2,
       "marketName" : "수줍은 들꽃",
       "grade" : "고급",
-      "currentMinPrice" : 154.0,
-      "recentPrice" : 153.0,
+      "currentMinPrice" : 157.0,
+      "recentPrice" : 157.0,
       "marketId" : 6882104,
       "subCode" : 90200,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_4_14.png",
       "bundleCount" : 100,
       "quantity" : 5,
-      "ydayAvgPrice" : 153.3
+      "ydayAvgPrice" : 158.6
     }, {
       "id" : 1,
       "marketName" : "들꽃",
       "grade" : "일반",
-      "currentMinPrice" : 60.0,
-      "recentPrice" : 60.0,
+      "currentMinPrice" : 61.0,
+      "recentPrice" : 61.0,
       "marketId" : 6882101,
       "subCode" : 90200,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_46.png",
       "bundleCount" : 100,
       "quantity" : 10,
-      "ydayAvgPrice" : 59.1
+      "ydayAvgPrice" : 63.1
     } ],
-    "ydayAvgPrice" : 4.4
+    "ydayAvgPrice" : 3.8
   }, {
     "id" : 42,
     "marketId" : 101062,
@@ -2365,34 +2406,35 @@
     "craftTime" : 1800,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_7.png",
     "grade" : "희귀",
-    "currentMinPrice" : 14.0,
-    "recentPrice" : 14.0,
+    "currentMinPrice" : 12.0,
+    "recentPrice" : 12.0,
+    "tradeCount" : 1548,
     "craftMaterials" : [ {
       "id" : 2,
       "marketName" : "수줍은 들꽃",
       "grade" : "고급",
-      "currentMinPrice" : 154.0,
-      "recentPrice" : 153.0,
+      "currentMinPrice" : 157.0,
+      "recentPrice" : 157.0,
       "marketId" : 6882104,
       "subCode" : 90200,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_4_14.png",
       "bundleCount" : 100,
       "quantity" : 9,
-      "ydayAvgPrice" : 153.3
+      "ydayAvgPrice" : 158.6
     }, {
       "id" : 1,
       "marketName" : "들꽃",
       "grade" : "일반",
-      "currentMinPrice" : 60.0,
-      "recentPrice" : 60.0,
+      "currentMinPrice" : 61.0,
+      "recentPrice" : 61.0,
       "marketId" : 6882101,
       "subCode" : 90200,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_46.png",
       "bundleCount" : 100,
       "quantity" : 19,
-      "ydayAvgPrice" : 59.1
+      "ydayAvgPrice" : 63.1
     } ],
-    "ydayAvgPrice" : 13.1
+    "ydayAvgPrice" : 14.7
   }, {
     "id" : 43,
     "marketId" : 101063,
@@ -2407,46 +2449,47 @@
     "craftTime" : 3600,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_8.png",
     "grade" : "영웅",
-    "currentMinPrice" : 31.0,
-    "recentPrice" : 31.0,
+    "currentMinPrice" : 32.0,
+    "recentPrice" : 32.0,
+    "tradeCount" : 14768,
     "craftMaterials" : [ {
       "id" : 3,
       "marketName" : "화사한 들꽃",
       "grade" : "희귀",
-      "currentMinPrice" : 68.0,
-      "recentPrice" : 68.0,
+      "currentMinPrice" : 71.0,
+      "recentPrice" : 72.0,
       "marketId" : 6882107,
       "subCode" : 90200,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_47.png",
       "bundleCount" : 100,
       "quantity" : 8,
-      "ydayAvgPrice" : 75.8
+      "ydayAvgPrice" : 73.1
     }, {
       "id" : 2,
       "marketName" : "수줍은 들꽃",
       "grade" : "고급",
-      "currentMinPrice" : 154.0,
-      "recentPrice" : 153.0,
+      "currentMinPrice" : 157.0,
+      "recentPrice" : 157.0,
       "marketId" : 6882104,
       "subCode" : 90200,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_4_14.png",
       "bundleCount" : 100,
       "quantity" : 25,
-      "ydayAvgPrice" : 153.3
+      "ydayAvgPrice" : 158.6
     }, {
       "id" : 1,
       "marketName" : "들꽃",
       "grade" : "일반",
-      "currentMinPrice" : 60.0,
-      "recentPrice" : 60.0,
+      "currentMinPrice" : 61.0,
+      "recentPrice" : 61.0,
       "marketId" : 6882101,
       "subCode" : 90200,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_46.png",
       "bundleCount" : 100,
       "quantity" : 33,
-      "ydayAvgPrice" : 59.1
+      "ydayAvgPrice" : 63.1
     } ],
-    "ydayAvgPrice" : 32.6
+    "ydayAvgPrice" : 32.5
   }, {
     "id" : 44,
     "marketId" : 101917,
@@ -2463,32 +2506,33 @@
     "grade" : "영웅",
     "currentMinPrice" : 70.0,
     "recentPrice" : 70.0,
+    "tradeCount" : 3896,
     "craftMaterials" : [ {
       "id" : 3,
       "marketName" : "화사한 들꽃",
       "grade" : "희귀",
-      "currentMinPrice" : 68.0,
-      "recentPrice" : 68.0,
+      "currentMinPrice" : 71.0,
+      "recentPrice" : 72.0,
       "marketId" : 6882107,
       "subCode" : 90200,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_47.png",
       "bundleCount" : 100,
       "quantity" : 8,
-      "ydayAvgPrice" : 75.8
+      "ydayAvgPrice" : 73.1
     }, {
       "id" : 40,
       "marketName" : "정령의 회복약",
       "grade" : "영웅",
-      "currentMinPrice" : 35.0,
-      "recentPrice" : 35.0,
-      "marketId" : 101036,
+      "currentMinPrice" : 32.0,
+      "recentPrice" : 32.0,
+      "marketId" : 101063,
       "subCode" : 60200,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_8.png",
       "bundleCount" : 1,
       "quantity" : 3,
-      "ydayAvgPrice" : 34.5
+      "ydayAvgPrice" : 32.5
     } ],
-    "ydayAvgPrice" : 71.9
+    "ydayAvgPrice" : 70.9
   }, {
     "id" : 45,
     "marketId" : 6861008,
@@ -2503,44 +2547,45 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_71.png",
     "grade" : "희귀",
-    "currentMinPrice" : 10.0,
-    "recentPrice" : 10.0,
+    "currentMinPrice" : 9.0,
+    "recentPrice" : 11.0,
+    "tradeCount" : 141869,
     "craftMaterials" : [ {
       "id" : 19,
       "marketName" : "오레하 태양 잉어",
       "grade" : "희귀",
-      "currentMinPrice" : 547.0,
-      "recentPrice" : 548.0,
+      "currentMinPrice" : 568.0,
+      "recentPrice" : 568.0,
       "marketId" : 6885608,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_74.png",
       "bundleCount" : 100,
       "quantity" : 10,
-      "ydayAvgPrice" : 550.3
+      "ydayAvgPrice" : 563.7
     }, {
       "id" : 18,
       "marketName" : "붉은 살 생선",
       "grade" : "고급",
-      "currentMinPrice" : 112.0,
-      "recentPrice" : 112.0,
+      "currentMinPrice" : 108.0,
+      "recentPrice" : 108.0,
       "marketId" : 6882604,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_4_49.png",
       "bundleCount" : 100,
       "quantity" : 40,
-      "ydayAvgPrice" : 111.0
+      "ydayAvgPrice" : 109.6
     }, {
       "id" : 17,
       "marketName" : "생선",
       "grade" : "일반",
-      "currentMinPrice" : 57.0,
-      "recentPrice" : 54.0,
+      "currentMinPrice" : 53.0,
+      "recentPrice" : 53.0,
       "marketId" : 6882601,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_1_142.png",
       "bundleCount" : 100,
       "quantity" : 80,
-      "ydayAvgPrice" : 56.7
+      "ydayAvgPrice" : 55.9
     } ],
     "ydayAvgPrice" : 10.9
   }, {
@@ -2557,44 +2602,45 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_71.png",
     "grade" : "희귀",
-    "currentMinPrice" : 10.0,
-    "recentPrice" : 10.0,
+    "currentMinPrice" : 9.0,
+    "recentPrice" : 11.0,
+    "tradeCount" : 141869,
     "craftMaterials" : [ {
       "id" : 15,
       "marketName" : "오레하 두툼한 생고기",
       "grade" : "희귀",
-      "currentMinPrice" : 510.0,
-      "recentPrice" : 510.0,
+      "currentMinPrice" : 497.0,
+      "recentPrice" : 498.0,
       "marketId" : 6885508,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_67.png",
       "bundleCount" : 100,
       "quantity" : 10,
-      "ydayAvgPrice" : 528.7
+      "ydayAvgPrice" : 500.2
     }, {
       "id" : 14,
       "marketName" : "다듬은 생고기",
       "grade" : "고급",
-      "currentMinPrice" : 123.0,
-      "recentPrice" : 123.0,
+      "currentMinPrice" : 136.0,
+      "recentPrice" : 137.0,
       "marketId" : 6882504,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_2_196.png",
       "bundleCount" : 100,
       "quantity" : 40,
-      "ydayAvgPrice" : 123.2
+      "ydayAvgPrice" : 142.7
     }, {
       "id" : 13,
       "marketName" : "두툼한 생고기",
       "grade" : "일반",
-      "currentMinPrice" : 62.0,
-      "recentPrice" : 62.0,
+      "currentMinPrice" : 67.0,
+      "recentPrice" : 67.0,
       "marketId" : 6882501,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_2_192.png",
       "bundleCount" : 100,
       "quantity" : 80,
-      "ydayAvgPrice" : 62.6
+      "ydayAvgPrice" : 70.8
     } ],
     "ydayAvgPrice" : 10.9
   }, {
@@ -2612,45 +2658,46 @@
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_109.png",
     "grade" : "영웅",
     "currentMinPrice" : 22.0,
-    "recentPrice" : 22.0,
+    "recentPrice" : 23.0,
+    "tradeCount" : 108165,
     "craftMaterials" : [ {
       "id" : 19,
       "marketName" : "오레하 태양 잉어",
       "grade" : "희귀",
-      "currentMinPrice" : 547.0,
-      "recentPrice" : 548.0,
+      "currentMinPrice" : 568.0,
+      "recentPrice" : 568.0,
       "marketId" : 6885608,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_74.png",
       "bundleCount" : 100,
       "quantity" : 16,
-      "ydayAvgPrice" : 550.3
+      "ydayAvgPrice" : 563.7
     }, {
       "id" : 18,
       "marketName" : "붉은 살 생선",
       "grade" : "고급",
-      "currentMinPrice" : 112.0,
-      "recentPrice" : 112.0,
+      "currentMinPrice" : 108.0,
+      "recentPrice" : 108.0,
       "marketId" : 6882604,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_4_49.png",
       "bundleCount" : 100,
       "quantity" : 64,
-      "ydayAvgPrice" : 111.0
+      "ydayAvgPrice" : 109.6
     }, {
       "id" : 17,
       "marketName" : "생선",
       "grade" : "일반",
-      "currentMinPrice" : 57.0,
-      "recentPrice" : 54.0,
+      "currentMinPrice" : 53.0,
+      "recentPrice" : 53.0,
       "marketId" : 6882601,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_1_142.png",
       "bundleCount" : 100,
       "quantity" : 128,
-      "ydayAvgPrice" : 56.7
+      "ydayAvgPrice" : 55.9
     } ],
-    "ydayAvgPrice" : 21.8
+    "ydayAvgPrice" : 22.7
   }, {
     "id" : 48,
     "marketId" : 6861009,
@@ -2666,45 +2713,46 @@
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_109.png",
     "grade" : "영웅",
     "currentMinPrice" : 22.0,
-    "recentPrice" : 22.0,
+    "recentPrice" : 23.0,
+    "tradeCount" : 108165,
     "craftMaterials" : [ {
       "id" : 15,
       "marketName" : "오레하 두툼한 생고기",
       "grade" : "희귀",
-      "currentMinPrice" : 510.0,
-      "recentPrice" : 510.0,
+      "currentMinPrice" : 497.0,
+      "recentPrice" : 498.0,
       "marketId" : 6885508,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_67.png",
       "bundleCount" : 100,
       "quantity" : 16,
-      "ydayAvgPrice" : 528.7
+      "ydayAvgPrice" : 500.2
     }, {
       "id" : 14,
       "marketName" : "다듬은 생고기",
       "grade" : "고급",
-      "currentMinPrice" : 123.0,
-      "recentPrice" : 123.0,
+      "currentMinPrice" : 136.0,
+      "recentPrice" : 137.0,
       "marketId" : 6882504,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_2_196.png",
       "bundleCount" : 100,
       "quantity" : 64,
-      "ydayAvgPrice" : 123.2
+      "ydayAvgPrice" : 142.7
     }, {
       "id" : 13,
       "marketName" : "두툼한 생고기",
       "grade" : "일반",
-      "currentMinPrice" : 62.0,
-      "recentPrice" : 62.0,
+      "currentMinPrice" : 67.0,
+      "recentPrice" : 67.0,
       "marketId" : 6882501,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_2_192.png",
       "bundleCount" : 100,
       "quantity" : 128,
-      "ydayAvgPrice" : 62.6
+      "ydayAvgPrice" : 70.8
     } ],
-    "ydayAvgPrice" : 21.8
+    "ydayAvgPrice" : 22.7
   }, {
     "id" : 49,
     "marketId" : 6861011,
@@ -2719,44 +2767,45 @@
     "craftTime" : 4500,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_11_29.png",
     "grade" : "영웅",
-    "currentMinPrice" : 50.0,
-    "recentPrice" : 50.0,
+    "currentMinPrice" : 49.0,
+    "recentPrice" : 49.0,
+    "tradeCount" : 246962,
     "craftMaterials" : [ {
       "id" : 19,
       "marketName" : "오레하 태양 잉어",
       "grade" : "희귀",
-      "currentMinPrice" : 547.0,
-      "recentPrice" : 548.0,
+      "currentMinPrice" : 568.0,
+      "recentPrice" : 568.0,
       "marketId" : 6885608,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_74.png",
       "bundleCount" : 100,
       "quantity" : 52,
-      "ydayAvgPrice" : 550.3
+      "ydayAvgPrice" : 563.7
     }, {
       "id" : 18,
       "marketName" : "붉은 살 생선",
       "grade" : "고급",
-      "currentMinPrice" : 112.0,
-      "recentPrice" : 112.0,
+      "currentMinPrice" : 108.0,
+      "recentPrice" : 108.0,
       "marketId" : 6882604,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_4_49.png",
       "bundleCount" : 100,
       "quantity" : 69,
-      "ydayAvgPrice" : 111.0
+      "ydayAvgPrice" : 109.6
     }, {
       "id" : 17,
       "marketName" : "생선",
       "grade" : "일반",
-      "currentMinPrice" : 57.0,
-      "recentPrice" : 54.0,
+      "currentMinPrice" : 53.0,
+      "recentPrice" : 53.0,
       "marketId" : 6882601,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_1_142.png",
       "bundleCount" : 100,
       "quantity" : 142,
-      "ydayAvgPrice" : 56.7
+      "ydayAvgPrice" : 55.9
     } ],
     "ydayAvgPrice" : 49.7
   }, {
@@ -2773,44 +2822,45 @@
     "craftTime" : 4500,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_11_29.png",
     "grade" : "영웅",
-    "currentMinPrice" : 50.0,
-    "recentPrice" : 50.0,
+    "currentMinPrice" : 49.0,
+    "recentPrice" : 49.0,
+    "tradeCount" : 246962,
     "craftMaterials" : [ {
       "id" : 15,
       "marketName" : "오레하 두툼한 생고기",
       "grade" : "희귀",
-      "currentMinPrice" : 510.0,
-      "recentPrice" : 510.0,
+      "currentMinPrice" : 497.0,
+      "recentPrice" : 498.0,
       "marketId" : 6885508,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_67.png",
       "bundleCount" : 100,
       "quantity" : 52,
-      "ydayAvgPrice" : 528.7
+      "ydayAvgPrice" : 500.2
     }, {
       "id" : 14,
       "marketName" : "다듬은 생고기",
       "grade" : "고급",
-      "currentMinPrice" : 123.0,
-      "recentPrice" : 123.0,
+      "currentMinPrice" : 136.0,
+      "recentPrice" : 137.0,
       "marketId" : 6882504,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_2_196.png",
       "bundleCount" : 100,
       "quantity" : 69,
-      "ydayAvgPrice" : 123.2
+      "ydayAvgPrice" : 142.7
     }, {
       "id" : 13,
       "marketName" : "두툼한 생고기",
       "grade" : "일반",
-      "currentMinPrice" : 62.0,
-      "recentPrice" : 62.0,
+      "currentMinPrice" : 67.0,
+      "recentPrice" : 67.0,
       "marketId" : 6882501,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_2_192.png",
       "bundleCount" : 100,
       "quantity" : 142,
-      "ydayAvgPrice" : 62.6
+      "ydayAvgPrice" : 70.8
     } ],
     "ydayAvgPrice" : 49.7
   }, {
@@ -2827,46 +2877,47 @@
     "craftTime" : 3600,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_12_86.png",
     "grade" : "희귀",
-    "currentMinPrice" : 69.0,
+    "currentMinPrice" : 70.0,
     "recentPrice" : 70.0,
+    "tradeCount" : 1487795,
     "craftMaterials" : [ {
       "id" : 20,
       "marketName" : "아비도스 태양 잉어",
       "grade" : "희귀",
-      "currentMinPrice" : 738.0,
-      "recentPrice" : 739.0,
+      "currentMinPrice" : 699.0,
+      "recentPrice" : 690.0,
       "marketId" : 6885609,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/lifelevel/lifelevel_02_53.png",
       "bundleCount" : 100,
       "quantity" : 33,
-      "ydayAvgPrice" : 743.9
+      "ydayAvgPrice" : 730.9
     }, {
       "id" : 18,
       "marketName" : "붉은 살 생선",
       "grade" : "고급",
-      "currentMinPrice" : 112.0,
-      "recentPrice" : 112.0,
+      "currentMinPrice" : 108.0,
+      "recentPrice" : 108.0,
       "marketId" : 6882604,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_4_49.png",
       "bundleCount" : 100,
       "quantity" : 45,
-      "ydayAvgPrice" : 111.0
+      "ydayAvgPrice" : 109.6
     }, {
       "id" : 17,
       "marketName" : "생선",
       "grade" : "일반",
-      "currentMinPrice" : 57.0,
-      "recentPrice" : 54.0,
+      "currentMinPrice" : 53.0,
+      "recentPrice" : 53.0,
       "marketId" : 6882601,
       "subCode" : 90600,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_1_142.png",
       "bundleCount" : 100,
       "quantity" : 86,
-      "ydayAvgPrice" : 56.7
+      "ydayAvgPrice" : 55.9
     } ],
-    "ydayAvgPrice" : 70.7
+    "ydayAvgPrice" : 70.6
   }, {
     "id" : 52,
     "marketId" : 6861012,
@@ -2881,46 +2932,47 @@
     "craftTime" : 3600,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_12_86.png",
     "grade" : "희귀",
-    "currentMinPrice" : 69.0,
+    "currentMinPrice" : 70.0,
     "recentPrice" : 70.0,
+    "tradeCount" : 1487795,
     "craftMaterials" : [ {
       "id" : 8,
       "marketName" : "아비도스 목재",
       "grade" : "희귀",
-      "currentMinPrice" : 675.0,
-      "recentPrice" : 674.0,
+      "currentMinPrice" : 698.0,
+      "recentPrice" : 700.0,
       "marketId" : 6884308,
       "subCode" : 90300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/lifelevel/lifelevel_02_48.png",
       "bundleCount" : 100,
       "quantity" : 33,
-      "ydayAvgPrice" : 689.9
+      "ydayAvgPrice" : 698.1
     }, {
       "id" : 6,
       "marketName" : "부드러운 목재",
       "grade" : "고급",
-      "currentMinPrice" : 106.0,
-      "recentPrice" : 106.0,
+      "currentMinPrice" : 113.0,
+      "recentPrice" : 113.0,
       "marketId" : 6882304,
       "subCode" : 90300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_253.png",
       "bundleCount" : 100,
       "quantity" : 45,
-      "ydayAvgPrice" : 108.6
+      "ydayAvgPrice" : 110.5
     }, {
       "id" : 5,
       "marketName" : "목재",
       "grade" : "일반",
-      "currentMinPrice" : 54.0,
-      "recentPrice" : 54.0,
+      "currentMinPrice" : 56.0,
+      "recentPrice" : 56.0,
       "marketId" : 6882301,
       "subCode" : 90300,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_252.png",
       "bundleCount" : 100,
       "quantity" : 86,
-      "ydayAvgPrice" : 54.2
+      "ydayAvgPrice" : 54.9
     } ],
-    "ydayAvgPrice" : 70.7
+    "ydayAvgPrice" : 70.6
   }, {
     "id" : 53,
     "marketId" : 6861012,
@@ -2935,46 +2987,47 @@
     "craftTime" : 3600,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_12_86.png",
     "grade" : "희귀",
-    "currentMinPrice" : 69.0,
+    "currentMinPrice" : 70.0,
     "recentPrice" : 70.0,
+    "tradeCount" : 1487795,
     "craftMaterials" : [ {
       "id" : 16,
       "marketName" : "아비도스 두툼한 생고기",
       "grade" : "희귀",
-      "currentMinPrice" : 783.0,
-      "recentPrice" : 783.0,
+      "currentMinPrice" : 848.0,
+      "recentPrice" : 859.0,
       "marketId" : 6885509,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/lifelevel/lifelevel_02_51.png",
       "bundleCount" : 100,
       "quantity" : 33,
-      "ydayAvgPrice" : 784.5
+      "ydayAvgPrice" : 912.8
     }, {
       "id" : 14,
       "marketName" : "다듬은 생고기",
       "grade" : "고급",
-      "currentMinPrice" : 123.0,
-      "recentPrice" : 123.0,
+      "currentMinPrice" : 136.0,
+      "recentPrice" : 137.0,
       "marketId" : 6882504,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_2_196.png",
       "bundleCount" : 100,
       "quantity" : 45,
-      "ydayAvgPrice" : 123.2
+      "ydayAvgPrice" : 142.7
     }, {
       "id" : 13,
       "marketName" : "두툼한 생고기",
       "grade" : "일반",
-      "currentMinPrice" : 62.0,
-      "recentPrice" : 62.0,
+      "currentMinPrice" : 67.0,
+      "recentPrice" : 67.0,
       "marketId" : 6882501,
       "subCode" : 90500,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_2_192.png",
       "bundleCount" : 100,
       "quantity" : 86,
-      "ydayAvgPrice" : 62.6
+      "ydayAvgPrice" : 70.8
     } ],
-    "ydayAvgPrice" : 70.7
+    "ydayAvgPrice" : 70.6
   }, {
     "id" : 54,
     "marketId" : 6861012,
@@ -2989,46 +3042,47 @@
     "craftTime" : 3600,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_12_86.png",
     "grade" : "희귀",
-    "currentMinPrice" : 69.0,
+    "currentMinPrice" : 70.0,
     "recentPrice" : 70.0,
+    "tradeCount" : 1487795,
     "craftMaterials" : [ {
       "id" : 4,
       "marketName" : "아비도스 들꽃",
       "grade" : "희귀",
-      "currentMinPrice" : 666.0,
-      "recentPrice" : 660.0,
+      "currentMinPrice" : 677.0,
+      "recentPrice" : 677.0,
       "marketId" : 6882109,
       "subCode" : 90200,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/lifelevel/lifelevel_02_47.png",
       "bundleCount" : 100,
       "quantity" : 33,
-      "ydayAvgPrice" : 695.2
+      "ydayAvgPrice" : 678.2
     }, {
       "id" : 2,
       "marketName" : "수줍은 들꽃",
       "grade" : "고급",
-      "currentMinPrice" : 154.0,
-      "recentPrice" : 153.0,
+      "currentMinPrice" : 157.0,
+      "recentPrice" : 157.0,
       "marketId" : 6882104,
       "subCode" : 90200,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_4_14.png",
       "bundleCount" : 100,
       "quantity" : 45,
-      "ydayAvgPrice" : 153.3
+      "ydayAvgPrice" : 158.6
     }, {
       "id" : 1,
       "marketName" : "들꽃",
       "grade" : "일반",
-      "currentMinPrice" : 60.0,
-      "recentPrice" : 60.0,
+      "currentMinPrice" : 61.0,
+      "recentPrice" : 61.0,
       "marketId" : 6882101,
       "subCode" : 90200,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_46.png",
       "bundleCount" : 100,
       "quantity" : 86,
-      "ydayAvgPrice" : 59.1
+      "ydayAvgPrice" : 63.1
     } ],
-    "ydayAvgPrice" : 70.7
+    "ydayAvgPrice" : 70.6
   }, {
     "id" : 55,
     "marketId" : 6861012,
@@ -3043,46 +3097,47 @@
     "craftTime" : 3600,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_12_86.png",
     "grade" : "희귀",
-    "currentMinPrice" : 69.0,
+    "currentMinPrice" : 70.0,
     "recentPrice" : 70.0,
+    "tradeCount" : 1487795,
     "craftMaterials" : [ {
       "id" : 12,
       "marketName" : "아비도스 철광석",
       "grade" : "희귀",
-      "currentMinPrice" : 665.0,
-      "recentPrice" : 673.0,
+      "currentMinPrice" : 677.0,
+      "recentPrice" : 678.0,
       "marketId" : 6884408,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/lifelevel/lifelevel_02_49.png",
       "bundleCount" : 100,
       "quantity" : 33,
-      "ydayAvgPrice" : 696.0
+      "ydayAvgPrice" : 691.4
     }, {
       "id" : 10,
       "marketName" : "묵직한 철광석",
       "grade" : "고급",
-      "currentMinPrice" : 143.0,
-      "recentPrice" : 144.0,
+      "currentMinPrice" : 142.0,
+      "recentPrice" : 143.0,
       "marketId" : 6882404,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_239.png",
       "bundleCount" : 100,
       "quantity" : 45,
-      "ydayAvgPrice" : 139.8
+      "ydayAvgPrice" : 129.8
     }, {
       "id" : 9,
       "marketName" : "철광석",
       "grade" : "일반",
-      "currentMinPrice" : 54.0,
-      "recentPrice" : 54.0,
+      "currentMinPrice" : 59.0,
+      "recentPrice" : 59.0,
       "marketId" : 6882401,
       "subCode" : 90400,
       "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_3_243.png",
       "bundleCount" : 100,
       "quantity" : 86,
-      "ydayAvgPrice" : 57.8
+      "ydayAvgPrice" : 59.0
     } ],
-    "ydayAvgPrice" : 70.7
+    "ydayAvgPrice" : 70.6
   } ],
-  "갱신시간" : "2024-11-19 22:10:08"
+  "갱신시간" : "2024-11-25 06:46:51"
 }

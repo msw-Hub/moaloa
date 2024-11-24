@@ -29,4 +29,10 @@ public class CraftItemEntity {
     private double recentPrice; // 최근 거래가
     private double yDayAvgPrice; // 전일 평균 거래가
 
+    private int tradeCount; // 거래량
+
+    @PrePersist
+    public void prePersist() {
+        this.tradeCount = 0;
+    }
 }
