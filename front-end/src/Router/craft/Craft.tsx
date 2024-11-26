@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Modal } from "../../components/modal";
+import { useNavigate } from "react-router-dom";
 
 interface CraftMaterial {
   id: number;
@@ -38,6 +39,7 @@ interface CraftItem {
   craftPriceAll: number; //전체 제작 비용
   craftSellPrice: number; //판매 차익
   craftCostMargin: number; //원가이익률
+  tradeCount: number; //거래량
 }
 
 //생활재료 가격 타입
@@ -97,6 +99,8 @@ function Craft() {
   //정렬 기준 설정
   const [sort, setSort] = useState<string>("craftSellPrice");
   const [sortedCraftList, setSortedCraftList] = useState<CraftList>({ craftItemList: [], 갱신시간: "" });
+
+  const navigate = useNavigate();
 
   const grade: Grade = {
     일반: "imgBackground1",
@@ -349,24 +353,26 @@ function Craft() {
         </div>
 
         {/* 제작품 목록 */}
-        <div className="w-[1000px] max-w-[1000px] grid grid-cols-[3fr_1fr_1fr_1fr_1fr_0.5fr_0.5fr] gap-4 p-8 content-box text-center items-center">
-          <span>제작법</span>
-          {priceStandard === "currentMinPrice" ? <span>현재 최저가</span> : <span>전날 평균가</span>}
-          {/* <span>최저가</span> */}
-          <span>제작비용</span>
-          <span>판매차익</span>
-          <span>원가이익률</span>
-          <span>사용</span>
-          <span>판매</span>
+        <div className="w-[1000px] max-w-[1000px] p-4 content-box text-center flex flex-col  justify-center">
+          <div className="grid grid-cols-[3fr_1fr_1fr_1fr_1fr_0.5fr_0.5fr] gap-4 py-2 px-4">
+            <span>제작법</span>
+            {priceStandard === "currentMinPrice" ? <span>현재 최저가</span> : <span>전날 평균가</span>}
+            {/* <span>최저가</span> */}
+            <span>제작비용</span>
+            <span>판매차익</span>
+            <span>원가이익률</span>
+            <span>사용</span>
+            <span>판매</span>
+          </div>
+
           {sortedCraftList.craftItemList.map((craft: CraftItem) => {
             //제작법 이름 검색(내용이 없으면 전부 표시)
             if (searchName !== "" && !craft.craftName.includes(searchName)) return null;
-
             //카테고리 메뉴가 꺼져있으면 전부 표시
             if (categoryMenu.reduce((a, v) => (v == false ? a + 1 : a), 0) === 8) null;
             else if (!categoryMenu[craft.category]) return null;
             return (
-              <React.Fragment key={craft.id}>
+              <div onClick={() => navigate(`/craft/${craft.id}`)} className="cursor-pointer hover:bg-hover dark:hover:bg-gray-700 transition-all grid grid-cols-[3fr_1fr_1fr_1fr_1fr_0.5fr_0.5fr] gap-4 border-t border-solid border-bddark py-2 px-4" key={craft.id}>
                 {/* 이미지 및 제작 이름  */}
                 <div className=" flex justify-start items-center gap-4">
                   <div className="relative">
@@ -376,18 +382,16 @@ function Craft() {
                   <span className="text-sm font-semibold">{craft.craftName}</span>
                 </div>
                 {/* 최저가 */}
-                {priceStandard === "currentMinPrice" ? <span className="text-center text-sm font-semibold">{craft.currentMinPrice}</span> : <span className="text-center text-sm font-semibold">{Math.round(craft.ydayAvgPrice)}</span>}
-
+                {priceStandard === "currentMinPrice" ? <span className="flex items-center justify-center text-center text-sm font-semibold">{craft.currentMinPrice}</span> : <span className="text-center text-sm font-semibold">{Math.round(craft.ydayAvgPrice)}</span>}
                 {/* 제작비용 */}
-                <span className="text-center text-sm font-semibold">{craft.craftPriceAll}</span>
+                <span className="flex items-center justify-center text-center text-sm font-semibold">{craft.craftPriceAll}</span>
                 {/* 판매 차익 */}
-                <span className="text-sm font-semibold">{craft.craftSellPrice}</span>
+                <span className="flex items-center justify-center text-sm font-semibold">{craft.craftSellPrice}</span>
                 {/* 원가이익률(%) */}
-                <span className="text-sm font-semibold">{craft.craftCostMargin}%</span>
-
-                {craft.currentMinPrice * craft.craftQuantity - craft.craftPriceAll > 0 ? <span className={"text-blue-400 text-sm font-semibold"}>이득</span> : <span className={"text-red-400 text-sm font-semibold"}>손해</span>}
-                {craft.craftSellPrice > 0 ? <span className={"text-blue-400 text-sm font-semibold"}>이득</span> : <span className={"text-red-400 text-sm font-semibold"}>손해</span>}
-              </React.Fragment>
+                <span className="flex items-center justify-center text-sm font-semibold">{craft.craftCostMargin}%</span>
+                {craft.currentMinPrice * craft.craftQuantity - craft.craftPriceAll > 0 ? <span className={"flex items-center justify-center text-blue-400 text-sm font-semibold"}>이득</span> : <span className={"flex items-center justify-center text-red-400 text-sm font-semibold"}>손해</span>}
+                {craft.craftSellPrice > 0 ? <span className={"flex items-center justify-center text-blue-400 text-sm font-semibold"}>이득</span> : <span className={"flex items-center justify-center text-red-400 text-sm font-semibold"}>손해</span>}
+              </div>
             );
           })}
         </div>
