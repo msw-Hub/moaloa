@@ -317,10 +317,10 @@ function GemSearch() {
 
   return (
     <>
-      <div className="h-full w-full max-w-[2000px] grid gap-4 px-20 grid-rows-responsive grid-cols-responsive">
+      <div className="h-full w-full xl:grid xl:grid-cols-2 flex flex-col gap-4 p-4">
         <div className="flex flex-col gap-4 text-nowrap">
           {/* class 선택 창 */}
-          <div className="flex flex-row justify-center items-start py-4 px-4 gap-2 bg-gray-50 dark:bg-ctdark border rounded-sm shadow-md">
+          <div className="flex flex-row justify-center items-start flex-wrap py-4 px-4 gap-2 bg-gray-50 dark:bg-ctdark border rounded-sm shadow-md">
             {classOrder.map((className) => (
               <div key={className}>
                 {/* 통합 class 이름 */}
@@ -341,7 +341,7 @@ function GemSearch() {
               </div>
             ))}
           </div>
-          <div className="grid  grid-cols-[1fr_3fr] gap-4 ">
+          <div className="md:grid md:grid-cols-[1fr_3fr] flex flex-col gap-4 ">
             {/*보석 옵션 설정창*/}
             <div className="w-full flex justify-start items-center py-6 px-6 bg-gray-50 dark:bg-ctdark rounded-sm shadow-md">
               <div className="w-full flex flex-col justify-center items-start gap-4">
@@ -471,8 +471,8 @@ function GemSearch() {
         {/*검색된 보석 리스트 */}
         <div className="flex flex-col">
           {/*필터 설정창*/}
-          <div className="w-full flex justify-between items-start py-4 px-4 bg-gray-50 dark:bg-ctdark rounded-sm shadow-md mb-4">
-            <div className="w-full flex justify-center items-center gap-10 text-sm font-semibold">
+          <div className="w-full flex justify-between items-start  py-4 px-4 bg-gray-50 dark:bg-ctdark rounded-sm shadow-md mb-4">
+            <div className="w-full flex justify-center items-center flex-wrap gap-10 text-sm font-semibold">
               {/* 정렬 기준 선택 */}
               <div className="flex justify-center items-center gap-3">
                 <span className="flex justify-center items-center">정렬 기준</span>

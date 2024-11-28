@@ -73,3 +73,16 @@ button {
 .imgBackground7 {
   background: linear-gradient(135deg, #3d3325, #dbc899);
 }
+
+.textColor1 {
+  color: #000000;
+}
+.textColor2 {
+  color: #6fc300;
+}
+.textColor3 {
+  color: #00b5ff;
+}
+.textColor4 {
+  color: #bf00fe;
+}
