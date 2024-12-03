@@ -394,22 +394,20 @@ public class CraftService {
                 }
                 br.close();
 
-                log.info("Response Code: {}", responseCode);
+                log.info("현재 작업 중인 아이템 ID: {}", craftItemEntity.getMarketName());
                 log.info("Response: {}", result);
-
-                String responseString = result.toString();
 
                 // JSON 파싱
                 JSONArray responseArray = new JSONArray(result.toString());
                 if (!responseArray.isEmpty()) {
-                    JSONObject firstItem = responseArray.getJSONObject(0); // 배열의 첫 번째 객체
+                    JSONObject firstItem = responseArray.getJSONObject(0); // 첫 번째 아이템 객체
                     if (firstItem.has("Stats")) {
                         JSONArray statsArray = firstItem.getJSONArray("Stats");
-                        if (!statsArray.isEmpty()) {
-                            JSONObject firstStat = statsArray.getJSONObject(0); // Stats의 첫 번째 객체
-                            if (firstStat.has("TradeCount")) {
-                                int tradeCount = firstStat.getInt("TradeCount");
-                                log.info("Item ID: {}, First TradeCount: {}", craftItemEntity.getMarketId(), tradeCount);
+                        if (statsArray.length() > 1) { // 두 번째 항목이 있는지 확인
+                            JSONObject secondStat = statsArray.getJSONObject(1); // 두 번째 날짜의 데이터
+                            if (secondStat.has("TradeCount")) {
+                                int tradeCount = secondStat.getInt("TradeCount");
+                                log.info("Item ID: {}, Second TradeCount: {}", craftItemEntity.getMarketId(), tradeCount);
 
                                 // 엔티티에 TradeCount 업데이트
                                 craftItemEntity.setTradeCount(tradeCount);
