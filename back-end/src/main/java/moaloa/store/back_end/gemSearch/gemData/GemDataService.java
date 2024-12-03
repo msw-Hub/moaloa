@@ -44,55 +44,61 @@ public class GemDataService {
     };
 
     //클로아에서 직업별 상위 100명 조사해서 직업각인 비율 계산
-    public void engraveRate() throws IOException {
+    public void engraveRate() {
         engraveCountCache.reset1();
         for (String jobId : searchJobId) {
             String reqURL = "https://secapi.korlark.com/lostark/ranking/character?page=1&limit=3&job=" + jobId;
             log.info("Calling API: {}", reqURL);
-            URL url = new URL(reqURL);
 
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-
-            int responseCode = conn.getResponseCode();
-            InputStreamReader streamReader;
-
-            if (responseCode == 200) {
-                streamReader = new InputStreamReader(conn.getInputStream());
-            } else {
-                streamReader = new InputStreamReader(conn.getErrorStream());
-            }
-            BufferedReader br = new BufferedReader(streamReader);
-            String line;
-            StringBuilder result = new StringBuilder();
-
-            while ((line = br.readLine()) != null) {
-                result.append(line);
-            }
-            br.close();
-
-            log.info("Response Code: {}", responseCode);
-            log.info("Response: {}", result);
-
-            String responseString = result.toString();
             try {
-                JSONArray jsonArray = new JSONArray(responseString);
+                URL url = new URL(reqURL);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
 
-                // 각 항목에서 arkPassiveEffects 배열의 이름을 가져옴
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject item = jsonArray.getJSONObject(i);
-                    JSONArray arkPassiveEffects = item.getJSONArray("arkPassiveEffects");
+                int responseCode = conn.getResponseCode();
+                InputStreamReader streamReader;
 
-                    for (int j = 0; j < arkPassiveEffects.length(); j++) {
-                        JSONObject effect = arkPassiveEffects.getJSONObject(j);
-                        String effectName = effect.getString("name");
-                        log.info("effectName: {}", effectName);
-                        countEngraveRate(jobId, effectName);
-                    }
+                if (responseCode == 200) {
+                    streamReader = new InputStreamReader(conn.getInputStream());
+                } else {
+                    streamReader = new InputStreamReader(conn.getErrorStream());
                 }
-            } catch (JSONException e) {
-                log.error("JSON 파싱 오류: {}", e.getMessage());
-                throw new GemDataException("직업각인 가중치를 위한 집계 중 오류가 발생했습니다");
+                BufferedReader br = new BufferedReader(streamReader);
+                String line;
+                StringBuilder result = new StringBuilder();
+
+                while ((line = br.readLine()) != null) {
+                    result.append(line);
+                }
+                br.close();
+
+                log.info("Response Code: {}", responseCode);
+                log.info("Response: {}", result);
+
+                String responseString = result.toString();
+
+                try {
+                    JSONArray jsonArray = new JSONArray(responseString);
+
+                    // 각 항목에서 arkPassiveEffects 배열의 이름을 가져옴
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject item = jsonArray.getJSONObject(i);
+                        JSONArray arkPassiveEffects = item.getJSONArray("arkPassiveEffects");
+
+                        for (int j = 0; j < arkPassiveEffects.length(); j++) {
+                            JSONObject effect = arkPassiveEffects.getJSONObject(j);
+                            String effectName = effect.getString("name");
+                            log.info("effectName: {}", effectName);
+                            countEngraveRate(jobId, effectName);
+                        }
+                    }
+                } catch (JSONException e) {
+                    log.error("JSON 파싱 오류: {}", e.getMessage());
+                    throw new GemDataException("직업각인 가중치를 위한 집계 중 오류가 발생했습니다");
+                }
+            } catch (Exception e) {
+                log.error("API 호출 중 오류 발생: {}", e.getMessage(), e);
+                throw new GemDataException("API 호출 또는 데이터 처리 중 문제가 발생했습니다.");
             }
         }
         log.info("Engrave Rate: {}", engraveCountCache.getEngraveCountMap());

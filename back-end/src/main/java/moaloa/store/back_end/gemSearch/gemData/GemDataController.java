@@ -33,7 +33,7 @@ public class GemDataController {
 
     @GetMapping("/engraveRate")
     public ResponseEntity<?> getEngraveRate(
-    ) throws IOException {
+    ){
         gemDataService.engraveRate();
         return ResponseEntity.ok("각 각인의 비율을 계산하였습니다");
     }
