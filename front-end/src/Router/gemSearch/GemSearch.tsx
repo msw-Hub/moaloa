@@ -209,6 +209,7 @@ function GemSearch() {
         }
       })
       .catch((error) => {
+        console.log(error.response);
         if (error.response && error.response.status === 429) {
           count--;
           if (apikeycount === i + 1) {
@@ -317,21 +318,24 @@ function GemSearch() {
 
   return (
     <>
-      <div className="h-full w-full xl:grid xl:grid-cols-2 flex flex-col gap-4 p-4">
+      <div className="max-w-[1700px] h-full w-full xl:grid xl:grid-cols-[2fr_1.5fr] flex flex-col gap-4 p-4">
         <div className="flex flex-col gap-4 text-nowrap">
           {/* class 선택 창 */}
           <div className="flex flex-row justify-center items-start flex-wrap py-4 px-4 gap-2 bg-gray-50 dark:bg-ctdark border rounded-sm shadow-md">
             {classOrder.map((className) => (
               <div key={className}>
                 {/* 통합 class 이름 */}
-                <h2 className="text-center font-bold mb-2">{className}</h2>
+                <h2 className="text-center font-bold my-2">{className}</h2>
                 <div className="w-full flex flex-col justify-center items-start gap-2">
                   {classIconListTyped[className].map((classIcon: ClassIcon) => (
                     <label key={classIcon.Class} className="w-full flex flex-row items-center justify-center gap-2">
                       <input className="hidden" value={classIcon.Class} id={classIcon.Class} type="checkbox" checked={checked.includes(classIcon.Class)} onChange={handleCheck} />
-                      <div className={`btn transition-all cursor-pointer w-full flex justify-start items-center gap-2 py-2 px-5 rounded-md  ${checked.includes(classIcon.Class) ? "bg-[#e3e3e3] dark:bg-bgdark text-white" : ""}`}>
+                      <div
+                        className={`classIconHover font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md transition-all cursor-pointer w-full flex justify-start items-center gap-2 py-2 px-5 rounded-md  ${
+                          checked.includes(classIcon.Class) ? "bg-blue-400 dark:bg-bgdark text-white" : ""
+                        }`}>
                         {/* class 이미지 아이콘 */}
-                        <img className={`w-7 h-7 ${darkMode === false ? " white-Mode-icon-filter" : null}`} src={classIcon.Icon} alt={classIcon.Class} />
+                        <img className={`transition-all w-7 h-7  ${darkMode === false && !checked.includes(classIcon.Class) ? " white-Mode-icon-filter" : null}`} src={classIcon.Icon} alt={classIcon.Class} />
                         {/* class 이름 */}
                         <span className="font-semibold ">{classIcon.Class}</span>
                       </div>
@@ -349,23 +353,23 @@ function GemSearch() {
                 <div className="w-full grid grid-cols-[1.5fr_1fr_1fr] grid-rows-4 gap-2 text-sm font-semibold">
                   {/*보석 티어*/}
                   <span className="flex justify-center items-center">보석 티어</span>
-                  <button onClick={() => setItemTier("3")} className={"btn transition-all w-14 py-1 px-2 rounded-md " + `${itemTier == "3" ? "bg-[#e3e3e3] dark:bg-bgdark dark:text-white" : ""}`}>
+                  <button onClick={() => setItemTier("3")} className={"btn text-bgdark transition-all w-14 py-1 px-2 rounded-md " + `${itemTier == "3" ? "bg-blue-400 dark:bg-bgdark text-white" : ""}`}>
                     3티어
                   </button>
-                  <button onClick={() => setItemTier("4")} className={"btn transition-all w-14 py-1 px-2 rounded-md " + `${itemTier == "4" ? "bg-[#e3e3e3] dark:bg-bgdark dark:text-white" : ""}`}>
+                  <button onClick={() => setItemTier("4")} className={"btn text-bgdark transition-all w-14 py-1 px-2 rounded-md " + `${itemTier == "4" ? "bg-blue-400 dark:bg-bgdark text-white" : ""}`}>
                     4티어
                   </button>
                   {/*보석 종류*/}
                   <span className="flex justify-center items-center">보석 종류</span>
-                  <button onClick={() => setGemDamCol("딜")} className={"btn transition-all w-14 py-1 px-2 rounded-md " + `${gemDamCol == "딜" ? "bg-[#e3e3e3] dark:bg-bgdark dark:text-white" : ""}`}>
+                  <button onClick={() => setGemDamCol("딜")} className={"btn text-bgdark transition-all w-14 py-1 px-2 rounded-md " + `${gemDamCol == "딜" ? "bg-blue-400 dark:bg-bgdark text-white" : ""}`}>
                     {itemTier === "3" ? "멸화" : "겁화"}
                   </button>
-                  <button onClick={() => setGemDamCol("쿨감")} className={"btn transition-all w-14 py-1 px-2 rounded-md " + `${gemDamCol == "쿨감" ? "bg-[#e3e3e3] dark:bg-bgdark dark:text-white" : ""}`}>
+                  <button onClick={() => setGemDamCol("쿨감")} className={"btn text-bgdark transition-all w-14 py-1 px-2 rounded-md " + `${gemDamCol == "쿨감" ? "bg-blue-400 dark:bg-bgdark text-white" : ""}`}>
                     {itemTier === "3" ? "홍염" : "작열"}
                   </button>
                   {/*보석 레벨*/}
                   <span className="flex justify-center items-center">보석 레벨</span>
-                  <select className="col-start-2 col-end-4 bg-[#e3e3e3] rounded-md dark:bg-bgdark text-center" onChange={(e) => setGemLevel(e.target.value)} defaultValue={gemLevel}>
+                  <select className="col-start-2 col-end-4 bg-blue-400 rounded-md dark:bg-bgdark text-center text-white shadow-md" onChange={(e) => setGemLevel(e.target.value)} defaultValue={gemLevel}>
                     <option className="font-semibold" value="5레벨">
                       5레벨
                     </option>
@@ -385,51 +389,18 @@ function GemSearch() {
                       10레벨
                     </option>
                   </select>
-                  <div className="flex justify-center items-center gap-2"></div>
                   {/* 스킬 사용율 % 설정, on/off 버튼에따라 활성화 비활성화 */}
-                  <div className="flex justify-center items-center gap-2 col-start-1 col-end-3 row-start-4">
+                  <div className="flex justify-center items-center gap-2 col-start-1 col-span-3 row-start-4">
                     <span>검색수</span>
                     <span>{`${nowClassSkillCount}/${classSkillCount}`}</span>
                   </div>
                   {/*검색 버튼*/}
-                  <button className="row-start-4 py-1 px-2 border-solid border border-bddark rounded-md hover:bg-[#373737] transition-all" onClick={() => gemSerchAPISend()}>
+                  <button className="col-start-1 col-span-3 bg-blue-400 dark:bg-bgdark hover:bg-blue-500 text-white py-1 px-2 rounded-md dark:hover:bg-[#373737] transition-all" onClick={() => gemSerchAPISend()}>
                     검색
                   </button>
                 </div>
               </div>
             </div>
-
-            {/* <div className="basis-full flex justify-start items-start py-6 px-6 bg-gray-50 dark:bg-ctdark rounded-sm shadow-md">
-              <div className="h-full w-full flex flex-col justify-start items-start gap-4 ">
-                <div className="font-semibold">검색 필터</div>
-                <div className="grid grid-cols-[1.5fr_1fr_1fr] grid-rows-3 gap-2 text-sm font-semibold">
-                  <span className="col-start-1 flex justify-center items-center">정렬 기준</span>
-                  <select className="col-start-2 col-end-4 rounded-md bg-[#e3e3e3] dark:bg-bgdark text-center " onChange={(e) => setSort(e.target.value)} defaultValue={sort}>
-                    <option className="font-semibold" value="recruitmentRate">
-                      채용률
-                    </option>
-                    <option className="font-semibold" value="price">
-                      가격
-                    </option>
-                  </select>
-
-                  <div className="col-start-1 col-end-2 flex justify-center items-center gap-2">
-                    <span>채용률</span>
-                    <span className="w-10 flex justify-center items-center ">{recruitmentRate}%</span>
-                  </div>
-                  <input className="col-start-2 col-end-4 ml-2" onChange={(e) => setRecruitmentRate(Number(e.target.value))} type="range" min="0" max="100" step="5" defaultValue={30} />
-
-                  <span className="row-start-3 flex justify-center items-center">매물</span>
-
-                  <button onClick={() => setShowGemList1(!showGemList1)} className={"btn row-start-3 w-14 py-1 px-2 rounded-md " + `${showGemList1 == true ? "bg-[#e3e3e3] dark:bg-bgdark dark:text-white" : ""}`}>
-                    있음
-                  </button>
-                  <button onClick={() => setShowGemList2(!showGemList2)} className={"btn row-start-3 w-14 py-1 px-2 rounded-md " + `${showGemList2 == true ? "bg-[#e3e3e3] dark:bg-bgdark dark:text-white" : ""}`}>
-                    없음
-                  </button>
-                </div>
-              </div>
-            </div> */}
 
             <div className="row-start-1 row-end-3 col-start-2 py-6 px-6 bg-gray-50 dark:bg-ctdark rounded-sm shadow-md">
               <div className="flex justify-between font-semibold mb-4">
@@ -476,7 +447,7 @@ function GemSearch() {
               {/* 정렬 기준 선택 */}
               <div className="flex justify-center items-center gap-3">
                 <span className="flex justify-center items-center">정렬 기준</span>
-                <select className="w-20 py-1 rounded-md bg-[#e3e3e3] dark:bg-bgdark text-center " onChange={(e) => setSort(e.target.value)} defaultValue={sort}>
+                <select className="w-20 py-1 rounded-md bg-blue-400 text-white dark:bg-bgdark text-center " onChange={(e) => setSort(e.target.value)} defaultValue={sort}>
                   <option className="font-semibold" value="recruitmentRate">
                     채용률
                   </option>
@@ -493,7 +464,7 @@ function GemSearch() {
                   <span>채용률</span>
                   <span className="w-10 flex justify-center items-center ">{recruitmentRate}%</span>
                 </div>
-                <input onChange={(e) => setRecruitmentRate(Number(e.target.value))} type="range" min="0" max="100" step="5" defaultValue={30} />
+                <input className="dark:accent-light" onChange={(e) => setRecruitmentRate(Number(e.target.value))} type="range" min="0" max="100" step="5" defaultValue={30} />
               </div>
 
               <div className="flex justify-center items-center gap-2">
@@ -502,10 +473,10 @@ function GemSearch() {
                 {/* <button onClick={() => setShowGemList("all")} className={"row-start-3 w-14 py-1 px-2 rounded-md hover:bg-[#373737] " + `${showGemList == "all" ? "bg-hover dark:bg-bgdark" : ""}`}>
                       전부
                     </button> */}
-                <button onClick={() => setShowGemList1(!showGemList1)} className={"btn w-14 py-1 px-2 rounded-md " + `${showGemList1 == true ? "bg-[#e3e3e3] dark:bg-bgdark dark:text-white" : ""}`}>
+                <button onClick={() => setShowGemList1(!showGemList1)} className={"btn w-14 py-1 px-2 rounded-md " + `${showGemList1 == true ? "bg-blue-400 dark:bg-bgdark text-white" : ""}`}>
                   있음
                 </button>
-                <button onClick={() => setShowGemList2(!showGemList2)} className={"btn w-14 py-1 px-2 rounded-md " + `${showGemList2 == true ? "bg-[#e3e3e3] dark:bg-bgdark dark:text-white" : ""}`}>
+                <button onClick={() => setShowGemList2(!showGemList2)} className={"btn w-14 py-1 px-2 rounded-md " + `${showGemList2 == true ? "bg-blue-400 dark:bg-bgdark text-white" : ""}`}>
                   없음
                 </button>
               </div>

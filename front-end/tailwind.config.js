@@ -7,9 +7,10 @@ export default {
     extend: {
       colors: {
         bgdark: "#303030",
+        btdark: "#383838",
         ctdark: "#424242",
         bddark: "#808080",
-        light: "#f5f5f5",
+        light: "#ebebeb",
         hover: "#f0f0f0",
         hoverdark: "#373737",
       },
@@ -29,14 +30,15 @@ export default {
           fontWeight: "500",
           borderRadius: "0.25rem",
           transition: "all 0.3s ease",
-          "@apply text-bgdark py-2 px-6 dark:border-ctdark dark:text-light hover:bg-hover dark:hover:bg-ctdark": {},
+          "@apply py-2 px-6 dark:border-ctdark dark:text-light hover:bg-[#2652e6] dark:hover:bg-ctdark": {},
         },
         ".white-Mode-icon-filter": {
           filter: "invert(82%) sepia(6%) saturate(0%) hue-rotate(233deg) brightness(92%) contrast(86%)",
         },
         ".btn": {
           transition: "all 0.3s ease",
-          "@apply text-bgdark dark:text-gray-200 hover:bg-hover dark:hover:bg-hoverdark": {},
+
+          "@apply font-bold dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md": {},
         },
         ".content-box": {
           "@apply rounded-sm shadow-md bg-gray-50 dark:bg-ctdark text-bgdark dark:text-light": {},

@@ -376,15 +376,15 @@ function CraftDetail() {
 
   return (
     craftDetail && (
-      <div className="p-6 flex flex-col gap-6">
+      <div className="p-6 flex flex-col gap-6 md:min-w-[800px]">
         <div className="flex flex-col justify-center items-center gap-4">
           <img className={grade[craftDetail.grade] + " w-20 h-20"} src={craftDetail.iconLink} alt="" />
           <h1 className={"text-2xl font-bold " + `${textColors[craftDetail.grade]}`}>{craftDetail.craftName}</h1>
           <p className="text-sm text-gray-500">갱신시간: {time}</p>
         </div>
         {/*판매 기준 설정, 재료정보 변환, 영지 효과 */}
-        <div className="content-box p-2 grid md:grid-cols-2 grid-cols-1 gap-2">
-          <div className="flex justify-center items-center gap-1">
+        <div className="content-box py-3 grid md:grid-cols-2 grid-cols-1 gap-2">
+          <div className="flex justify-center items-center gap-2">
             <span className="mr-2 font-bold">판매시세</span>
             <button onClick={() => setPriceStandard("currentMinPrice")} className={"btn font-medium py-2 px-4 rounded-md " + `${priceStandard == "currentMinPrice" ? "bg-[#e3e3e3] dark:bg-bgdark dark:text-white" : ""}`}>
               현재 최저가
@@ -407,7 +407,7 @@ function CraftDetail() {
         <div className="grid lg:grid-cols-[1fr_1fr] grid-cols-2 gap-6">
           {/* 제작 정보 */}
           <div className="p-4 content-box">
-            <h2 className="font-bold text-lg mb-4">제작 정보</h2>
+            <h2 className="font-bold text-lg mb-4 h-9">제작 정보</h2>
             <div className="space-y-2 font-medium">
               <div className="flex justify-between items-center">
                 <div>제작단위</div>
@@ -438,7 +438,7 @@ function CraftDetail() {
           {/* 판매 정보 */}
           <div className="p-4 content-box">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="font-bold text-lg text-balance">판매 정보</h2>
+              <h2 className="font-bold text-lg text-balance h-9">판매 정보</h2>
               <button onClick={() => setCraftModalOpen(true)} className="text-balance py-1 px-4 font-semibold col-start-6 btn flex items-center justify-center border border-solid border-bddark rounded-md">
                 영지효과
               </button>
@@ -472,7 +472,7 @@ function CraftDetail() {
               </div>
               <div className="flex justify-between items-center">
                 <div>원가 이익률</div>
-                <div>{convert === "default" ? craftDetail.craftCostMargin : craftDetail.convertCraftCostMargin}%</div>
+                <div className={`${(convert === "default" ? craftDetail.craftCostMargin : craftDetail.convertCraftCostMargin) >= 0 ? "text-green-400" : "text-blue-400"}`}>{convert === "default" ? craftDetail.craftCostMargin : craftDetail.convertCraftCostMargin}%</div>
               </div>
             </div>
           </div>
@@ -498,7 +498,7 @@ function CraftDetail() {
                           <div className="flex items-center justify-start gap-2">
                             <div className="relative">
                               <img className={`w-10 h-10 ${grade[materialData.convertMaterial.grade]}`} src={itemIcon[materialData.convertMaterial.marketName as keyof typeof itemIcon]} alt="재료아이템" />
-                              <span className="absolute bottom-0 right-0 text-xs font-semibold text-white">{materialData.convertMaterial.grade === "고급" ? 25 : 5}</span>
+                              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{materialData.convertMaterial.grade === "고급" ? 25 : 5}</span>
                             </div>
                             <span className={textColors[materialData.convertMaterial.grade]}>{materialData.convertMaterial.marketName}</span>
                           </div>
@@ -506,7 +506,7 @@ function CraftDetail() {
                           <div className="flex items-center justify-start gap-2">
                             <div className="relative">
                               <img className={`w-10 h-10 ${grade[materialData.grade]}`} src={itemIcon[materialData.marketName as keyof typeof itemIcon]} alt="재료아이템" />
-                              <span className="absolute bottom-0 right-0 text-xs font-semibold text-white">50</span>
+                              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">50</span>
                             </div>
                             <span className={textColors[materialData.grade]}>{materialData.marketName}</span>
                           </div>
@@ -523,7 +523,7 @@ function CraftDetail() {
                           <div className="flex items-center justify-start gap-2">
                             <div className="relative">
                               <img className={`w-10 h-10 ${grade[materialData.convertMaterial.grade]}`} src={itemIcon[materialData.convertMaterial.marketName as keyof typeof itemIcon]} alt="재료아이템" />
-                              <span className="absolute bottom-0 right-0 text-xs font-semibold text-white">{materialData.convertMaterial.grade === "고급" ? 50 : 100}</span>
+                              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{materialData.convertMaterial.grade === "고급" ? 50 : 100}</span>
                             </div>
                             <span className={textColors[materialData.convertMaterial.grade]}>{materialData.convertMaterial.marketName}</span>
                           </div>
@@ -535,7 +535,7 @@ function CraftDetail() {
                                 src={itemIcon[lastString === "들꽃" ? "채집의 가루" : lastString === "철광석" ? "채광의 가루" : lastString === "목재" ? "벌목의 가루" : lastString === "생고기" ? "수렵의 가루" : lastString === "유물" ? "고고학의 가루" : "낚시의 가루"]}
                                 alt="가루"
                               />
-                              <span className="absolute bottom-0 right-0 text-xs font-semibold text-white">80</span>
+                              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">80</span>
                             </div>
                             <span>{lastString === "들꽃" ? "채집의 가루" : lastString === "철광석" ? "채광의 가루" : lastString === "목재" ? "벌목의 가루" : lastString === "생고기" ? "수렵의 가루" : lastString === "유물" ? "고고학의 가루" : "낚시의 가루"}</span>
                           </div>
@@ -546,7 +546,7 @@ function CraftDetail() {
                                 src={itemIcon[lastString === "들꽃" ? "채집의 가루" : lastString === "철광석" ? "채광의 가루" : lastString === "목재" ? "벌목의 가루" : lastString === "생고기" ? "수렵의 가루" : lastString === "유물" ? "고고학의 가루" : "낚시의 가루"]}
                                 alt="가루"
                               />
-                              <span className="absolute bottom-0 right-0 text-xs font-semibold text-white">100</span>
+                              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">100</span>
                             </div>
                             <span>{lastString === "들꽃" ? "채집의 가루" : lastString === "철광석" ? "채광의 가루" : lastString === "목재" ? "벌목의 가루" : lastString === "생고기" ? "수렵의 가루" : lastString === "유물" ? "고고학의 가루" : "낚시의 가루"}</span>
                           </div>
@@ -554,7 +554,7 @@ function CraftDetail() {
                           <div className="flex justify-start items-center gap-2">
                             <div className="relative">
                               <img className={`w-10 h-10 ${grade[materialData.grade]}`} src={itemIcon[materialData.marketName as keyof typeof itemIcon]} alt="재료아이템" />
-                              <span className="absolute bottom-0 right-0 text-xs font-semibold text-white">10</span>
+                              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">10</span>
                             </div>
                             <span className={textColors[materialData.grade]}>{materialData.marketName}</span>
                           </div>
@@ -565,9 +565,10 @@ function CraftDetail() {
                 })}
             </div>
           </div>
+          {/* 생활재료 가격 수정 */}
           <div className="p-4 content-box md:col-span-1 col-span-2">
-            <h2 className="font-bold text-lg mb-4">생활재료 가격 수정</h2>
-            <div className="flex flex-col">
+            <h2 className="font-bold text-lg mb-4">재료 가격 수정</h2>
+            <div className="flex flex-col font-semibold">
               {craftDetail.craftMaterials
                 .sort((a, b) => a.id - b.id)
                 .map((material) => (
@@ -586,7 +587,7 @@ function CraftDetail() {
                         }}
                         onChange={(e) => onMaterialPriceChange(e, material.marketId)}
                         defaultValue={material.currentMinPrice}
-                        className="w-24 text-right p-2 bg-[#393939]"
+                        className="content-box w-24 text-right p-2 border-solid border border-bddark"
                         type="text"
                       />
                     </div>
@@ -607,7 +608,7 @@ function CraftDetail() {
                             }}
                             onChange={(e) => onMaterialPriceChange(e, materialList?.벌목[2].marketId ?? 0)}
                             defaultValue={materialList?.벌목[2].currentMinPrice}
-                            className="w-24 text-right p-2  bg-[#393939]"
+                            className="content-box w-24 text-right p-2 border-solid border border-bddark"
                             type="text"
                           />
                         </div>
@@ -621,7 +622,11 @@ function CraftDetail() {
 
         {/* 재료 정보 */}
         <div className="p-4 content-box">
-          <h2 className="font-bold text-lg mb-4">재료 정보</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="font-bold text-lg">재료 정보</h2>
+            {/*수수료 감소 숯; */}
+            <span className="text-sm text-zinc-400">수수료 감소율 : {craftEffect["제작수수료 감소"][0] + craftEffect["제작수수료 감소"][craftDetail.category]}%</span>
+          </div>
           <div>
             <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-4 text-center font-bold mb-2">
               <div className="flex justify-start items-center">재료</div>
@@ -630,39 +635,39 @@ function CraftDetail() {
               <div className="flex justify-end items-center">개당 가격</div>
               <div className="flex justify-end items-center">총 비용</div>
             </div>
-            <div className="flex flex-col gap-2 font-semibold">
+            <div className="flex flex-col  font-semibold">
               {craftDetail.craftMaterials
                 .sort((a, b) => a.id - b.id)
                 .map((material) => (
-                  <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-4" key={material.id}>
+                  <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-4 border-t border-solid border-bddark py-1 px-2" key={material.id}>
                     <div className="flex items-center gap-2">
                       <div className="relative">
                         <img src={material.iconLink} alt={material.marketName} className={"w-10 h-10 " + `${grade[material.grade]}`} />
-                        <span className="absolute bottom-0 right-0 text-xs font-semibold text-white">{material.quantity}</span>
+                        <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{material.quantity}</span>
                       </div>
                       <span className={textColors[material.grade]}>{material.marketName}</span>
                     </div>
                     {/* <input defaultValue={material.currentMinPrice} className="bg-light dark:bg-bgdark dark:border-bddark border-bddark rounded-md p-2" type="text" /> */}
                     <div className="flex justify-end items-center">{material.bundleCount} 개</div>
                     <div className="flex justify-end items-center gap-1">
-                      <div className="flex justify-center items-center">{convert === "default" ? material.currentMinPrice : material.convertPrice}</div>
+                      <div className="flex justify-center items-center">{convert === "default" ? material?.currentMinPrice : material.convertPrice ?? material?.currentMinPrice}</div>
                       <img className="w-5 h-5" src={goldIcon} alt="gold" />
                     </div>
                     <div className="flex justify-end items-center gap-1">
-                      <div className="flex justify-center items-center">{Math.ceil(((convert === "default" ? material.currentMinPrice : material.convertPrice) / material.bundleCount) * 100) / 100}</div>
+                      <div className="flex justify-center items-center">{Math.ceil(((convert === "default" ? material?.currentMinPrice : material?.convertPrice ?? material?.currentMinPrice) / material?.bundleCount) * 100) / 100}</div>
                       <img className="w-5 h-5" src={goldIcon} alt="gold" />
                     </div>
                     <div className="flex justify-end items-center gap-1">
-                      <div className="flex justify-center items-center">{Math.ceil(((material.quantity * (convert === "default" ? material.currentMinPrice : material.convertPrice)) / material.bundleCount) * 100) / 100}</div>
+                      <div className="flex justify-center items-center">{Math.ceil(((material.quantity * (convert === "default" ? material?.currentMinPrice : material?.convertPrice ?? material?.currentMinPrice)) / material?.bundleCount) * 100) / 100}</div>
                       <img className="w-5 h-5" src={goldIcon} alt="gold" />
                     </div>
                   </div>
                 ))}
-              <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-4">
+              <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-4 border-t border-solid border-bddark py-1 px-2">
                 <div className="flex items-center">
                   <div className="relative">
                     <img src={itemIcon.골드} alt={"골드"} className={"w-10 h-10 " + `${grade["일반"]}`} />
-                    <span className="absolute bottom-0 right-0 text-xs font-semibold text-white">{craftDetail.craftPrice}</span>
+                    <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{craftDetail.craftPrice}</span>
                   </div>
                   <span className="ml-2">골드</span>
                 </div>
@@ -701,7 +706,7 @@ function CraftDetail() {
                             type="number"
                             min={0}
                             max={100}
-                            className="w-28 h-10 content-box border-solid border rounded-md border-bddark p-4"
+                            className="w-28 h-10  shadow-sm bg-gray-50 dark:bg-ctdark text-bgdark dark:text-light border-solid border rounded-md border-bddark p-4"
                             onChange={(e) => {
                               const newValue = Number(e.target.value);
                               setCraftEffect((prevEffect) => {
