@@ -67,4 +67,28 @@ public class GlobalExceptionHandler {
         response.put("message", e.getMessage());
         return ResponseEntity.ok(response);
     }
+    @ExceptionHandler(GemPriceApiException.class)
+    public ResponseEntity<Map<String, Object>> GemPriceApiException(GemPriceApiException e) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", 200); // OK
+        response.put("errorCode", "GEM_PRICE_API_ERROR");
+        response.put("message", e.getMessage());
+        return ResponseEntity.ok(response);
+    }
+    @ExceptionHandler(RenewTradeCountException.class)
+    public ResponseEntity<Map<String, Object>> renewTradeCountException(RenewTradeCountException e) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", 200); // OK
+        response.put("errorCode", "RENEW_TRADE_COUNT_ERROR");
+        response.put("message", e.getMessage());
+        return ResponseEntity.ok(response);
+    }
+    @ExceptionHandler(GemAggregationException.class)
+    public ResponseEntity<Map<String, Object>> GemAggregationException(GemAggregationException e) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", 200); // OK
+        response.put("errorCode", "GEM_AGGREGATION_ERROR");
+        response.put("message", e.getMessage());
+        return ResponseEntity.ok(response);
+    }
 }
