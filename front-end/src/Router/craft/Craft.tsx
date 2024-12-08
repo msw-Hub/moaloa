@@ -7,15 +7,13 @@ interface CraftMaterial {
   id: number;
   marketName: string;
   grade: string;
-  currentMinPrice: number;
-  recentPrice: number;
   marketId: number;
   subCode: number;
   iconLink: string;
   bundleCount: number;
   quantity: number;
-  ydayAvgPrice: number;
-  convertMaterial: MaterialItem;
+  currentMinPrice?: number;
+  ydayAvgPrice?: number;
 }
 
 interface CraftItem {
@@ -33,32 +31,47 @@ interface CraftItem {
   iconLink: string; //아이콘 링크
   grade: string; //등급
   currentMinPrice: number; //현재 최저가
-  recentPrice: number; //최근 팔린 가격
   craftMaterials: CraftMaterial[]; //제작 재료
   ydayAvgPrice: number; //전날 평균 가격
-  craftPriceAll: number; //전체 제작 비용
-  craftSellPrice: number; //판매 차익
-  craftCostMargin: number; //원가이익률
   tradeCount: number; //거래량
+  craft: {
+    craftPriceAll: number; //전체 제작 비용
+    craftSellPrice: number; //판매 차익
+    craftCostMargin: number; //원가이
+  };
+  ydayCraft: {
+    ydayCraftPriceAll: number; //전날 전체 제작 비용
+    ydayCraftSellPrice: number; //전날 판매 차익
+    ydayCraftCostMargin: number; //전날 원가이익률
+  };
+  convert?: {
+    convertCraftPriceAll: number; //변환 제작 비용
+    convertCraftSellPrice: number; //변환 판매 차익
+    convertCraftCostMargin: number; //변환 원가이익률
+  };
+  ydayConvert?: {
+    ydayConvertCraftPriceAll: number; //전날 변환 제작 비용
+    ydayConvertCraftSellPrice: number; //전날 변환 판매 차익
+    ydayConvertCraftCostMargin: number; //전날 변환 원가이익률
+  };
 }
 
 //생활재료 가격 타입
 interface Material {
-  식물채집: MaterialItem[];
-  채광: MaterialItem[];
-  낚시: MaterialItem[];
-  수렵: MaterialItem[];
-  고고학: MaterialItem[];
-  벌목: MaterialItem[];
+  [key: string]: MaterialItem[];
 }
 
 interface MaterialItem {
   marketId: number;
   marketName: string;
   currentMinPrice: number;
+  ydayAvgPrice: number;
+  // originalMinPrice: number; // 기존 최저가 백업
   grade: string;
-  convertPrice?: number;
-  convertMaterial?: MaterialItem;
+  convert?: {
+    convertPrice: number;
+    convertMaterial: MaterialItem;
+  };
 }
 
 interface CraftEffect {
@@ -81,7 +94,7 @@ const getInitialCraftEffect = (): CraftEffect => {
       };
 };
 
-function Craft() {
+function CraftTest() {
   const [craftList, setCraftList] = useState<CraftItem[]>([]);
   const [craftModalOpen, setCraftModalOpen] = useState(false);
   const [craftEffect, setCraftEffect] = useState<CraftEffect>(getInitialCraftEffect);
@@ -90,6 +103,7 @@ function Craft() {
   const [materialList, setMaterialList] = useState<Material>();
   //시세 기준 (현재 최저가 : currentMinPrice, 전날가격 : ydayAvgPrice )
   const [priceStandard, setPriceStandard] = useState<string>("currentMinPrice");
+  const [convert, setConvert] = useState<string>("convert");
 
   //정렬 기준 설정
   const [sort, setSort] = useState<string>("craftSellPrice");
@@ -110,15 +124,8 @@ function Craft() {
   function getCraftList() {
     axios("/api/v1/craft/readDataAll")
       .then((res) => {
-        const updatedCraftList = res.data.craftItemList.map((craft: CraftItem) => {
-          return {
-            ...craft,
-            ...calculateCraftValues(craft),
-          };
-        });
-        setCraftList(updatedCraftList);
-        setMaterialList(materialConversion(res.data["생활재료시세"]));
-        console.log(res.data);
+        setCraftList(res.data.craftItemList);
+        setMaterialList(materialConversion(res.data.제작재료시세));
       })
       .catch((err) => {
         console.log(err);
@@ -135,7 +142,14 @@ function Craft() {
   }, [craftList]);
 
   useEffect(() => {
-    console.log(materialList);
+    if (!craftList) return;
+    const updatedCraftList = craftList.map((craft: CraftItem) => {
+      return {
+        ...craft,
+        ...calculateCraftValues(craft),
+      };
+    });
+    setCraftList(updatedCraftList);
   }, [materialList]);
 
   // craftEffect 상태가 변경될 때마다 localStorage에 저장
@@ -158,113 +172,147 @@ function Craft() {
     setTradeRank(sortedList);
   }, [craftList]);
 
-  function materialConversion(materials: Material): Material {
+  const materialConversion = (materials: Material): Material => {
     const updatedMaterials = { ...materials };
 
     for (const materialKey in updatedMaterials) {
-      if (materialKey === "식물채집" || materialKey === "벌목" || materialKey === "채광" || materialKey === "수렵" || materialKey === "낚시" || materialKey === "고고학") {
-        const material = updatedMaterials[materialKey];
+      // 기존 데이터의 convertPrice와 convertMaterial 필드를 제거
+      if (materialKey[0] !== "9") continue;
 
-        //아비도스 교환 비율 계산 후 저장
-        //생활 가루 구입 탭
-        let grade1 = (material[0].currentMinPrice / 8) * 100; //일반 100개 -> 가루 80개
-        let grade2 = (material[1].currentMinPrice / 8) * 50; //고급 50개 -> 가루 80개
+      const material = updatedMaterials[materialKey];
 
-        //생활 재료 교환 탭
-        //희귀 1개 -> 일반 10개
-        if (materialKey === "채광" || materialKey === "벌목") {
-          if (material[0].currentMinPrice * 10 > material[2].currentMinPrice) {
-            grade1 = (material[2].currentMinPrice / 8) * 10; //단단한 철광석 1개 -> 철광석 10개 , 튼튼한 목재 1개 -> 목재 10개
-            updatedMaterials[materialKey][0] = {
-              ...material[0],
-              convertMaterial: material[2], //단단한 철광석
+      // 아비도스 교환 비율 계산 후 저장
+      let grade1 = (material[0].currentMinPrice / 8) * 100; // 일반 100개 -> 가루 80개
+      let grade2 = (material[1].currentMinPrice / 8) * 50; // 고급 50개 -> 가루 80개
+
+      // 생활 재료 교환 탭
+      if (materialKey === "90400" || materialKey === "90300") {
+        if (material[0].currentMinPrice * 10 > material[2].currentMinPrice) {
+          grade1 = (material[2].currentMinPrice / 8) * 10;
+          updatedMaterials[materialKey][0] = {
+            ...material[0],
+            convert: {
+              convertMaterial: material[2],
               convertPrice: material[2].currentMinPrice / 10,
-            };
-          }
-
-          //고급 재료 25개 -> 일반 재료 50개
-          if (material[0].currentMinPrice * 2 > material[1].currentMinPrice) {
-            grade1 = (material[1].currentMinPrice / 8) * 50;
-            updatedMaterials[materialKey][0] = {
-              ...material[0],
-              convertMaterial: material[1],
-              convertPrice: material[1].currentMinPrice / 2,
-            };
-          }
-        }
-
-        //일반, 고급 재료 중 아비도스 보다 저렴한 재료를 반환
-        if (grade1 < material[3].currentMinPrice || grade2 < material[3].currentMinPrice) {
-          updatedMaterials[materialKey][3] = {
-            ...material[3],
-            convertMaterial: grade1 < grade2 ? material[0] : material[1], //grade1이 더 저렴하면 grade1을 변환
-            convertPrice: grade1 < grade2 ? grade1 : grade2,
+            },
           };
         }
-        //일반, 고급 재료 중 오레하 보다 저렴한 재료를 반환
-        if (materialKey === "고고학" || materialKey === "낚시" || materialKey === "수렵") {
-          if (grade1 < material[2].currentMinPrice || grade2 < material[2].currentMinPrice) {
-            updatedMaterials[materialKey][2] = {
-              ...material[2],
-              convertMaterial: grade1 < grade2 ? material[0] : material[1], //grade1이 더 저렴하면 grade1을 변환
+
+        if (material[0].currentMinPrice * 2 > material[1].currentMinPrice && !(material[0].currentMinPrice * 10 > material[2].currentMinPrice)) {
+          grade1 = (material[1].currentMinPrice / 8) * 50;
+          updatedMaterials[materialKey][0] = {
+            ...material[0],
+            convert: {
+              convertMaterial: material[1],
+              convertPrice: material[1].currentMinPrice / 2,
+            },
+          };
+        }
+      }
+
+      // 일반, 고급 재료 중 아비도스 보다 저렴한 재료를 반환
+      if (grade1 < material[3].currentMinPrice || grade2 < material[3].currentMinPrice) {
+        updatedMaterials[materialKey][3] = {
+          ...material[3],
+          convert: {
+            convertMaterial: grade1 < grade2 ? material[0] : material[1],
+            convertPrice: grade1 < grade2 ? grade1 : grade2,
+          },
+        };
+      }
+
+      // 고고학, 낚시, 수렵의 경우
+      if (materialKey === "90700" || materialKey === "90600" || materialKey === "90500") {
+        if (grade1 < material[2].currentMinPrice || grade2 < material[2].currentMinPrice) {
+          updatedMaterials[materialKey][2] = {
+            ...material[2],
+            convert: {
+              convertMaterial: grade1 < grade2 ? material[0] : material[1],
               convertPrice: grade1 < grade2 ? grade1 : grade2,
-            };
-          }
+            },
+          };
         }
       }
     }
     return updatedMaterials;
-  }
+  };
 
   //제작 비용 계산 및 판매 차익 계산
   function calculateCraftValues(craftItem: CraftItem) {
-    let totalMaterialCost = 0;
+    let craftTotalMaterialCost: number = 0;
+    let convertTotalMaterialCost: number = 0;
 
-    let subCode: { [key: number]: string } = {
-      90200: "식물채집",
-      90300: "벌목",
-      90400: "채광",
-      90500: "수렵",
-      90600: "낚시",
-      90700: "고고학",
-    };
-
+    //총 제작비용 계산
     craftItem.craftMaterials.forEach((material) => {
-      if (materialList && subCode[material.subCode]) {
-        const materialCheck = materialList[subCode[material.subCode] as keyof Material];
-        if (materialCheck) {
-          const convertPrice = materialCheck.find((a) => a.marketId === material.marketId)?.convertPrice || material.currentMinPrice;
-          const totalMaterialCostForItem = (convertPrice / material.bundleCount) * material.quantity;
-          totalMaterialCost += totalMaterialCostForItem;
-        }
+      // 재료가 없는 경우
+      if (!materialList) return;
+
+      //만약 생활 재료가 아닌 경우 배템으로 계산
+
+      // 재료 가격 찾기
+      let findMaterial = materialList[material.subCode]?.find((item) => item.marketId === material.marketId);
+      if (!findMaterial) return;
+
+      // 최저가로 계산
+      const craftCost = findMaterial.currentMinPrice;
+      craftTotalMaterialCost += (craftCost / material.bundleCount) * material.quantity;
+
+      // 변환 가격이 있는 경우 변환 가격으로 계산 없으면 일반 재료 가격으로 계산
+      if (findMaterial.convert) {
+        const convertCost = findMaterial.convert.convertPrice;
+        convertTotalMaterialCost += (convertCost / material.bundleCount) * material.quantity;
       } else {
-        const totalMaterialCostForItem = (material.currentMinPrice / material.bundleCount) * material.quantity;
-        totalMaterialCost += totalMaterialCostForItem;
+        convertTotalMaterialCost += (craftCost / material.bundleCount) * material.quantity;
       }
     });
 
-    let craftPriceAll;
+    //제작 수수료감소 적용 및 추가 비용 계산 소수점 2자리까지
+    const craftPriceAll = Math.floor((craftTotalMaterialCost + craftItem.craftPrice * (1 - 0.01 * (craftEffect["제작수수료 감소"][0] + craftEffect["제작수수료 감소"][craftItem.category]))) * 100) / 100;
+    const ydayCraftPriceAll = craftPriceAll;
+    const convertCraftPriceAll = Math.floor((convertTotalMaterialCost + craftItem.craftPrice * (1 - 0.01 * (craftEffect["제작수수료 감소"][0] + craftEffect["제작수수료 감소"][craftItem.category]))) * 100) / 100;
+    const ydayConvertCraftPriceAll = convertCraftPriceAll;
 
-    // 제작수수료 감소 효과 적용
-    const totalCraftCost = totalMaterialCost + Math.floor(craftItem.craftPrice * (1 - 0.01 * (craftEffect["제작수수료 감소"][0] + craftEffect["제작수수료 감소"][craftItem.category])));
-    craftPriceAll = Math.ceil(totalCraftCost * 100) / 100;
-    // if (craftItem.craftName === "아비도스 융화 재료(벌목)") console.log(totalCraftCost, totalMaterialCost, craftItem.craftPrice, craftEffect["제작수수료 감소"][0], craftEffect["제작수수료 감소"][craftItem.category]);
-    // if (craftItem.craftName === "아비도스 융화 재료(벌목)") console.log(craftItem.craftPrice * (1 - 0.01 * (craftEffect["제작수수료 감소"][0] + craftEffect["제작수수료 감소"][craftItem.category])));
-    // // 판매 차익 계산 수수료 5% 포함 소수점은 무조건 올림
-    const priceStandardValue = Math.round(craftItem[priceStandard as keyof CraftItem] as number);
-    if (typeof priceStandardValue === "number") {
-      const sellPrice = priceStandardValue - Math.ceil(priceStandardValue * 0.05);
-      const craftSellPrice = Math.ceil((craftItem.craftQuantity * (sellPrice / craftItem.bundleCount) - craftPriceAll) * 100) / 100;
-      // 원가이익률 계산
-      const craftCostMargin = Math.round((craftSellPrice / (priceStandardValue * craftItem.craftQuantity - craftSellPrice)) * 10000) / 100;
-      return {
-        craftPriceAll, // 제작 비용
-        craftSellPrice, // 판매 차익
-        craftCostMargin, // 원가이익률
-      };
-    } else {
-      throw new Error(`Invalid priceStandard value: ${priceStandardValue}`);
-    }
+    const defaultSellPrice = craftItem.currentMinPrice - Math.ceil(craftItem.currentMinPrice * 0.05);
+    const ydaySellPrice = Math.ceil(craftItem.ydayAvgPrice) - Math.ceil(craftItem.ydayAvgPrice * 0.05);
+
+    //기본 시세 판매 차익 및 원가이익률 계산
+    const craftSellPrice = Math.ceil((craftItem.craftQuantity * (defaultSellPrice / craftItem.bundleCount) - craftPriceAll) * 100) / 100;
+    const craftCostMargin = Math.round((craftSellPrice / (craftItem.currentMinPrice * craftItem.craftQuantity - craftSellPrice)) * 10000) / 100;
+
+    //전날 시세 판매 차익 및 원가이익률 계산
+    const ydayCraftSellPrice = Math.ceil((craftItem.craftQuantity * (ydaySellPrice / craftItem.bundleCount) - craftPriceAll) * 100) / 100;
+    const ydayCraftCostMargin = Math.round((ydayCraftSellPrice / (craftItem.ydayAvgPrice * craftItem.craftQuantity - ydayCraftSellPrice)) * 10000) / 100;
+
+    //변환 시세 판매 차익 및 원가이익률 계산
+    const convertCraftSellPrice = Math.ceil((craftItem.craftQuantity * (defaultSellPrice / craftItem.bundleCount) - convertCraftPriceAll) * 100) / 100;
+    const convertCraftCostMargin = Math.round((convertCraftSellPrice / (craftItem.currentMinPrice * craftItem.craftQuantity - convertCraftSellPrice)) * 10000) / 100;
+    //기본 재료
+
+    const ydayConvertCraftSellPrice = Math.ceil((craftItem.craftQuantity * (ydaySellPrice / craftItem.bundleCount) - convertCraftPriceAll) * 100) / 100;
+    const ydayConvertCraftCostMargin = Math.round((ydayConvertCraftSellPrice / (craftItem.ydayAvgPrice * craftItem.craftQuantity - ydayConvertCraftSellPrice)) * 10000) / 100;
+
+    return {
+      craft: {
+        craftPriceAll,
+        craftSellPrice,
+        craftCostMargin,
+      },
+      ydayCraft: {
+        ydayCraftPriceAll,
+        ydayCraftSellPrice,
+        ydayCraftCostMargin,
+      },
+      convert: {
+        convertCraftPriceAll,
+        convertCraftSellPrice,
+        convertCraftCostMargin,
+      },
+      ydayConvert: {
+        ydayConvertCraftPriceAll,
+        ydayConvertCraftSellPrice,
+        ydayConvertCraftCostMargin,
+      },
+    };
   }
 
   // 제작 비용
@@ -281,27 +329,69 @@ function Craft() {
   //수수료가 변동되면 다시 계산
   useEffect(() => {
     calculateCraftPriceAll();
-  }, [craftEffect, priceStandard]);
+  }, [craftEffect]);
 
   //sort에 따라 정렬
+  //convert가 변환시세로 설정되어 있으면 변환시세로 계산
+  //priceStandard가 전날가격으로 설정되어 있으면 전날가격으로 계산
   useEffect(() => {
     const sortedList: CraftItem[] = [...craftList];
     sortedList.sort((a, b) => {
-      // if (sort === "currentMinPrice") {
-      //   return b.currentMinPrice - a.currentMinPrice;
-      // }
-      // else if (sort === "craftPriceAll") {
-      //   return b.craftPriceAll - a.craftPriceAll;
-      // }
-      if (sort === "craftSellPrice") {
-        return b.craftSellPrice - a.craftSellPrice;
-      } else if (sort === "craftCostMargin") {
-        return b.craftCostMargin - a.craftCostMargin;
+      //현재 최저가, 변환 시세, 판매차익
+      if (priceStandard === "currentMinPrice" && convert === "convert" && sort === "craftSellPrice" && b?.convert?.convertCraftSellPrice && a?.convert?.convertCraftSellPrice) {
+        return b?.convert?.convertCraftSellPrice - a?.convert?.convertCraftSellPrice;
       }
+
+      //현재 최저가, 변호 시세, 원가이익률
+      else if (priceStandard === "currentMinPrice" && convert === "convert" && sort === "craftCostMargin" && b?.convert?.convertCraftCostMargin && a?.convert?.convertCraftCostMargin) {
+        return b?.convert?.convertCraftCostMargin - a?.convert?.convertCraftCostMargin;
+      }
+
+      //현재 최저가, 기본 시세, 판매차익
+      else if (priceStandard === "currentMinPrice" && convert === "default" && sort === "craftSellPrice") {
+        return b?.craft?.craftSellPrice - a?.craft?.craftSellPrice;
+      }
+
+      //현재 최저가, 기본 시세, 원가이익률
+      else if (priceStandard === "currentMinPrice" && convert === "default" && sort === "craftCostMargin") {
+        return b?.craft.craftCostMargin - a?.craft?.craftCostMargin;
+      }
+
+      //전날 평균가, 변환 시세, 판매차익
+      else if (priceStandard === "ydayAvgPrice" && convert === "convert" && sort === "craftSellPrice" && b?.ydayConvert?.ydayConvertCraftSellPrice && a?.ydayConvert?.ydayConvertCraftSellPrice) {
+        return b?.ydayConvert?.ydayConvertCraftSellPrice - a?.ydayConvert?.ydayConvertCraftSellPrice;
+      }
+
+      //전날 평균가, 변환 시세, 원가이익률
+      else if (priceStandard === "ydayAvgPrice" && convert === "convert" && sort === "craftCostMargin" && b?.ydayConvert?.ydayConvertCraftCostMargin && a?.ydayConvert?.ydayConvertCraftCostMargin) {
+        return b?.ydayConvert?.ydayConvertCraftCostMargin - a?.ydayConvert?.ydayConvertCraftCostMargin;
+      }
+
+      //전날 평균가, 기본 시세, 판매차익
+      else if (priceStandard === "ydayAvgPrice" && convert === "default" && sort === "craftSellPrice") {
+        return b?.ydayCraft?.ydayCraftSellPrice - a?.ydayCraft?.ydayCraftSellPrice;
+      }
+
+      //전날 평균가, 기본 시세, 원가이익률
+      else if (priceStandard === "ydayAvgPrice" && convert === "default" && sort === "craftCostMargin") {
+        return b?.ydayCraft?.ydayCraftCostMargin - a?.ydayCraft?.ydayCraftCostMargin;
+      }
+
+      // if (sort === "craftSellPrice") {
+      //   if (convert === "convert" && b?.convert?.convertCraftSellPrice && a?.convert?.convertCraftSellPrice) {
+      //     return b?.convert?.convertCraftSellPrice - a?.convert?.convertCraftSellPrice;
+      //   }
+      //   return b?.craft?.craftSellPrice - a?.craft?.craftSellPrice;
+      // } else if (sort === "craftCostMargin") {
+      //   if (convert === "convert" && b?.convert?.convertCraftCostMargin && a?.convert?.convertCraftCostMargin) {
+      //     return b?.convert?.convertCraftCostMargin - a?.convert?.convertCraftCostMargin;
+      //   }
+      //   return b?.craft.craftCostMargin - a?.craft?.craftCostMargin;
+      // }
       return 0;
     });
     setSortedCraftList(sortedList);
-  }, [sort, craftList]);
+  }, [sort, craftList, convert, priceStandard]);
 
   return (
     <div className="w-full h-full flex justify-center  gap-4 font-semibold lg:flex-row flex-col lg:items-start items-center p-2">
@@ -369,51 +459,52 @@ function Craft() {
       <div className="flex flex-col gap-4 flex-wrap basis-[900px]">
         {/* 검색창 */}
         {/* 영지효과 버튼 */}
-        <div className=" content-box grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr] gap-4 p-4 flex-wrap">
-          <input onChange={(e) => setSearchName(e.target.value)} placeholder="제작법" type="text" className="col-span-7 h-10 content-box border-solid border rounded-md border-bddark p-4" />
-
-          <div className="flex justify-center items-center gap-2 md:col-span-3 col-span-7">
-            <span className="mr-2 font-bold">정렬기준</span>
-            <button
-              onClick={() => setSort("craftSellPrice")}
-              className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md  py-2 px-4 rounded-md " + `${sort == "craftSellPrice" ? "dark:bg-bgdark bg-blue-400 text-white" : ""}`}>
-              판매차익
-            </button>
-            <button
-              onClick={() => setSort("craftCostMargin")}
-              className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md py-2 px-4 rounded-md " + `${sort == "craftCostMargin" ? "dark:bg-bgdark bg-blue-400 text-white" : ""}`}>
-              원가이익률
-            </button>
-          </div>
-
-          <div className="md:col-span-3 col-span-7 flex justify-center items-center gap-2">
-            <span className="mr-2 font-bold">판매시세</span>
-            <button
-              onClick={() => setPriceStandard("currentMinPrice")}
-              className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md py-2 px-4 rounded-md " + `${priceStandard == "currentMinPrice" ? "dark:bg-bgdark bg-blue-400 text-white" : ""}`}>
-              현재 최저가
-            </button>
-            <button
-              onClick={() => setPriceStandard("ydayAvgPrice")}
-              className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md py-2 px-4 rounded-md " + `${priceStandard == "ydayAvgPrice" ? "dark:bg-bgdark bg-blue-400 text-white" : ""}`}>
-              전날 평균 가격
-            </button>
-          </div>
-
-          <button onClick={() => setCraftModalOpen(true)} className="transition-all bg-blue-400 dark:bg-bgdark font-bold text-white dark:text-gray-200 hover:bg-blue-500 dark:hover:bg-hoverdark shadow-md text-nowrap py-2 px-3 col-span-7 flex items-center justify-center rounded-md ">
+        <div className=" content-box grid md:grid-cols-[0.5fr_1fr_1fr_0.5fr_1fr_1fr] grid-cols-[0.5fr_1fr_1fr] gap-4 p-4 flex-wrap text-nowrap">
+          <input onChange={(e) => setSearchName(e.target.value)} placeholder="제작법" type="text" className="md:col-span-6 col-span-3 h-10 content-box border-solid border rounded-md border-bddark p-4" />
+          <span className="mr-2 font-bold flex justify-end items-center">판매시세</span>
+          <button
+            onClick={() => setPriceStandard("currentMinPrice")}
+            className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md py-2 px-4 rounded-md " + `${priceStandard == "currentMinPrice" ? "dark:bg-bgdark bg-blue-400 text-white" : ""}`}>
+            현재 최저가
+          </button>
+          <button
+            onClick={() => setPriceStandard("ydayAvgPrice")}
+            className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md py-2 px-4 rounded-md " + `${priceStandard == "ydayAvgPrice" ? "dark:bg-bgdark bg-blue-400 text-white" : ""}`}>
+            전날 평균가
+          </button>
+          <span className="mr-2 font-bold flex justify-end items-center">생활재료</span>
+          <button onClick={() => setConvert("convert")} className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md py-2 px-4 rounded-md " + `${convert == "convert" ? "dark:bg-bgdark bg-blue-400 text-white" : ""}`}>
+            변환 시세
+          </button>
+          <button onClick={() => setConvert("default")} className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md py-2 px-4 rounded-md " + `${convert == "default" ? "dark:bg-bgdark bg-blue-400 text-white" : ""}`}>
+            기본 시세
+          </button>
+          <span className="mr-2 font-bold flex justify-end items-center">정렬기준</span>
+          <button
+            onClick={() => setSort("craftSellPrice")}
+            className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md  py-2 px-4 rounded-md " + `${sort == "craftSellPrice" ? "dark:bg-bgdark bg-blue-400 text-white" : ""}`}>
+            판매차익
+          </button>
+          <button
+            onClick={() => setSort("craftCostMargin")}
+            className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md py-2 px-4 rounded-md " + `${sort == "craftCostMargin" ? "dark:bg-bgdark bg-blue-400 text-white" : ""}`}>
+            원가이익률
+          </button>
+          <span className="mr-2 font-bold flex justify-end items-center">영지효과</span>
+          <button onClick={() => setCraftModalOpen(true)} className="col-span-2 transition-all bg-blue-400 dark:bg-bgdark font-bold text-white dark:text-gray-200 hover:bg-blue-500 dark:hover:bg-hoverdark shadow-md text-nowrap py-2 px-3 flex items-center justify-center rounded-md ">
             영지효과
           </button>
         </div>
 
         {/* 제작품 목록 */}
         <div className="max-w-[1200px] p-4 content-box text-center flex flex-col  justify-center flex-wrap">
-          <div className="grid md:grid-cols-[3fr_1fr_1fr_1fr_1fr_0.5fr_0.5fr] grid-cols-7 gap-4 py-2 px-4">
+          <div className="grid md:grid-cols-[3fr_1fr_1fr_1fr_1fr_0.5fr_0.5fr] sm:grid-cols-7 grid-cols-[auto_auto_auto_auto_auto_auto] gap-4 py-2 px-4 text-nowrap">
             <span>제작법</span>
-            {priceStandard === "currentMinPrice" ? <span>현재 최저가</span> : <span>전날 평균가</span>}
+            {priceStandard === "currentMinPrice" ? <span className="flex justify-end items-center">현재 최저가</span> : <span className="flex justify-end items-center">전날 평균가</span>}
             {/* <span>최저가</span> */}
-            <span>제작비용</span>
-            <span>판매차익</span>
-            <span>원가이익률</span>
+            <span className="sm:flex hidden justify-end items-center">제작비용</span>
+            <span className={`flex justify-end items-center ${sort === "craftSellPrice" ? "text-green-400" : null}`}>판매차익</span>
+            <span className={`flex justify-end items-center ${sort === "craftCostMargin" ? "text-green-400" : null}`}>원가이익률</span>
             <span>사용</span>
             <span>판매</span>
           </div>
@@ -425,9 +516,12 @@ function Craft() {
             if (categoryMenu.reduce((a, v) => (v == false ? a + 1 : a), 0) === 8) null;
             else if (!categoryMenu[craft.category]) return null;
             return (
-              <div onClick={() => navigate(`/craft/${craft.id}`)} className="cursor-pointer hover:bg-hover dark:hover:bg-gray-700 transition-all grid md:grid-cols-[3fr_1fr_1fr_1fr_1fr_0.5fr_0.5fr] grid-cols-7 gap-4 border-t border-solid border-bddark py-2 px-4" key={craft.id}>
+              <div
+                onClick={() => navigate(`/craft/${craft.id}`)}
+                className="cursor-pointer hover:bg-hover dark:hover:bg-gray-700 transition-all grid md:grid-cols-[3fr_1fr_1fr_1fr_1fr_0.5fr_0.5fr] sm:grid-cols-7 grid-cols-[auto_auto_auto_auto_auto_auto] gap-4 border-t border-solid border-bddark py-2 px-4"
+                key={craft.id}>
                 {/* 이미지 및 제작 이름  */}
-                <div className=" flex justify-start items-center gap-4">
+                <div className=" flex md:justify-start justify-center items-center gap-4">
                   <div className="relative">
                     <img src={craft.iconLink} alt={craft.craftName} className={"w-10 h-10 " + `${grade[craft.grade]}`} />
                     <div className="text-xs font-semibold absolute right-[0.125rem] bottom-0 text-white">{craft.craftQuantity}</div>
@@ -435,15 +529,36 @@ function Craft() {
                   <span className="text-sm font-semibold md:block hidden">{craft.craftName}</span>
                 </div>
                 {/* 최저가 */}
-                {priceStandard === "currentMinPrice" ? <span className="flex items-center justify-center text-center text-sm font-semibold">{craft.currentMinPrice}</span> : <span className="flex items-center justify-center text-center text-sm font-semibold">{Math.round(craft.ydayAvgPrice)}</span>}
-                {/* 제작비용 */}
-                <span className="flex items-center justify-center text-center text-sm font-semibold">{craft.craftPriceAll}</span>
+                <div className="gap-2 flex items-center justify-end text-center text-sm font-semibold">
+                  <div>{priceStandard === "currentMinPrice" ? craft.currentMinPrice : Math.round(craft.ydayAvgPrice)}</div>
+                  <img className="w-5 h-5" src="/itemIcon/gold.webp" alt="gold" />
+                </div>
+
+                <div className="sm:flex hidden gap-2 items-center justify-end text-center text-sm font-semibold">
+                  <div>{craft?.craft?.craftPriceAll}</div>
+                  <img className="w-5 h-5" src="/itemIcon/gold.webp" alt="gold" />
+                </div>
+
                 {/* 판매 차익 */}
-                <span className="flex items-center justify-center text-sm font-semibold">{craft.craftSellPrice}</span>
+                <span className={"flex gap-2 items-center justify-end text-sm font-semibold " + `${sort === "craftSellPrice" ? "text-green-400" : null}`}>
+                  {convert === "default" ? <div>{priceStandard === "currentMinPrice" ? craft?.craft.craftSellPrice : craft?.ydayCraft.ydayCraftSellPrice}</div> : <div>{priceStandard === "currentMinPrice" ? craft?.convert?.convertCraftSellPrice : craft?.ydayConvert?.ydayConvertCraftSellPrice}</div>}
+                  <img className="w-5 h-5" src="/itemIcon/gold.webp" alt="gold" />
+                </span>
                 {/* 원가이익률(%) */}
-                <span className="flex items-center justify-center text-sm font-semibold">{craft.craftCostMargin}%</span>
-                {craft.currentMinPrice * craft.craftQuantity - craft.craftPriceAll > 0 ? <span className={"flex items-center justify-center text-green-400  text-sm font-semibold"}>이득</span> : <span className={"flex items-center justify-center text-blue-400 text-sm font-semibold"}>손해</span>}
-                {craft.craftSellPrice > 0 ? <span className={"flex items-center justify-center text-green-400 text-sm font-semibold"}>이득</span> : <span className={"flex items-center justify-center text-blue-400 text-sm font-semibold"}>손해</span>}
+                <span className={"gap-1 flex items-center justify-end text-sm font-semibold " + `${sort === "craftCostMargin" ? "text-green-400" : null}`}>
+                  {convert === "default" ? (
+                    <div className="">{priceStandard === "currentMinPrice" ? craft?.craft.craftCostMargin : craft?.ydayCraft.ydayCraftCostMargin}</div>
+                  ) : (
+                    <div className="">{priceStandard === "currentMinPrice" ? craft?.convert?.convertCraftCostMargin : craft?.ydayConvert?.ydayConvertCraftCostMargin}</div>
+                  )}
+                  <div>%</div>
+                </span>
+                {craft.currentMinPrice * craft.craftQuantity - craft?.craft?.craftPriceAll > 0 ? (
+                  <span className={"flex items-center justify-center text-red-400  text-sm font-semibold"}>이득</span>
+                ) : (
+                  <span className={"flex items-center justify-center text-blue-400 text-sm font-semibold"}>손해</span>
+                )}
+                {craft?.craft?.craftSellPrice > 0 ? <span className={"flex items-center justify-center text-red-400 text-sm font-semibold"}>이득</span> : <span className={"flex items-center justify-center text-blue-400 text-sm font-semibold"}>손해</span>}
               </div>
             );
           })}
@@ -491,4 +606,4 @@ function Craft() {
   );
 }
 
-export default Craft;
+export default CraftTest;

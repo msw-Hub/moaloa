@@ -10,7 +10,6 @@ import { setApiKey } from "./store/apiKey";
 import { useState } from "react";
 import Auction from "./Router/auction/auction";
 import { AlertText } from "./hooks/useAlert";
-import CraftTest from "./Router/craft/CraftTest";
 
 function App() {
   const navigate = useNavigate();
@@ -131,7 +130,6 @@ function App() {
           <Route path="/craft/:id" element={<CraftDetail></CraftDetail>}></Route>
           {/*경매 계산 페이지*/}
           <Route path="/auction" element={<Auction></Auction>}></Route>
-          <Route path="/test" element={<CraftTest></CraftTest>}></Route>
         </Routes>
         <footer className="font-semibold flex flex-col justify-center items-center py-6">
           <div>@2024 moaloa All rights reserved</div>

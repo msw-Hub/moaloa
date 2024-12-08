@@ -134,25 +134,27 @@ function CraftDetail() {
     "부드러운 목재": 1,
     "튼튼한 목재": 2,
     "아비도스 목재": 3,
+    "신속 로브": 0,
+    "진군의 깃발": 1,
+    "만능 물약": 0,
+    "성스러운 부적": 1,
+    신호탄: 2,
+    "점토 수류탄": 0,
+    "화염 수류탄": 1,
+    "암흑 수류탄": 2,
+    "회오리 수류탄": 3,
+    "파괴 수류탄": 4,
+    "부식 수류탄": 5,
+    "수면 폭탄": 6,
+    "성스러운 폭탄": 7,
+    "정령의 회복약": 0,
   };
 
   const getCraftDetail = async (id: number) => {
     return axios
       .get(`/api/v1/craft/readData?craftItemId=${id}`)
       .then((res) => {
-        setTime(res.data.갱신시간);
-        return res.data.제작아이템;
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
-  const getMaterialList = async () => {
-    return axios
-      .get("/api/v1/craft/readLifeData")
-      .then((res) => {
-        return res.data.생활재료시세;
+        return res.data;
       })
       .catch((err) => {
         console.error(err);
@@ -160,10 +162,11 @@ function CraftDetail() {
   };
 
   const api = () => {
-    Promise.all([getCraftDetail(Number(id)), getMaterialList()]).then((res) => {
+    Promise.all([getCraftDetail(Number(id))]).then((res) => {
       console.log(res);
-      setCraftDetail(res[0]);
-      setMaterialList(materialConversion(res[1]));
+      setTime(res[0].갱신시간);
+      setCraftDetail(res[0].제작아이템);
+      setMaterialList(materialConversion(res[0].제작재료시세));
     });
   };
 
@@ -319,7 +322,7 @@ function CraftDetail() {
 
     //전날 시세 판매 차익 및 원가이익률 계산
     const ydayCraftSellPrice = Math.ceil((craftItem.craftQuantity * (ydaySellPrice / craftItem.bundleCount) - craftPriceAll) * 100) / 100;
-    const ydayCraftCostMargin = Math.round((ydayCraftSellPrice / (craftItem.ydayAvgPrice * craftItem.craftQuantity - ydayCraftSellPrice)) * 10000) / 100;
+    const ydayCraftCostMargin = Math.round((ydayCraftSellPrice / (Math.ceil(craftItem.ydayAvgPrice) * craftItem.craftQuantity - ydayCraftSellPrice)) * 10000) / 100;
 
     //변환 시세 판매 차익 및 원가이익률 계산
     const convertCraftSellPrice = Math.ceil((craftItem.craftQuantity * (defaultSellPrice / craftItem.bundleCount) - convertCraftPriceAll) * 100) / 100;
@@ -327,7 +330,7 @@ function CraftDetail() {
     //기본 재료
 
     const ydayConvertCraftSellPrice = Math.ceil((craftItem.craftQuantity * (ydaySellPrice / craftItem.bundleCount) - convertCraftPriceAll) * 100) / 100;
-    const ydayConvertCraftCostMargin = Math.round((ydayConvertCraftSellPrice / (craftItem.ydayAvgPrice * craftItem.craftQuantity - ydayConvertCraftSellPrice)) * 10000) / 100;
+    const ydayConvertCraftCostMargin = Math.round((ydayConvertCraftSellPrice / (Math.ceil(craftItem.ydayAvgPrice) * craftItem.craftQuantity - ydayConvertCraftSellPrice)) * 10000) / 100;
 
     setCraftDetail({
       ...craftItem,
@@ -374,6 +377,21 @@ function CraftDetail() {
     고대: "textColor7",
   };
 
+  const craftTimeInSeconds = (craftTime: number) => {
+    if (!craftDetail) return;
+    const totalSeconds = Math.floor(craftTime * (1 - 0.01 * (craftEffect["제작시간 감소"][0] + craftEffect["제작시간 감소"][craftDetail.category])));
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    if (minutes > 0 && seconds > 0) {
+      return `${minutes}분 ${seconds}초`;
+    } else if (minutes > 0) {
+      return `${minutes}분`;
+    } else {
+      return `${seconds}초`;
+    }
+  };
+
   return (
     craftDetail && (
       <div className="p-6 flex flex-col gap-6 md:min-w-[800px]">
@@ -386,19 +404,23 @@ function CraftDetail() {
         <div className="content-box py-3 grid md:grid-cols-2 grid-cols-1 gap-2">
           <div className="flex justify-center items-center gap-2">
             <span className="mr-2 font-bold">판매시세</span>
-            <button onClick={() => setPriceStandard("currentMinPrice")} className={"btn font-medium py-2 px-4 rounded-md " + `${priceStandard == "currentMinPrice" ? "bg-[#e3e3e3] dark:bg-bgdark dark:text-white" : ""}`}>
+            <button
+              onClick={() => setPriceStandard("currentMinPrice")}
+              className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md py-2 px-4 rounded-md " + `${priceStandard == "currentMinPrice" ? "dark:bg-bgdark bg-blue-400 text-white" : ""}`}>
               현재 최저가
             </button>
-            <button onClick={() => setPriceStandard("ydayAvgPrice")} className={"btn font-medium py-2 px-4 rounded-md " + `${priceStandard == "ydayAvgPrice" ? "bg-[#e3e3e3] dark:bg-bgdark dark:text-white" : ""}`}>
-              전날 평균 가격
+            <button
+              onClick={() => setPriceStandard("ydayAvgPrice")}
+              className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md py-2 px-4 rounded-md " + `${priceStandard == "ydayAvgPrice" ? "dark:bg-bgdark bg-blue-400 text-white" : ""}`}>
+              전날 평균가
             </button>
           </div>
           <div className="flex justify-center items-center gap-2">
             <span className="mr-2 font-bold">생활재료</span>
-            <button onClick={() => setConvert("convert")} className={"btn font-medium py-2 px-4 rounded-md " + `${convert == "convert" ? "bg-[#e3e3e3] dark:bg-bgdark dark:text-white" : ""}`}>
+            <button onClick={() => setConvert("convert")} className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md py-2 px-4 rounded-md " + `${convert == "convert" ? "dark:bg-bgdark bg-blue-400 text-white" : ""}`}>
               변환 시세
             </button>
-            <button onClick={() => setConvert("default")} className={"btn font-medium py-2 px-4 rounded-md " + `${convert == "default" ? "bg-[#e3e3e3] dark:bg-bgdark dark:text-white" : ""}`}>
+            <button onClick={() => setConvert("default")} className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md py-2 px-4 rounded-md " + `${convert == "default" ? "dark:bg-bgdark bg-blue-400 text-white" : ""}`}>
               기본 시세
             </button>
           </div>
@@ -415,11 +437,11 @@ function CraftDetail() {
               </div>
               <div className="flex justify-between items-center">
                 <div>활동력</div>
-                <div>{craftDetail.activityPrice}</div>
+                <div>{Math.floor(craftDetail.activityPrice * (1 - 0.01 * (craftEffect["활동력 감소"][0] + craftEffect["활동력 감소"][craftDetail.category])))}</div>
               </div>
               <div className="flex justify-between items-center">
                 <div>제작시간</div>
-                <div>{craftDetail.craftTime} 초</div>
+                <div>{craftTimeInSeconds(craftDetail.craftTime)}</div>
               </div>
               <div className="flex justify-between items-center">
                 <div>경험치</div>
@@ -439,7 +461,7 @@ function CraftDetail() {
           <div className="p-4 content-box">
             <div className="flex justify-between items-center mb-4">
               <h2 className="font-bold text-lg text-balance h-9">판매 정보</h2>
-              <button onClick={() => setCraftModalOpen(true)} className="text-balance py-1 px-4 font-semibold col-start-6 btn flex items-center justify-center border border-solid border-bddark rounded-md">
+              <button onClick={() => setCraftModalOpen(true)} className="transition-all bg-blue-400 dark:bg-bgdark font-bold text-white dark:text-gray-200 hover:bg-blue-500 dark:hover:bg-hoverdark shadow-md text-nowrap py-2 px-3 flex items-center justify-center rounded-md ">
                 영지효과
               </button>
             </div>
@@ -509,7 +531,7 @@ function CraftDetail() {
           {/*채광 벌목만 일반등급중 currentMinPrice가 있으면 변환 */}
           <div className="p-4 content-box font-medium md:col-span-1 col-span-2">
             <h2 className="font-bold text-lg mb-4">생활재료 교환 정보</h2>
-            <div className="grid grid-cols-[1fr_0.3fr_1fr] gap-2">
+            <div className="grid grid-cols-[auto_0.3fr_auto] gap-5">
               {craftDetail.craftMaterials
                 .sort((a, b) => a.id - b.id)
                 .map((material, index) => {
@@ -598,13 +620,17 @@ function CraftDetail() {
           <div className="p-4 content-box md:col-span-1 col-span-2">
             <h2 className="font-bold text-lg mb-4">재료 가격 수정</h2>
             <div className="flex flex-col font-semibold">
+              <h2 className="font-bold text-lg my-4 order-1">교환 재료 가격 수정</h2>
               {craftDetail.craftMaterials
                 .sort((a, b) => a.id - b.id)
                 .map((material) => (
                   <React.Fragment key={material.id}>
                     <div className="flex justify-between items-center mb-2">
                       <div className="flex justify-center items-center gap-2">
-                        <img src={material.iconLink} alt={material.marketName} className={"w-10 h-10 " + `${grade[material.grade]}`} />
+                        <div className="relative">
+                          <img src={material.iconLink} alt={material.marketName} className={"w-10 h-10 " + `${grade[material.grade]}`} />
+                          <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{material.bundleCount}</span>
+                        </div>
                         <span className={textColors[material.grade]}>{material.marketName}</span>
                       </div>
                       {materialList && (
@@ -623,9 +649,32 @@ function CraftDetail() {
                       )}
                     </div>
                     {
-                      // marketName이 목재, 철광석이면 변환재료도 같이 표시
-                      material.marketName === "목재" && materialList && (
-                        <div className="flex justify-between items-center mb-2 order-2">
+                      // marketName이 목재이면 부드러운목재 추가 단 이미 부드러운목재가 있으면 추가하지 않음
+                      material.marketName === "목재" && materialList && !craftDetail.craftMaterials.find((a) => a.marketName === "부드러운 목재") && (
+                        <div className="flex justify-between items-center mb-2 order-3">
+                          <div className="flex justify-center items-center gap-2">
+                            <img src={itemIcon["부드러운 목재"]} alt={"부드러운 목재"} className={"w-10 h-10 " + `${grade["고급"]}`} />
+                            <span className={textColors["고급"]}>부드러운 목재</span>
+                          </div>
+                          <input
+                            onFocus={(e) => {
+                              setTimeout(() => {
+                                const length = e.target.value.length;
+                                e.target.setSelectionRange(length, length);
+                              }, 0);
+                            }}
+                            onChange={(e) => onMaterialPriceChange(e, materialList[90300][1].marketId, 90300)}
+                            defaultValue={materialList[90300][1].currentMinPrice}
+                            className="content-box w-24 text-right p-2 border-solid border border-bddark"
+                            type="text"
+                          />
+                        </div>
+                      )
+                    }
+                    {
+                      // marketName이 목재 이면 튼튼한목재 추가 단 이미 튼튼한목재가 있으면 추가하지 않음
+                      material.marketName === "목재" && materialList && !craftDetail.craftMaterials.find((a) => a.marketName === "튼튼한 목재") && (
+                        <div className="flex justify-between items-center mb-2 order-3">
                           <div className="flex justify-center items-center gap-2">
                             <img src={itemIcon["튼튼한 목재"]} alt={"튼튼한 목재"} className={"w-10 h-10 " + `${grade["희귀"]}`} />
                             <span className={textColors["희귀"]}>튼튼한 목재</span>
@@ -646,8 +695,31 @@ function CraftDetail() {
                       )
                     }
                     {
-                      // marketName이 목재, 철광석이면 변환재료도 같이 표시
-                      material.marketName === "철광석" && materialList && (
+                      // marketName이 철광석이면 묵직한 철광석 추가 단 이미 묵직한 철광석이 있으면 추가하지 않음
+                      material.marketName === "철광석" && materialList && !craftDetail.craftMaterials.find((a) => a.marketName === "묵직한 철광석") && (
+                        <div className="flex justify-between items-center mb-2 order-2">
+                          <div className="flex justify-center items-center gap-2">
+                            <img src={itemIcon["묵직한 철광석"]} alt={"묵직한 철광석"} className={"w-10 h-10 " + `${grade["고급"]}`} />
+                            <span className={textColors["고급"]}>묵직한 철광석</span>
+                          </div>
+                          <input
+                            onFocus={(e) => {
+                              setTimeout(() => {
+                                const length = e.target.value.length;
+                                e.target.setSelectionRange(length, length);
+                              }, 0);
+                            }}
+                            onChange={(e) => onMaterialPriceChange(e, materialList[90400][1].marketId, 90400)}
+                            defaultValue={materialList[90400][1].currentMinPrice}
+                            className="content-box w-24 text-right p-2 border-solid border border-bddark"
+                            type="text"
+                          />
+                        </div>
+                      )
+                    }
+                    {
+                      // marketName이 철광석이면 단단한 철광석 추가 단 이미 단단한 철광석이 있으면 추가하지 않음
+                      material.marketName === "철광석" && materialList && !craftDetail.craftMaterials.find((a) => a.marketName === "단단한 철광석") && (
                         <div className="flex justify-between items-center mb-2 order-2">
                           <div className="flex justify-center items-center gap-2">
                             <img src={itemIcon["단단한 철광석"]} alt={"단단한 철광석"} className={"w-10 h-10 " + `${grade["희귀"]}`} />
@@ -682,7 +754,7 @@ function CraftDetail() {
             <span className="text-sm text-zinc-400">수수료 감소율 : {craftEffect["제작수수료 감소"][0] + craftEffect["제작수수료 감소"][craftDetail.category]}%</span>
           </div>
           <div>
-            <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-4 text-center font-bold mb-2">
+            <div className="grid sm:grid-cols-[2fr_1fr_1fr_1fr_1fr] grid-cols-[1fr_1fr_1fr_1fr_2fr] gap-4 text-center font-bold mb-2">
               <div className="flex justify-start items-center">재료</div>
               <div className="flex justify-end items-center">단위</div>
               <div className="flex justify-end items-center">시세</div>
@@ -695,13 +767,13 @@ function CraftDetail() {
                 .map((material) => {
                   if (!materialList) return null;
                   return (
-                    <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-4 border-t border-solid border-bddark py-1 px-2" key={material.id}>
+                    <div className="grid sm:grid-cols-[2fr_1fr_1fr_1fr_1fr] grid-cols-[1fr_1fr_1fr_1fr_2fr] gap-4 border-t border-solid border-bddark py-1 px-2" key={material.id}>
                       <div className="flex items-center gap-2">
                         <div className="relative">
                           <img src={material.iconLink} alt={material.marketName} className={"w-10 h-10 " + `${grade[material.grade]}`} />
                           <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{material.quantity}</span>
                         </div>
-                        <span className={textColors[material.grade]}>{material.marketName}</span>
+                        <span className={textColors[material.grade] + " sm:block hidden"}>{material.marketName}</span>
                       </div>
                       {/* <input defaultValue={material.currentMinPrice} className="bg-light dark:bg-bgdark dark:border-bddark border-bddark rounded-md p-2" type="text" /> */}
                       <div className="flex justify-end items-center">{material.bundleCount} 개</div>
@@ -741,13 +813,13 @@ function CraftDetail() {
                     </div>
                   );
                 })}
-              <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-4 border-t border-solid border-bddark py-1 px-2">
+              <div className="grid sm:grid-cols-[2fr_1fr_1fr_1fr_1fr] grid-cols-[1fr_1fr_1fr_1fr_2fr] gap-4 border-t border-solid border-bddark py-1 px-2">
                 <div className="flex items-center">
                   <div className="relative">
                     <img src={itemIcon.골드} alt={"골드"} className={"w-10 h-10 " + `${grade["일반"]}`} />
                     <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{craftDetail.craftPrice}</span>
                   </div>
-                  <span className="ml-2">골드</span>
+                  <span className="ml-2 sm:block hidden">골드</span>
                 </div>
                 <div className="flex justify-end items-center">1 개</div>
                 <div className="flex justify-end items-center gap-1">
