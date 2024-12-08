@@ -15,6 +15,7 @@ import moaloa.store.back_end.craft.Repositoy.CraftMaterialRepository;
 import moaloa.store.back_end.craft.Repositoy.CraftRecipeRepository;
 import moaloa.store.back_end.exception.custom.CraftApiGetException;
 import moaloa.store.back_end.exception.custom.CraftDataException;
+import moaloa.store.back_end.exception.custom.RenewTradeCountException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -167,7 +168,8 @@ public class CraftService {
                         log.info("제작 재료에 해당되는 아이템입니다");
                         CraftMaterialEntity craftMaterialEntity = craftMaterialRepository.findByMarketId(marketId);
                         if (craftMaterialEntity == null) {
-                            throw new CraftDataException("DB에 존재하지 않는 아이템입니다");
+                            log.warn("재료 아이템을 찾는 과정에서 DB에 존재하지 않는 아이템입니다 해당 아이템을 확인해 주시기 바랍니다. : {}", item);
+                            continue;
                         }
                         craftMaterialEntity.setCurrentMinPrice(currentMinPrice);
                         craftMaterialEntity.setRecentPrice(recentPrice);
@@ -179,7 +181,8 @@ public class CraftService {
                         log.info("제작 아이템에 해당되는 아이템입니다");
                         List<CraftItemEntity> craftItemEntities = craftItemRepository.findAllByMarketId(marketId);
                         if (craftItemEntities.isEmpty()) {
-                            throw new CraftDataException("DB에 존재하지 않는 아이템입니다");
+                            log.warn("제작 아이템을 찾는 과정에서 DB에 존재하지 않는 아이템입니다 해당 아이템을 확인해 주시기 바랍니다. : {}", item);
+                            continue;
                         } //같은 이름의 아이템이 여러개일 수 있음 - 한번에 다 바꾸기
                         for (CraftItemEntity craftItemEntity : craftItemEntities) {
                             craftItemEntity.setCurrentMinPrice(currentMinPrice);
@@ -195,10 +198,10 @@ public class CraftService {
             }
         } catch (JSONException e) {
             log.error("JSON 파싱 중 오류가 발생했습니다: {}", responseString, e);
-            throw new CraftDataException("JSON 데이터를 객체로 변환 중 오류가 발생했습니다");
+            throw new CraftDataException("JSON 데이터를 객체로 변환 중 오류가 발생했습니다. api 키 횟수의 문제가 있을 수 있습니다.");
         } catch (Exception e) {
-            log.error("JSON 데이터를 객체로 변환 중 오류가 발생했습니다", e);
-            throw new CraftDataException("JSON 데이터를 객체로 변환 중 오류가 발생했습니다");
+            log.error("데이터 베이스 업데이트 중 오류가 발생했습니다", e);
+            throw new CraftDataException("데이터 베이스 업데이트 중 오류가 발생했습니다");
         }
     }
 
@@ -398,9 +401,12 @@ public class CraftService {
                             }
                         }
                     }
+                }else {
+                    log.warn("해당 아이템에 대한 데이터가 존재하지 않습니다: {}", craftItemEntity);
                 }
             } catch (Exception e) {
-                log.error("Error processing item ID: {}", craftItemEntity.getMarketId(), e);
+                log.error("거래량 갱신 중 오류가 발생했습니다 {}", craftItemEntity);
+                throw new RenewTradeCountException("거래량 갱신 중 오류가 발생했습니다");
             } finally {
                 if (conn != null) {
                     conn.disconnect();

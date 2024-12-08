@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import moaloa.store.back_end.exception.custom.GemDataException;
+import moaloa.store.back_end.exception.custom.GemPriceApiException;
 import moaloa.store.back_end.exception.custom.UserNotFoundException;
 import moaloa.store.back_end.exception.custom.GemApiGetException;
 import moaloa.store.back_end.gemSearch.crawling.CrawlingEntity;
@@ -139,9 +140,6 @@ public class GemApiService {
                                     gemType = "작";
                                 } else if (description.contains("피해")||description.contains("지원")) {
                                     gemType = "겁";
-                                } else {
-                                    log.error("Unknown gem type: {}", description);
-                                    throw new GemApiGetException("알 수 없는 종류의 보석입니다" + description);
                                 }
 
                                 GemApiEntity gemApiEntity = gemApiRepository.findByCharacterClassNameAndSkillNameAndGemTypeAndEngraveType(characterClassName, skillName, gemType, engraveName);
@@ -192,6 +190,7 @@ public class GemApiService {
 
         try {
             for (String gemName : gemCategory) {
+                log.info("현재 요청중인 보석 이름: {}", gemName);
                 HttpURLConnection conn = (HttpURLConnection) new URL(reqURL).openConnection();
                 conn.setRequestMethod("POST");
                 conn.setRequestProperty("Authorization", "bearer " + craftApi[1]);
@@ -232,7 +231,7 @@ public class GemApiService {
             String jsonResult = objectMapper.writeValueAsString(gemPriceEntities);
             saveJsonToFile(jsonResult);
         } catch (IOException e) {
-            throw new GemApiGetException("로아 api 요청으로 보석 시세를 가져오는 중 오류가 발생했습니다");
+            throw new GemPriceApiException("로아 api 요청으로 보석 시세를 가져오는 중 오류가 발생했습니다");
         }
     }
 
@@ -259,7 +258,7 @@ public class GemApiService {
                 newGemPriceEntity.setBuyPrice(buyPrice);
                 gemPriceRepository.save(newGemPriceEntity);
             }
-        } else throw new GemApiGetException("로아 api 요청은 정상 처리되었으나, 보석 데이터가 없습니다.");
+        } else throw new GemPriceApiException("로아 api 요청은 정상 처리되었으나, 보석 데이터가 없습니다.");
     }
 
     private String createJsonInputString(String gemName) {

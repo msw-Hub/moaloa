@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import moaloa.store.back_end.exception.custom.GemAggregationException;
 import moaloa.store.back_end.exception.custom.GemDataException;
 import moaloa.store.back_end.gemSearch.gemApi.GemApiEntity;
 import moaloa.store.back_end.gemSearch.gemApi.GemApiRepository;
@@ -246,63 +247,63 @@ public class GemDataService {
         List<GemApiEntity> gems = gemApiRepository.findAll();
         // gems가 비었을 경우 예외 발생
         if (gems.isEmpty()) {
-            throw new GemDataException("데이터베이스에 보석 정보가 없어서 집계를 내릴 수 없습니다");
+            throw new GemAggregationException("데이터베이스에 보석 정보가 없어서 집계를 내릴 수 없습니다");
         }
         //getActualUserCountMap()에 임의 값 설정
         //나중에 삭제 되어야함
         // 집계 결과에서 각인 이름과 카운트를 업데이트
-        engraveCountCache.updateActualUserCount("오의강화", 40);
-        engraveCountCache.updateActualUserCount("갈증", 40);
-        engraveCountCache.updateActualUserCount("넘치는교감", 39);
-        engraveCountCache.updateActualUserCount("이슬비", 44);
-        engraveCountCache.updateActualUserCount("포식자", 38);
-        engraveCountCache.updateActualUserCount("일격필살", 38);
-        engraveCountCache.updateActualUserCount("절제", 42);
-        engraveCountCache.updateActualUserCount("역천지체", 42);
-        engraveCountCache.updateActualUserCount("절정", 40);
-        engraveCountCache.updateActualUserCount("멈출수없는충동", 24);
-        engraveCountCache.updateActualUserCount("심판자", 44);
-        engraveCountCache.updateActualUserCount("환류", 36);
-        engraveCountCache.updateActualUserCount("전투태세", 35);
-        engraveCountCache.updateActualUserCount("사냥의시간", 45);
-        engraveCountCache.updateActualUserCount("광기", 41);
-        engraveCountCache.updateActualUserCount("회귀", 38);
-        engraveCountCache.updateActualUserCount("포격강화", 37);
-        engraveCountCache.updateActualUserCount("분노의망치", 44);
-        engraveCountCache.updateActualUserCount("상급소환사", 44);
-        engraveCountCache.updateActualUserCount("핸드거너", 42);
-        engraveCountCache.updateActualUserCount("아르데타인의기술", 43);
-        engraveCountCache.updateActualUserCount("완벽한억제", 38);
-        engraveCountCache.updateActualUserCount("광전사의비기", 38);
-        engraveCountCache.updateActualUserCount("축복의오라", 36);
-        engraveCountCache.updateActualUserCount("수라의길", 40);
-        engraveCountCache.updateActualUserCount("버스트", 39);
-        engraveCountCache.updateActualUserCount("화력강화", 43);
-        engraveCountCache.updateActualUserCount("만월의집행자", 44);
-        engraveCountCache.updateActualUserCount("만개", 37);
-        engraveCountCache.updateActualUserCount("황후의은총", 36);
-        engraveCountCache.updateActualUserCount("권왕파천무", 41);
-        engraveCountCache.updateActualUserCount("세맥타통", 37);
-        engraveCountCache.updateActualUserCount("그믐의경계", 46);
-        engraveCountCache.updateActualUserCount("황제의칙령", 38);
-        engraveCountCache.updateActualUserCount("달의소리", 40);
-        engraveCountCache.updateActualUserCount("처단자", 42);
-        engraveCountCache.updateActualUserCount("오의난무", 41);
-        engraveCountCache.updateActualUserCount("점화", 38);
-        engraveCountCache.updateActualUserCount("고독한기사", 37);
-        engraveCountCache.updateActualUserCount("잔재된기운", 39);
-        engraveCountCache.updateActualUserCount("진화의유산", 27);
-        engraveCountCache.updateActualUserCount("강화무기", 42);
-        engraveCountCache.updateActualUserCount("중력수련", 32);
-        engraveCountCache.updateActualUserCount("체술", 42);
-        engraveCountCache.updateActualUserCount("피스메이커", 42);
-        engraveCountCache.updateActualUserCount("충격단련", 38);
-        engraveCountCache.updateActualUserCount("죽음의습격", 44);
-        engraveCountCache.updateActualUserCount("초심", 40);
-        engraveCountCache.updateActualUserCount("두번째동료", 37);
-        engraveCountCache.updateActualUserCount("진실된용맹", 33);
-        engraveCountCache.updateActualUserCount("질풍술사", 38);
-        engraveCountCache.updateActualUserCount("절실한구원", 33);
+//        engraveCountCache.updateActualUserCount("오의강화", 40);
+//        engraveCountCache.updateActualUserCount("갈증", 40);
+//        engraveCountCache.updateActualUserCount("넘치는교감", 39);
+//        engraveCountCache.updateActualUserCount("이슬비", 44);
+//        engraveCountCache.updateActualUserCount("포식자", 38);
+//        engraveCountCache.updateActualUserCount("일격필살", 38);
+//        engraveCountCache.updateActualUserCount("절제", 42);
+//        engraveCountCache.updateActualUserCount("역천지체", 42);
+//        engraveCountCache.updateActualUserCount("절정", 40);
+//        engraveCountCache.updateActualUserCount("멈출수없는충동", 24);
+//        engraveCountCache.updateActualUserCount("심판자", 44);
+//        engraveCountCache.updateActualUserCount("환류", 36);
+//        engraveCountCache.updateActualUserCount("전투태세", 35);
+//        engraveCountCache.updateActualUserCount("사냥의시간", 45);
+//        engraveCountCache.updateActualUserCount("광기", 41);
+//        engraveCountCache.updateActualUserCount("회귀", 38);
+//        engraveCountCache.updateActualUserCount("포격강화", 37);
+//        engraveCountCache.updateActualUserCount("분노의망치", 44);
+//        engraveCountCache.updateActualUserCount("상급소환사", 44);
+//        engraveCountCache.updateActualUserCount("핸드거너", 42);
+//        engraveCountCache.updateActualUserCount("아르데타인의기술", 43);
+//        engraveCountCache.updateActualUserCount("완벽한억제", 38);
+//        engraveCountCache.updateActualUserCount("광전사의비기", 38);
+//        engraveCountCache.updateActualUserCount("축복의오라", 36);
+//        engraveCountCache.updateActualUserCount("수라의길", 40);
+//        engraveCountCache.updateActualUserCount("버스트", 39);
+//        engraveCountCache.updateActualUserCount("화력강화", 43);
+//        engraveCountCache.updateActualUserCount("만월의집행자", 44);
+//        engraveCountCache.updateActualUserCount("만개", 37);
+//        engraveCountCache.updateActualUserCount("황후의은총", 36);
+//        engraveCountCache.updateActualUserCount("권왕파천무", 41);
+//        engraveCountCache.updateActualUserCount("세맥타통", 37);
+//        engraveCountCache.updateActualUserCount("그믐의경계", 46);
+//        engraveCountCache.updateActualUserCount("황제의칙령", 38);
+//        engraveCountCache.updateActualUserCount("달의소리", 40);
+//        engraveCountCache.updateActualUserCount("처단자", 42);
+//        engraveCountCache.updateActualUserCount("오의난무", 41);
+//        engraveCountCache.updateActualUserCount("점화", 38);
+//        engraveCountCache.updateActualUserCount("고독한기사", 37);
+//        engraveCountCache.updateActualUserCount("잔재된기운", 39);
+//        engraveCountCache.updateActualUserCount("진화의유산", 27);
+//        engraveCountCache.updateActualUserCount("강화무기", 42);
+//        engraveCountCache.updateActualUserCount("중력수련", 32);
+//        engraveCountCache.updateActualUserCount("체술", 42);
+//        engraveCountCache.updateActualUserCount("피스메이커", 42);
+//        engraveCountCache.updateActualUserCount("충격단련", 38);
+//        engraveCountCache.updateActualUserCount("죽음의습격", 44);
+//        engraveCountCache.updateActualUserCount("초심", 40);
+//        engraveCountCache.updateActualUserCount("두번째동료", 37);
+//        engraveCountCache.updateActualUserCount("진실된용맹", 33);
+//        engraveCountCache.updateActualUserCount("질풍술사", 38);
+//        engraveCountCache.updateActualUserCount("절실한구원", 33);
 
 
         // 데이터 집계 및 채용률 계산
@@ -359,7 +360,7 @@ public class GemDataService {
             // JSON 데이터를 파일에 저장 (덮어쓰기)
             saveJsonToFile(jsonResult);
         } catch (JsonProcessingException e) {
-            throw new GemDataException("JSON 파일로 변환 중 오류가 발생했습니다");
+            throw new GemAggregationException("JSON 파일로 변환 중 오류가 발생했습니다");
         }
     }
 
@@ -368,7 +369,7 @@ public class GemDataService {
         try {
             Files.write(Paths.get(filePath), jsonData.getBytes());
         } catch (IOException e) {
-            throw new GemDataException("JSON 파일 저장 중 오류가 발생했습니다");
+            throw new GemAggregationException("JSON 파일 저장 중 오류가 발생했습니다");
         }
     }
 
