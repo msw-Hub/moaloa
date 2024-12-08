@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import moaloa.store.back_end.craft.Dto.CraftMaterialDto;
 import moaloa.store.back_end.craft.Dto.CraftMaterialLifeDto;
 import moaloa.store.back_end.craft.Dto.CraftRecipeDto;
 import moaloa.store.back_end.craft.Entity.CraftItemEntity;
@@ -13,7 +12,6 @@ import moaloa.store.back_end.craft.Entity.CraftMaterialEntity;
 import moaloa.store.back_end.craft.Entity.CraftRecipeEntity;
 import moaloa.store.back_end.craft.Repositoy.CraftItemRepository;
 import moaloa.store.back_end.craft.Repositoy.CraftMaterialRepository;
-import moaloa.store.back_end.craft.Repositoy.CraftRecipeMaterialRepository;
 import moaloa.store.back_end.craft.Repositoy.CraftRecipeRepository;
 import moaloa.store.back_end.exception.custom.CraftApiGetException;
 import moaloa.store.back_end.exception.custom.CraftDataException;
@@ -36,8 +34,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static java.util.Arrays.stream;
 
 @Slf4j
 @Service
@@ -83,9 +79,6 @@ public class CraftService {
     }
     @Value("${jsonFile.craftData}")
     private String filePath;
-
-    @Value("${jsonFile.craftLifeData}")
-    private String filePath2;
 
     @Transactional
     public void getLoaApi() {
@@ -135,8 +128,6 @@ public class CraftService {
             }
             //시세 갱신된 데이터를 json 파일로 저장. 이때, json 구조를 변경해야함
             saveJsonToFile();
-            //생활재료만 모여있는 추가 데이터 저장
-            saveJsonToFile2();
         } catch (Exception e) {
             log.error("Craft API 호출 중 오류가 발생했습니다", e);
             throw new CraftApiGetException("로스트아크 API 호출 중 오류가 발생했습니다.");
@@ -254,7 +245,7 @@ public class CraftService {
         Map<String, Object> jsonMap = new HashMap<>();
         jsonMap.put("갱신시간", currentDateTime);
         jsonMap.put("craftItemList", craftRecipeDtos);
-        jsonMap.put("생활재료시세", lifeMap());
+        jsonMap.put("제작재료시세", materialAllMap());
 
         // ObjectMapper를 사용하여 Map을 JSON으로 변환
         ObjectMapper objectMapper = new ObjectMapper();
@@ -264,57 +255,22 @@ public class CraftService {
         Files.write(Paths.get(filePath), jsonString.getBytes());
     }
 
-    //추가 데이터 저장
-    private void saveJsonToFile2() throws IOException {
-        String currentDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-
-        Map<String, Object> jsonMap = new HashMap<>();
-        jsonMap.put("갱신시간", currentDateTime);
-        jsonMap.put("생활재료시세", lifeMap());
-
-        // ObjectMapper를 사용하여 Map을 JSON으로 변환
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonString = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonMap);
-
-        // JSON 파일로 저장
-        Files.write(Paths.get(filePath2), jsonString.getBytes());
-    }
-    private Map<String, Object> lifeMap(){
+    private Map<String, Object> materialAllMap(){
         Map<String, Object> lifeMap = new HashMap<>();
-        int[] subCodes = {90200, 90300, 90400, 90500, 90600, 90700};
+        int[] subCodes = {60200,60300,60400,60500,90200, 90300, 90400, 90500, 90600, 90700};
         for (int subCode : subCodes) {
             List<CraftMaterialLifeDto> craftMaterialDtos = craftMaterialRepository.findBySubCode(subCode).stream()
                     .map(CraftMaterialLifeDto::new)
                     .toList();
-            switch (subCode) {
-                case 90200:
-                    lifeMap.put("식물채집", craftMaterialDtos);
-                    break;
-                case 90300:
-                    lifeMap.put("벌목", craftMaterialDtos);
-                    break;
-                case 90400:
-                    lifeMap.put("채광", craftMaterialDtos);
-                    break;
-                case 90500:
-                    lifeMap.put("수렵", craftMaterialDtos);
-                    break;
-                case 90600:
-                    lifeMap.put("낚시", craftMaterialDtos);
-                    break;
-                case 90700:
-                    lifeMap.put("고고학", craftMaterialDtos);
-                    break;
-            }
+            lifeMap.put(String.valueOf(subCode), craftMaterialDtos);
         }
         return lifeMap;
     }
 
 
-    public String readJsonFromFile(int code) {
+    public String readJsonFromFile() {
         try {
-            if(code == 0) return Files.readString(Paths.get(filePath));
-            else return Files.readString(Paths.get(filePath2));
+            return Files.readString(Paths.get(filePath));
         } catch (IOException e) {
             throw new CraftDataException("JSON 파일 읽기 중 오류가 발생했습니다");
         }
@@ -345,22 +301,49 @@ public class CraftService {
                     break;
                 }
             }
-
             // 만약 해당 아이템이 없다면 예외 처리
             if (matchedItem == null) {
                 throw new CraftDataException("해당 아이템 ID를 찾을 수 없습니다: " + craftItemId);
+            }
+
+            // 제작 재료 배열에서 subCode 추출 및 중복 제거
+            List<Integer> subCodes = new ArrayList<>();
+            if (matchedItem.has("craftMaterials")) {
+                JSONArray craftMaterials = matchedItem.getJSONArray("craftMaterials");
+                for (int i = 0; i < craftMaterials.length(); i++) {
+                    JSONObject material = craftMaterials.getJSONObject(i);
+                    if (material.has("subCode")) {
+                        Integer subCode = material.getInt("subCode");
+                        if (!subCodes.contains(subCode)) { // 중복 확인
+                            subCodes.add(subCode);
+                        }
+                    }
+                }
             }
 
             // 결과 데이터 구성
             Map<String, Object> craftItemData = new HashMap<>();
             craftItemData.put("갱신시간", date);
             craftItemData.put("제작아이템", matchedItem.toMap()); // JSONObject를 Map으로 변환
+            craftItemData.put("제작재료시세", materialMap(subCodes));
 
             return craftItemData;
         } catch (JSONException e) {
             throw new CraftDataException("JSON 데이터를 객체로 변환 중 오류가 발생했습니다");
         }
     }
+
+    private Map<String, Object> materialMap(List<Integer> subCodes){
+        Map<String, Object> materialMap = new HashMap<>();
+        for (int subCode : subCodes) {
+            List<CraftMaterialLifeDto> craftMaterialDtos = craftMaterialRepository.findBySubCode(subCode).stream()
+                    .map(CraftMaterialLifeDto::new)
+                    .toList();
+            materialMap.put(String.valueOf(subCode), craftMaterialDtos);
+        }
+        return materialMap;
+    }
+
 
     @Transactional
     public void renewTradeCount() {

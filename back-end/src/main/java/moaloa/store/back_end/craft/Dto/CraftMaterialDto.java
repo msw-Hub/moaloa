@@ -12,9 +12,6 @@ public class CraftMaterialDto {
     private int id;
     private String marketName;
     private String grade;
-    private double currentMinPrice;
-    private double recentPrice;
-    private double yDayAvgPrice;
     private int marketId;
     private int subCode;
     private String iconLink;
@@ -25,9 +22,6 @@ public class CraftMaterialDto {
         this.id = craftMaterial.getId();
         this.marketName = craftMaterial.getMarketName();
         this.grade = craftMaterial.getGrade();
-        this.currentMinPrice = craftMaterial.getCurrentMinPrice();
-        this.recentPrice = craftMaterial.getRecentPrice();
-        this.yDayAvgPrice = craftMaterial.getYDayAvgPrice();
         this.marketId = craftMaterial.getMarketId();
         this.subCode = craftMaterial.getSubCode();
         this.iconLink = craftMaterial.getIconLink();
