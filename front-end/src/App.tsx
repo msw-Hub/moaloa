@@ -10,15 +10,16 @@ import { setApiKey } from "./store/apiKey";
 import { useState } from "react";
 import Auction from "./Router/auction/auction";
 import { AlertText } from "./hooks/useAlert";
+import CraftTest from "./Router/craft/CraftTest";
 
 function App() {
-  const [darkMode, setDarkMode] = useDarkMode();
   const navigate = useNavigate();
   const [apiKeyModalOpen, setApiKeyModalOpen] = useState(false); //api모달
   const apiKey = useSelector<RootState, string[]>((state) => state.apiKeys.apiKey);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false); //모바일용 메뉴바
   const location = useLocation();
 
+  const [darkMode, setDarkMode] = useDarkMode();
   return (
     <>
       {/*네비게이션*/}
@@ -130,6 +131,7 @@ function App() {
           <Route path="/craft/:id" element={<CraftDetail></CraftDetail>}></Route>
           {/*경매 계산 페이지*/}
           <Route path="/auction" element={<Auction></Auction>}></Route>
+          <Route path="/test" element={<CraftTest></CraftTest>}></Route>
         </Routes>
         <footer className="font-semibold flex flex-col justify-center items-center py-6">
           <div>@2024 moaloa All rights reserved</div>
