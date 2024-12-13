@@ -100,10 +100,10 @@ function Auction() {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-4 max-w-[600px] p-4 w-full font-medium">
+    <div className="md:text-base text-sm grid grid-cols-2 gap-4 max-w-[550px] w-full font-medium p-2">
       {/* 가격 , 인원 , 이득률 퍼센트 설정 */}
       <div className="content-box col-span-2 grid grid-cols-1 gap-4 p-4 font-medium">
-        <div className="font-bold text-xl">경매 계산기</div>
+        <div className="font-bold">경매 계산기</div>
         <input className="content-box border-solid border border-bddark p-4" onFocus={(e) => e.target.select()} type="number" placeholder="가격" onChange={(e) => setAuctionPrice(Number(e.target.value))} />
         <div className="flex justify-evenly items-center  text-nowrap">
           {[4, 8, 16, 25].map((v) => (
@@ -115,18 +115,18 @@ function Auction() {
         </div>
 
         <div className="flex justify-start items-center gap-2 mb-4">
-          <div className="font-semibold text-lg">이득률</div>
+          <div className="font-semibold">이득률</div>
           <div>{`[ 0% ~ ${people * 10}% ]`}</div>
         </div>
         <div className="relative flex justify-between items-center w-full">
           <input className="w-full dark:accent-light" step={5} defaultValue={70} min={0} max={100} type="range" placeholder="이득률" onChange={(e) => setProfitRate(Number(e.target.value))} />
-          <div className="absolute left-0 -top-6 text-sm text-bddark">N빵 입찰가</div>
-          <div className="absolute right-0 -top-6 text-sm text-bddark">입찰적정가</div>
+          <div className="absolute left-0 -top-6 text-bddark">N빵 입찰가</div>
+          <div className="absolute right-0 -top-6 text-bddark">입찰적정가</div>
         </div>
       </div>
       {/*입찰적정가 */}
       <div className="content-box p-4 flex flex-col justify-start gap-3">
-        <h2 className="font-bold text-xl">N빵 입찰가</h2>
+        <h2 className="font-bold">N빵 입찰가</h2>
         <div className="flex justify-between items-center">
           <div>금액</div>
           <div
@@ -155,7 +155,7 @@ function Auction() {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <div>남들보다 버는 골드</div>
+          <div>이득금</div>
           <div className="flex justify-center items-center gap-1">
             <div className="text-red-400">{(auction.bEPPriceProfit - auction.bEPPriceDistribution).toLocaleString()}</div>
             <img className="w-5 h-5" src={goldIcon} alt="gold" />
@@ -165,7 +165,7 @@ function Auction() {
       {/*손익분기점 */}
       <div className="content-box p-4 flex  flex-col justify-start gap-3">
         <div className="flex justify-between items-center">
-          <h2 className="font-bold text-xl">입찰적정가</h2>
+          <h2 className="font-bold">입찰적정가</h2>
           {/* <div className="flex justify-start items-center gap-1 text-sm">
             <span>수수료 : </span>
             <div>{auction.commission.toLocaleString()}</div>
@@ -200,7 +200,7 @@ function Auction() {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <div>남들보다 버는 골드</div>
+          <div>이득금</div>
           <div className="flex justify-center items-center gap-1">
             <div className="text-red-400">{(auction.bidPriceProfit - auction.bidPriceDistribution).toLocaleString()}</div>
             <img className="w-5 h-5" src={goldIcon} alt="gold" />
@@ -210,8 +210,8 @@ function Auction() {
 
       <div className="col-span-2 content-box p-4 flex flex-col justify-start gap-3">
         <div className="flex justify-between items-center">
-          <h2 className="font-bold text-xl">이득률 계산</h2>
-          <div className="flex justify-start items-center gap-1 text-base font-bold text-red-400">
+          <h2 className="font-bold">이득률 계산</h2>
+          <div className="flex justify-start items-center gap-1 font-bold text-red-400">
             <div>이득률 : </div>
             <div>{Math.floor(people * 10 * (0.01 * profitRate)).toLocaleString()}%</div>
           </div>
@@ -244,7 +244,7 @@ function Auction() {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <div>남들보다 버는 골드</div>
+          <div>이득금</div>
           <div className="flex justify-center items-center gap-1">
             <div className="text-red-400">{(auction.gainPriceProfit - auction.gainPriceDistribution).toLocaleString()}</div>
             <img className="w-5 h-5" src={goldIcon} alt="gold" />

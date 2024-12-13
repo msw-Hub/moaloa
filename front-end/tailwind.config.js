@@ -12,7 +12,7 @@ export default {
         bddark: "#808080",
         light: "#ebebeb",
         hover: "#f0f0f0",
-        hoverdark: "#373737",
+        hoverdark: "#282828",
       },
     },
   },
@@ -33,15 +33,25 @@ export default {
           "@apply py-2 px-6 dark:border-ctdark dark:text-light hover:bg-[#2652e6] dark:hover:bg-ctdark": {},
         },
         ".white-Mode-icon-filter": {
-          filter: "invert(82%) sepia(6%) saturate(0%) hue-rotate(233deg) brightness(92%) contrast(86%)",
+          filter: "invert(65%) sepia(24%) saturate(5655%) hue-rotate(190deg) brightness(102%) contrast(96%)",
         },
         ".btn": {
-          transition: "all 0.3s ease",
-
-          "@apply font-bold dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md": {},
+          transition: "all 0.2s ease",
+          "@apply font-bold rounded-md shadow-md bg-blue-400 dark:bg-bgdark text-white dark:text-light hover:bg-blue-500 dark:hover:bg-hoverdark": {},
         },
         ".content-box": {
           "@apply rounded-sm shadow-md bg-gray-50 dark:bg-ctdark text-bgdark dark:text-light": {},
+        },
+        ".active-btn": {
+          transition: "all 0.2s ease-in-out",
+          "@apply shadow-md font-bold text-white dark:text-light bg-blue-400 dark:bg-bgdark border-2 border-solid border-blue-400 dark:border-bgdark": {},
+        },
+        ".default-btn": {
+          transition: "all 0.2s ease-in-out",
+          "@apply shadow-md font-bold text-blue-400 dark:text-zinc-300 bg-[#f9fafb] dark:bg-ctdark border-2 border-solid border-blue-400 dark:border-bgdark hover:text-white hover:bg-blue-300 hover:border-blue-300 dark:hover:bg-[#393939]": {},
+        },
+        ".flexCC": {
+          "@apply flex items-center justify-center": {},
         },
       });
     },

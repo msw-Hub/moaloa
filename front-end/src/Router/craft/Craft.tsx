@@ -98,12 +98,12 @@ function CraftTest() {
   const [craftList, setCraftList] = useState<CraftItem[]>([]);
   const [craftModalOpen, setCraftModalOpen] = useState(false);
   const [craftEffect, setCraftEffect] = useState<CraftEffect>(getInitialCraftEffect);
-  const [categoryMenu, setCategoryMenu] = useState<boolean[]>([false, false, false, false, false, false, false, false]);
+  const [categoryMenu, setCategoryMenu] = useState<boolean[]>(() => JSON.parse(localStorage.getItem("categoryMenu") || `"[true, false, false, false, false, false, false, false]"`));
   const [searchName, setSearchName] = useState<string>("");
   const [materialList, setMaterialList] = useState<Material>();
   //시세 기준 (현재 최저가 : currentMinPrice, 전날가격 : ydayAvgPrice )
-  const [priceStandard, setPriceStandard] = useState<string>("currentMinPrice");
-  const [convert, setConvert] = useState<string>("convert");
+  const [priceStandard, setPriceStandard] = useState<string>(() => JSON.parse(localStorage.getItem("priceStandard") || `"currentMinPrice"`));
+  const [convert, setConvert] = useState<string>(() => JSON.parse(localStorage.getItem("convert") || `"convert"`));
 
   //정렬 기준 설정
   const [sort, setSort] = useState<string>("craftSellPrice");
@@ -128,7 +128,7 @@ function CraftTest() {
         setMaterialList(materialConversion(res.data.제작재료시세));
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
       });
   }
 
@@ -136,10 +136,6 @@ function CraftTest() {
   useEffect(() => {
     getCraftList();
   }, []);
-
-  useEffect(() => {
-    console.log(craftList);
-  }, [craftList]);
 
   useEffect(() => {
     if (!craftList) return;
@@ -157,10 +153,23 @@ function CraftTest() {
     localStorage.setItem("craftEffect", JSON.stringify(craftEffect));
   }, [craftEffect]);
 
+  //
+  useEffect(() => {
+    localStorage.setItem("priceStandard", JSON.stringify(priceStandard));
+  }, [priceStandard]);
+
+  useEffect(() => {
+    localStorage.setItem("convert", JSON.stringify(convert));
+  }, [convert]);
+
+  useEffect(() => {
+    localStorage.setItem("categoryMenu", JSON.stringify(categoryMenu));
+  }, [categoryMenu]);
+
   //판매량 순위 계산
   const [tradeRank, setTradeRank] = useState<CraftItem[]>([]);
   //표시할 판매량 순위 조정 변수
-  const [tradeRankCount, setTradeRankCount] = useState<number>(10);
+  const [tradeRankCount, setTradeRankCount] = useState<number>(20);
   useEffect(() => {
     // marketName이 같은 항목을 제거
     const uniqueCraftList = craftList.filter((item, index, self) => index === self.findIndex((t) => t.marketName === item.marketName));
@@ -273,7 +282,7 @@ function CraftTest() {
     const ydayConvertCraftPriceAll = convertCraftPriceAll;
 
     const defaultSellPrice = craftItem.currentMinPrice - Math.ceil(craftItem.currentMinPrice * 0.05);
-    const ydaySellPrice = Math.ceil(craftItem.ydayAvgPrice) - Math.ceil(craftItem.ydayAvgPrice * 0.05);
+    const ydaySellPrice = Math.ceil(craftItem.ydayAvgPrice) - Math.ceil(Math.ceil(craftItem.ydayAvgPrice) * 0.05);
 
     //기본 시세 판매 차익 및 원가이익률 계산
     const craftSellPrice = Math.ceil((craftItem.craftQuantity * (defaultSellPrice / craftItem.bundleCount) - craftPriceAll) * 100) / 100;
@@ -376,60 +385,52 @@ function CraftTest() {
       else if (priceStandard === "ydayAvgPrice" && convert === "default" && sort === "craftCostMargin") {
         return b?.ydayCraft?.ydayCraftCostMargin - a?.ydayCraft?.ydayCraftCostMargin;
       }
-
-      // if (sort === "craftSellPrice") {
-      //   if (convert === "convert" && b?.convert?.convertCraftSellPrice && a?.convert?.convertCraftSellPrice) {
-      //     return b?.convert?.convertCraftSellPrice - a?.convert?.convertCraftSellPrice;
-      //   }
-      //   return b?.craft?.craftSellPrice - a?.craft?.craftSellPrice;
-      // } else if (sort === "craftCostMargin") {
-      //   if (convert === "convert" && b?.convert?.convertCraftCostMargin && a?.convert?.convertCraftCostMargin) {
-      //     return b?.convert?.convertCraftCostMargin - a?.convert?.convertCraftCostMargin;
-      //   }
-      //   return b?.craft.craftCostMargin - a?.craft?.craftCostMargin;
-      // }
       return 0;
     });
     setSortedCraftList(sortedList);
   }, [sort, craftList, convert, priceStandard]);
 
   return (
-    <div className="w-full h-full flex justify-center  gap-4 font-semibold lg:flex-row flex-col lg:items-start items-center p-2">
+    <div className="sm:text-sm text-xs w-full h-full flex justify-center gap-4 font-semibold xl:flex-row flex-col xl:items-start items-center p-2">
       {/* 카테고리 버튼 관심, 특수, 물약, 폭탄, 수류탄, 로브, 기타, 음식, */}
       <div className="grid grid-cols-1 gap-4">
         <div className="flex flex-col justify-center items-start content-box p-4 gap-4 ">
-          <span className="font-semibold">카테고리</span>
-          <div className="grid grid-cols-4 gap-2 ">
-            {["추천", "특수", "물약", "폭탄", "수류탄", "로브", "기타", "요리"].map((category, index) => {
+          <span className="sm:text-base text-sm font-semibold">카테고리</span>
+          <div className="w-full grid grid-cols-4 gap-2 ">
+            {["전체", "특수", "물약", "폭탄", "수류탄", "로브", "기타", "요리"].map((category, index) => {
+              //카테고리 버튼 클릭시 해당 카테고리의 메뉴를 토글
+              //전체 클릭시 모든 메뉴 토글 해제
+              //전체를 제외한 나머지 카테고리를 클릭시 전체 메뉴 토글 해제
               return (
                 <button
                   key={category}
                   onClick={() => {
-                    setCategoryMenu((prev) => {
-                      const updated = [...prev];
-                      updated[index] = !updated[index];
-                      return updated;
-                    });
+                    if (index === 0) {
+                      setCategoryMenu([true, false, false, false, false, false, false, false]);
+                    } else {
+                      let temp = [...categoryMenu];
+                      temp[0] = false;
+                      temp[index] = !temp[index];
+                      if (temp.slice(1).every((menu) => !menu)) {
+                        temp[0] = true;
+                      }
+                      setCategoryMenu(temp);
+                    }
                   }}
-                  className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md flex items-center justify-center rounded-sm py-2 px-4 text-nowrap " + (categoryMenu[index] ? " dark:bg-bgdark bg-blue-400 text-white" : "")}>
+                  className={`flexCC text-nowrap py-2 px-4 rounded-md ${categoryMenu[index] ? "active-btn" : "default-btn"}`}>
                   {category}
                 </button>
               );
             })}
           </div>
         </div>
-        <div className="p-4 content-box lg:block hidden">
+        <div className="p-4 content-box xl:block hidden">
           <div className="flex justify-start items-center mb-2 gap-4">
-            <div className="font-semibold ">전날 판매량 순위</div>
+            <div className="sm:text-base text-sm font-semibold ">전날 판매량 순위</div>
             <div className="flex justify-start items-center gap-3">
               {[10, 20, 30, 40].map((count) => {
                 return (
-                  <button
-                    key={count}
-                    onClick={() => setTradeRankCount(count)}
-                    className={
-                      "transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md py-1 px-2 text-sm flex items-center justify-center rounded-sm text-nowrap " + (tradeRankCount === count ? " dark:bg-bgdark bg-blue-400 text-white" : "")
-                    }>
+                  <button key={count} onClick={() => setTradeRankCount(count)} className={`rounded-sm px-1 ${tradeRankCount === count ? "active-btn" : "default-btn"}`}>
                     {count}
                   </button>
                 );
@@ -445,9 +446,9 @@ function CraftTest() {
                   <div className="flex justify-start items-center gap-2">
                     <div className="w-4 text-end">{index + 1}</div>
                     <img className={"w-8 h-8 " + `${grade[craft.grade]}`} src={craft.iconLink} alt={craft.marketName} />
-                    <span className="text-sm">{craft.marketName}</span>
+                    <span>{craft.marketName}</span>
                   </div>
-                  <span className="text-sm">{(craft.tradeCount * craft.bundleCount).toLocaleString()}</span>
+                  <span>{(craft.tradeCount * craft.bundleCount).toLocaleString()}</span>
                 </div>
               );
             })}
@@ -459,52 +460,53 @@ function CraftTest() {
       <div className="flex flex-col gap-4 flex-wrap basis-[900px]">
         {/* 검색창 */}
         {/* 영지효과 버튼 */}
-        <div className=" content-box grid md:grid-cols-[0.5fr_1fr_1fr_0.5fr_1fr_1fr] grid-cols-[0.5fr_1fr_1fr] gap-4 p-4 flex-wrap text-nowrap">
-          <input onChange={(e) => setSearchName(e.target.value)} placeholder="제작법" type="text" className="md:col-span-6 col-span-3 h-10 content-box border-solid border rounded-md border-bddark p-4" />
-          <span className="mr-2 font-bold flex justify-end items-center">판매시세</span>
-          <button
-            onClick={() => setPriceStandard("currentMinPrice")}
-            className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md py-2 px-4 rounded-md " + `${priceStandard == "currentMinPrice" ? "dark:bg-bgdark bg-blue-400 text-white" : ""}`}>
-            현재 최저가
-          </button>
-          <button
-            onClick={() => setPriceStandard("ydayAvgPrice")}
-            className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md py-2 px-4 rounded-md " + `${priceStandard == "ydayAvgPrice" ? "dark:bg-bgdark bg-blue-400 text-white" : ""}`}>
-            전날 평균가
-          </button>
-          <span className="mr-2 font-bold flex justify-end items-center">생활재료</span>
-          <button onClick={() => setConvert("convert")} className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md py-2 px-4 rounded-md " + `${convert == "convert" ? "dark:bg-bgdark bg-blue-400 text-white" : ""}`}>
-            변환 시세
-          </button>
-          <button onClick={() => setConvert("default")} className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md py-2 px-4 rounded-md " + `${convert == "default" ? "dark:bg-bgdark bg-blue-400 text-white" : ""}`}>
-            기본 시세
-          </button>
-          <span className="mr-2 font-bold flex justify-end items-center">정렬기준</span>
-          <button
-            onClick={() => setSort("craftSellPrice")}
-            className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md  py-2 px-4 rounded-md " + `${sort == "craftSellPrice" ? "dark:bg-bgdark bg-blue-400 text-white" : ""}`}>
-            판매차익
-          </button>
-          <button
-            onClick={() => setSort("craftCostMargin")}
-            className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md py-2 px-4 rounded-md " + `${sort == "craftCostMargin" ? "dark:bg-bgdark bg-blue-400 text-white" : ""}`}>
-            원가이익률
-          </button>
-          <span className="mr-2 font-bold flex justify-end items-center">영지효과</span>
-          <button onClick={() => setCraftModalOpen(true)} className="col-span-2 transition-all bg-blue-400 dark:bg-bgdark font-bold text-white dark:text-gray-200 hover:bg-blue-500 dark:hover:bg-hoverdark shadow-md text-nowrap py-2 px-3 flex items-center justify-center rounded-md ">
+        <div className=" content-box grid md:grid-cols-8 gap-4 p-4 flex-wrap text-nowrap">
+          <div className="relative flex justify-center items-center md:col-span-7 col-span-8 gap-2">
+            <input onChange={(e) => setSearchName(e.target.value)} placeholder="제작법" type="text" className="grow h-10 content-box border-solid border rounded-md border-bddark p-4" />
+            <i className="absolute right-2 xi-search xi-x"></i>
+          </div>
+          <button onClick={() => setCraftModalOpen(true)} className="md:col-span-1 flexCC col-span-8 py-2 px-4 btn">
             영지효과
           </button>
+          <div className="flexCC grid grid-cols-2 md:col-span-4 col-span-8 gap-4">
+            <span className="sm:text-base text-sm mr-2 font-bold flex justify-center items-center">판매시세</span>
+            <div>
+              <button onClick={() => setPriceStandard("currentMinPrice")} className={`w-28 py-2 px-4 rounded-l-md ${priceStandard === "currentMinPrice" ? "active-btn" : "default-btn "}`}>
+                현재 최저가
+              </button>
+              <button onClick={() => setPriceStandard("ydayAvgPrice")} className={`w-28 py-2 px-4 rounded-r-md ${priceStandard === "ydayAvgPrice" ? "active-btn" : "default-btn"}`}>
+                전날 평균가
+              </button>
+            </div>
+          </div>
+          <div className="flexCC grid grid-cols-2 md:col-span-4 col-span-8 gap-4">
+            <span className="sm:text-base text-sm mr-2 font-bold flex justify-center items-center">생활재료</span>
+            <div>
+              <button onClick={() => setConvert("convert")} className={`w-28 py-2 px-4 rounded-l-md ${convert === "convert" ? "active-btn" : "default-btn "}`}>
+                변환 시세
+              </button>
+              <button onClick={() => setConvert("default")} className={`w-28 py-2 px-4 rounded-r-md ${convert === "default" ? "active-btn" : "default-btn "}`}>
+                기본 시세
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* 제작품 목록 */}
-        <div className="max-w-[1200px] p-4 content-box text-center flex flex-col  justify-center flex-wrap">
-          <div className="grid md:grid-cols-[3fr_1fr_1fr_1fr_1fr_0.5fr_0.5fr] sm:grid-cols-7 grid-cols-[auto_auto_auto_auto_auto_auto] gap-4 py-2 px-4 text-nowrap">
+        <div className="sm:max-w-[1200px] p-4 content-box text-center flex flex-col  justify-center flex-wrap">
+          <div className="grid md:grid-cols-[3fr_1fr_1fr_1fr_0.8fr_0.5fr_0.5fr] sm:grid-cols-[1fr_1fr_1fr_1fr_0.8fr_0.5fr_0.5fr] grid-cols-[1fr_1fr_1fr_0.8fr_0.5fr_0.5fr] sm:gap-4 gap-3 py-2 px-4 text-nowrap">
             <span>제작법</span>
-            {priceStandard === "currentMinPrice" ? <span className="flex justify-end items-center">현재 최저가</span> : <span className="flex justify-end items-center">전날 평균가</span>}
+            <span className="flex justify-end items-center">{priceStandard === "currentMinPrice" ? "현재 최저가" : "전날 평균가"}</span>
             {/* <span>최저가</span> */}
             <span className="sm:flex hidden justify-end items-center">제작비용</span>
-            <span className={`flex justify-end items-center ${sort === "craftSellPrice" ? "text-green-400" : null}`}>판매차익</span>
-            <span className={`flex justify-end items-center ${sort === "craftCostMargin" ? "text-green-400" : null}`}>원가이익률</span>
+            <button className={"flex justify-end items-center gap-1 " + `${sort === "craftSellPrice" ? "text-green-500" : null}`} onClick={() => setSort("craftSellPrice")}>
+              <span className="flex justify-center items-center">판매차익</span>
+              <i className="xi-caret-down-min"></i>
+            </button>
+            <button className={"flex justify-end items-center gap-1 " + `${sort === "craftCostMargin" ? "text-green-500" : null}`} onClick={() => setSort("craftCostMargin")}>
+              <span className={`flex justify-center items-center `}>이익률</span>
+              <i className="xi-caret-down-min"></i>
+            </button>
             <span>사용</span>
             <span>판매</span>
           </div>
@@ -512,53 +514,103 @@ function CraftTest() {
           {sortedCraftList.map((craft: CraftItem) => {
             //제작법 이름 검색(내용이 없으면 전부 표시)
             if (searchName !== "" && !craft.craftName.includes(searchName)) return null;
-            //카테고리 메뉴가 꺼져있으면 전부 표시
-            if (categoryMenu.reduce((a, v) => (v == false ? a + 1 : a), 0) === 8) null;
-            else if (!categoryMenu[craft.category]) return null;
+            //카테고리 메뉴에서 전체가 아닌 경우 해당 카테고리만 표시
+            if (!categoryMenu[0] && !categoryMenu[craft.category]) return null;
+
             return (
               <div
                 onClick={() => navigate(`/craft/${craft.id}`)}
-                className="cursor-pointer hover:bg-hover dark:hover:bg-gray-700 transition-all grid md:grid-cols-[3fr_1fr_1fr_1fr_1fr_0.5fr_0.5fr] sm:grid-cols-7 grid-cols-[auto_auto_auto_auto_auto_auto] gap-4 border-t border-solid border-bddark py-2 px-4"
+                className="cursor-pointer hover:bg-hover dark:hover:bg-gray-700 transition-all grid md:grid-cols-[3fr_1fr_1fr_1fr_0.8fr_0.5fr_0.5fr] sm:grid-cols-[1fr_1fr_1fr_1fr_0.8fr_0.5fr_0.5fr] grid-cols-[1fr_1fr_1fr_0.8fr_0.5fr_0.5fr] sm:gap-4 gap-3 border-t border-solid border-bddark py-2 px-4"
                 key={craft.id}>
                 {/* 이미지 및 제작 이름  */}
-                <div className=" flex md:justify-start justify-center items-center gap-4">
+                <div className=" flex md:justify-start justify-center items-center gap-4 ">
                   <div className="relative">
                     <img src={craft.iconLink} alt={craft.craftName} className={"w-10 h-10 " + `${grade[craft.grade]}`} />
                     <div className="text-xs font-semibold absolute right-[0.125rem] bottom-0 text-white">{craft.craftQuantity}</div>
                   </div>
-                  <span className="text-sm font-semibold md:block hidden">{craft.craftName}</span>
+                  <span className="font-semibold md:block hidden">{craft.craftName}</span>
                 </div>
                 {/* 최저가 */}
-                <div className="gap-2 flex items-center justify-end text-center text-sm font-semibold">
-                  <div>{priceStandard === "currentMinPrice" ? craft.currentMinPrice : Math.round(craft.ydayAvgPrice)}</div>
-                  <img className="w-5 h-5" src="/itemIcon/gold.webp" alt="gold" />
+                <div className="gap-2 flex items-center justify-end text-center font-semibold">
+                  <div>{priceStandard === "currentMinPrice" ? craft.currentMinPrice : Math.ceil(craft.ydayAvgPrice)}</div>
+                  <img className="sm:w-5 sm:h-5 w-4 h-4" src="/itemIcon/gold.webp" alt="gold" />
                 </div>
-
-                <div className="sm:flex hidden gap-2 items-center justify-end text-center text-sm font-semibold">
+                {/* 제작비용 */}
+                <div className="sm:flex hidden gap-2 items-center justify-end text-center font-semibold">
                   <div>{craft?.craft?.craftPriceAll}</div>
-                  <img className="w-5 h-5" src="/itemIcon/gold.webp" alt="gold" />
+                  <img className="sm:w-5 sm:h-5 w-4 h-4" src="/itemIcon/gold.webp" alt="gold" />
                 </div>
 
                 {/* 판매 차익 */}
-                <span className={"flex gap-2 items-center justify-end text-sm font-semibold " + `${sort === "craftSellPrice" ? "text-green-400" : null}`}>
-                  {convert === "default" ? <div>{priceStandard === "currentMinPrice" ? craft?.craft.craftSellPrice : craft?.ydayCraft.ydayCraftSellPrice}</div> : <div>{priceStandard === "currentMinPrice" ? craft?.convert?.convertCraftSellPrice : craft?.ydayConvert?.ydayConvertCraftSellPrice}</div>}
-                  <img className="w-5 h-5" src="/itemIcon/gold.webp" alt="gold" />
+                <span className={"flex gap-2 items-center justify-end font-semibold " + `${sort === "craftSellPrice" ? "text-green-500" : null}`}>
+                  {convert === "default" ? (
+                    <div>{priceStandard === "currentMinPrice" ? craft?.craft?.craftSellPrice : craft?.ydayCraft?.ydayCraftSellPrice}</div>
+                  ) : (
+                    <div>{priceStandard === "currentMinPrice" ? craft?.convert?.convertCraftSellPrice : craft?.ydayConvert?.ydayConvertCraftSellPrice}</div>
+                  )}
+                  <img className="sm:w-5 sm:h-5 w-4 h-4" src="/itemIcon/gold.webp" alt="gold" />
                 </span>
                 {/* 원가이익률(%) */}
-                <span className={"gap-1 flex items-center justify-end text-sm font-semibold " + `${sort === "craftCostMargin" ? "text-green-400" : null}`}>
+                <span className={"flex gap-1  items-center justify-end font-semibold " + `${sort === "craftCostMargin" ? "text-green-500" : null}`}>
                   {convert === "default" ? (
-                    <div className="">{priceStandard === "currentMinPrice" ? craft?.craft.craftCostMargin : craft?.ydayCraft.ydayCraftCostMargin}</div>
+                    <div className="">{priceStandard === "currentMinPrice" ? craft?.craft.craftCostMargin : craft?.ydayCraft?.ydayCraftCostMargin}</div>
                   ) : (
                     <div className="">{priceStandard === "currentMinPrice" ? craft?.convert?.convertCraftCostMargin : craft?.ydayConvert?.ydayConvertCraftCostMargin}</div>
                   )}
                   <div>%</div>
                 </span>
-                {craft.currentMinPrice * craft.craftQuantity - craft?.craft?.craftPriceAll > 0 ? (
-                  <span className={"flex items-center justify-center text-red-400  text-sm font-semibold"}>이득</span>
+                {/* 사용 */}
+                {convert === "default" ? (
+                  priceStandard === "currentMinPrice" ? (
+                    craft.currentMinPrice * craft.craftQuantity - craft?.craft?.craftPriceAll > 0 ? (
+                      <span className={"flex items-center justify-center text-red-400 font-semibold"}>이득</span>
+                    ) : (
+                      <span className={"flex items-center justify-center text-blue-400 font-semibold"}>손해</span>
+                    )
+                  ) : craft.ydayAvgPrice * craft.craftQuantity - craft?.ydayCraft?.ydayCraftPriceAll > 0 ? (
+                    <span className={"flex items-center justify-center text-red-400 font-semibold"}>이득</span>
+                  ) : (
+                    <span className={"flex items-center justify-center text-blue-400 font-semibold"}>손해</span>
+                  )
+                ) : priceStandard === "currentMinPrice" ? (
+                  craft.currentMinPrice * craft.craftQuantity - (craft?.convert?.convertCraftPriceAll ?? 0) > 0 ? (
+                    <span className={"flex items-center justify-center text-red-400 font-semibold"}>이득</span>
+                  ) : (
+                    <span className={"flex items-center justify-center text-blue-400 font-semibold"}>손해</span>
+                  )
+                ) : craft.ydayAvgPrice * craft.craftQuantity - (craft?.ydayConvert?.ydayConvertCraftPriceAll ?? 0) > 0 ? (
+                  <span className={"flex items-center justify-center text-red-400 font-semibold"}>이득</span>
                 ) : (
-                  <span className={"flex items-center justify-center text-blue-400 text-sm font-semibold"}>손해</span>
+                  <span className={"flex items-center justify-center text-blue-400 font-semibold"}>손해</span>
                 )}
-                {craft?.craft?.craftSellPrice > 0 ? <span className={"flex items-center justify-center text-red-400 text-sm font-semibold"}>이득</span> : <span className={"flex items-center justify-center text-blue-400 text-sm font-semibold"}>손해</span>}
+
+                {/* 판매 */}
+                {convert === "default" ? (
+                  priceStandard === "currentMinPrice" ? (
+                    craft?.craft?.craftSellPrice > 0 ? (
+                      <span className={"flex items-center justify-center text-red-400 font-semibold"}>이득</span>
+                    ) : (
+                      <span className={"flex items-center justify-center text-blue-400 font-semibold"}>손해</span>
+                    )
+                  ) : craft?.ydayCraft?.ydayCraftSellPrice > 0 ? (
+                    <span className={"flex items-center justify-center text-red-400 font-semibold"}>이득</span>
+                  ) : (
+                    <span className={"flex items-center justify-center text-blue-400 font-semibold"}>손해</span>
+                  )
+                ) : priceStandard === "currentMinPrice" ? (
+                  (craft?.convert?.convertCraftSellPrice ?? 0) > 0 ? (
+                    <span className={"flex items-center justify-center text-red-400 font-semibold"}>이득</span>
+                  ) : (
+                    <span className={"flex items-center justify-center text-blue-400 font-semibold"}>손해</span>
+                  )
+                ) : (craft?.ydayConvert?.ydayConvertCraftSellPrice ?? 0) > 0 ? (
+                  <span className={"flex items-center justify-center text-red-400 font-semibold"}>이득</span>
+                ) : (
+                  <span className={"flex items-center justify-center text-blue-400 font-semibold"}>손해</span>
+                )}
+
+                {/* {craft.currentMinPrice * craft.craftQuantity - craft?.craft?.craftPriceAll > 0 ? <span className={"flex items-center justify-center text-red-400 font-semibold"}>이득</span> : <span className={"flex items-center justify-center text-blue-400 font-semibold"}>손해</span>}
+                {craft?.craft?.craftSellPrice > 0 ? <span className={"flex items-center justify-center text-red-400 font-semibold"}>이득</span> : <span className={"flex items-center justify-center text-blue-400 font-semibold"}>손해</span>} */}
               </div>
             );
           })}

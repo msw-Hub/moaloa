@@ -1,7 +1,7 @@
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import useDarkMode from "./hooks/useDarkMode";
 import GemSearch from "./Router/gemSearch/GemSearch";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "./components/modal";
 import Craft from "./Router/craft/Craft";
 import CraftDetail from "./Router/craft/CraftDetail";
@@ -17,6 +17,7 @@ function App() {
   const apiKey = useSelector<RootState, string[]>((state) => state.apiKeys.apiKey);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false); //모바일용 메뉴바
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const [darkMode, setDarkMode] = useDarkMode();
   return (
@@ -33,7 +34,7 @@ function App() {
         <button onClick={() => navigate("/gemSerch")} className={"navBtn hover:bg-[#d2d2d2] w-full flex items-center justify-center " + `${location.pathname === "/gemSerch" ? "bg-[#d2d2d2] dark:bg-hoverdark" : ""}`}>
           보석검색
         </button>
-        <button onClick={() => navigate("/craft")} className={"navBtn hover:bg-[#d2d2d2] w-full flex items-center justify-center " + `${location.pathname === "/craft" ? "bg-[#d2d2d2] dark:bg-hoverdark" : ""}`}>
+        <button onClick={() => navigate("/craft")} className={"navBtn hover:bg-[#d2d2d2] w-full flex items-center justify-center " + `${location.pathname.startsWith("/craft") ? "bg-[#d2d2d2] dark:bg-hoverdark" : ""}`}>
           영지제작
         </button>
         <button onClick={() => navigate("/auction")} className={"navBtn hover:bg-[#d2d2d2] w-full flex items-center justify-center " + `${location.pathname === "/auction" ? "bg-[#d2d2d2] dark:bg-hoverdark" : ""}`}>
@@ -67,7 +68,7 @@ function App() {
             <button onClick={() => navigate("/gemSerch")} className={"navBtn flex items-center justify-center " + `${location.pathname === "/gemSerch" ? "bg-[#2652e6] dark:bg-ctdark" : ""}`}>
               보석검색
             </button>
-            <button onClick={() => navigate("/craft")} className={"navBtn flex items-center justify-center " + `${location.pathname === "/craft" ? "bg-[#2652e6] dark:bg-ctdark" : ""}`}>
+            <button onClick={() => navigate("/craft")} className={"navBtn flex items-center justify-center " + `${location.pathname.startsWith("/craft") ? "bg-[#2652e6] dark:bg-ctdark" : ""}`}>
               영지제작
             </button>
             <button onClick={() => navigate("/auction")} className={"navBtn flex items-center justify-center " + `${location.pathname === "/auction" ? "bg-[#2652e6] dark:bg-ctdark" : ""}`}>
@@ -90,11 +91,11 @@ function App() {
         </div>
         {/*api모달*/}
         <Modal isOpen={apiKeyModalOpen} onClose={() => setApiKeyModalOpen(false)}>
-          <div className="flex flex-col items-center bg-light dark:bg-ctdark text-ctdark dark:text-light rounded-md p-8 w-[500px] gap-2">
+          <div className="flex flex-col items-center bg-light dark:bg-ctdark text-ctdark dark:text-light rounded-md p-8 md:w-[500px] w-[350px] gap-2">
             {/* API KEY 입력 5칸 */}
             <div className="w-full flex justify-between items-center">
-              <span className="font-semibold">API키 입력</span>
-              <button onClick={() => window.open("https://developer-lostark.game.onstove.com/", "_blank")} className="font-medium text-sm py-2 px-4 bg-light dark:bg-ctdark dark:border-bddark border-bddark border border-solid rounded-md">
+              <span className="font-bold text-lg">API키 입력</span>
+              <button onClick={() => window.open("https://developer-lostark.game.onstove.com/", "_blank")} className="btn py-2 px-4">
                 API키 발급
               </button>
             </div>
@@ -106,7 +107,7 @@ function App() {
                 onChange={(e) => {
                   let copy = [...apiKey];
                   copy[i] = e.target.value;
-                  setApiKey(copy);
+                  dispatch(setApiKey(copy));
                 }}
                 defaultValue={key}
                 placeholder="API 키"
@@ -131,7 +132,7 @@ function App() {
           {/*경매 계산 페이지*/}
           <Route path="/auction" element={<Auction></Auction>}></Route>
         </Routes>
-        <footer className="font-semibold flex flex-col justify-center items-center py-6">
+        <footer className="sm:text-sm text-xs font-semibold flex flex-col justify-center text-center items-center py-6">
           <div>@2024 moaloa All rights reserved</div>
           <div>This site is not associated with Smilegate RPG & Smilegate Stove.</div>
         </footer>

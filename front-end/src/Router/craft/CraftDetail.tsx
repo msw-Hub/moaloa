@@ -98,12 +98,20 @@ function CraftDetail() {
   const [craftModalOpen, setCraftModalOpen] = useState(false);
   const goldIcon = "/itemIcon/gold.webp";
 
-  const [priceStandard, setPriceStandard] = useState<string>("currentMinPrice");
   const [craftDetail, setCraftDetail] = useState<CraftItem>();
   const [materialList, setMaterialList] = useState<Material>();
   const [craftEffect, setCraftEffect] = useState<CraftEffect>(getInitialCraftEffect);
   const [time, setTime] = useState<number>(0);
-  const [convert, setConvert] = useState<string>("convert");
+  const [priceStandard, setPriceStandard] = useState<string>(() => JSON.parse(localStorage.getItem("priceStandard") || `"currentMinPrice"`));
+  const [convert, setConvert] = useState<string>(() => JSON.parse(localStorage.getItem("convert") || `"convert"`));
+
+  useEffect(() => {
+    localStorage.setItem("priceStandard", JSON.stringify(priceStandard));
+  }, [priceStandard]);
+
+  useEffect(() => {
+    localStorage.setItem("convert", JSON.stringify(convert));
+  }, [convert]);
 
   const materialIndex: {
     [key: string]: number;
@@ -163,7 +171,6 @@ function CraftDetail() {
 
   const api = () => {
     Promise.all([getCraftDetail(Number(id))]).then((res) => {
-      console.log(res);
       setTime(res[0].갱신시간);
       setCraftDetail(res[0].제작아이템);
       setMaterialList(materialConversion(res[0].제작재료시세));
@@ -175,14 +182,9 @@ function CraftDetail() {
   }, [id]);
 
   useEffect(() => {
-    console.log(materialList);
     if (!craftDetail) return;
     calculateCraftValues(craftDetail);
   }, [materialList]);
-
-  useEffect(() => {
-    console.log(craftDetail);
-  }, [craftDetail]);
 
   useEffect(() => {
     localStorage.setItem("craftEffect", JSON.stringify(craftEffect));
@@ -314,7 +316,7 @@ function CraftDetail() {
     const ydayConvertCraftPriceAll = convertCraftPriceAll;
 
     const defaultSellPrice = craftItem.currentMinPrice - Math.ceil(craftItem.currentMinPrice * 0.05);
-    const ydaySellPrice = Math.ceil(craftItem.ydayAvgPrice) - Math.ceil(craftItem.ydayAvgPrice * 0.05);
+    const ydaySellPrice = Math.ceil(craftItem.ydayAvgPrice) - Math.ceil(Math.ceil(craftItem.ydayAvgPrice) * 0.05);
 
     //기본 시세 판매 차익 및 원가이익률 계산
     const craftSellPrice = Math.ceil((craftItem.craftQuantity * (defaultSellPrice / craftItem.bundleCount) - craftPriceAll) * 100) / 100;
@@ -394,33 +396,29 @@ function CraftDetail() {
 
   return (
     craftDetail && (
-      <div className="p-6 flex flex-col gap-6 md:min-w-[800px]">
+      <div className="sm:text-sm text-xs p-2 flex flex-col gap-6 md:min-w-[750px]">
         <div className="flex flex-col justify-center items-center gap-4">
           <img className={grade[craftDetail.grade] + " w-20 h-20"} src={craftDetail.iconLink} alt="" />
           <h1 className={"text-2xl font-bold " + `${textColors[craftDetail.grade]}`}>{craftDetail.craftName}</h1>
-          <p className="text-sm text-gray-500">갱신시간: {time}</p>
+          <p className=" text-gray-500">갱신시간: {time}</p>
         </div>
         {/*판매 기준 설정, 재료정보 변환, 영지 효과 */}
-        <div className="content-box py-3 grid md:grid-cols-2 grid-cols-1 gap-2">
-          <div className="flex justify-center items-center gap-2">
-            <span className="mr-2 font-bold">판매시세</span>
-            <button
-              onClick={() => setPriceStandard("currentMinPrice")}
-              className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md py-2 px-4 rounded-md " + `${priceStandard == "currentMinPrice" ? "dark:bg-bgdark bg-blue-400 text-white" : ""}`}>
+        <div className="content-box py-3 grid md:grid-cols-2 grid-cols-1 gap-2 px-4">
+          <div className="flex justify-center items-center">
+            <span className="sm:text-base text-sm mr-6 font-bold">판매시세</span>
+            <button onClick={() => setPriceStandard("currentMinPrice")} className={`w-28 py-2 px-4 rounded-l-md ${priceStandard === "currentMinPrice" ? "active-btn" : "default-btn "}`}>
               현재 최저가
             </button>
-            <button
-              onClick={() => setPriceStandard("ydayAvgPrice")}
-              className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md py-2 px-4 rounded-md " + `${priceStandard == "ydayAvgPrice" ? "dark:bg-bgdark bg-blue-400 text-white" : ""}`}>
+            <button onClick={() => setPriceStandard("ydayAvgPrice")} className={`w-28 py-2 px-4 rounded-r-md ${priceStandard === "ydayAvgPrice" ? "active-btn" : "default-btn"}`}>
               전날 평균가
             </button>
           </div>
-          <div className="flex justify-center items-center gap-2">
-            <span className="mr-2 font-bold">생활재료</span>
-            <button onClick={() => setConvert("convert")} className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md py-2 px-4 rounded-md " + `${convert == "convert" ? "dark:bg-bgdark bg-blue-400 text-white" : ""}`}>
+          <div className="flex justify-center items-center">
+            <span className="sm:text-base text-sm mr-6 font-bold">생활재료</span>
+            <button onClick={() => setConvert("convert")} className={`w-28 py-2 px-4 rounded-l-md ${convert === "convert" ? "active-btn" : "default-btn "}`}>
               변환 시세
             </button>
-            <button onClick={() => setConvert("default")} className={"transition-all font-bold text-bgdark dark:text-gray-200 hover:bg-blue-300 hover:text-white dark:hover:bg-hoverdark shadow-md py-2 px-4 rounded-md " + `${convert == "default" ? "dark:bg-bgdark bg-blue-400 text-white" : ""}`}>
+            <button onClick={() => setConvert("default")} className={`w-28 py-2 px-4 rounded-r-md ${convert === "default" ? "active-btn" : "default-btn "}`}>
               기본 시세
             </button>
           </div>
@@ -428,8 +426,8 @@ function CraftDetail() {
 
         <div className="grid lg:grid-cols-[1fr_1fr] grid-cols-2 gap-6">
           {/* 제작 정보 */}
-          <div className="p-4 content-box">
-            <h2 className="font-bold text-lg mb-4 h-9">제작 정보</h2>
+          <div className="sm:col-span-1 col-span-2 p-4 content-box">
+            <h2 className="sm:text-base text-sm font-bold  mb-4 h-9">제작 정보</h2>
             <div className="space-y-2 font-medium">
               <div className="flex justify-between items-center">
                 <div>제작단위</div>
@@ -450,18 +448,18 @@ function CraftDetail() {
               <div className="flex justify-between items-center">
                 <div>제작비용</div>
                 <div className="flex justify-center items-center gap-1">
-                  <div>{convert === "default" ? craftDetail.craft.craftPriceAll : craftDetail.convert?.convertCraftPriceAll}</div>
-                  <img className="w-5 h-5" src={goldIcon} alt="gold" />
+                  <div>{convert === "default" ? craftDetail?.craft?.craftPriceAll : craftDetail?.convert?.convertCraftPriceAll}</div>
+                  <img className="sm:w-5 sm:h-5 w-4 h-4" src={goldIcon} alt="gold" />
                 </div>
               </div>
             </div>
           </div>
 
           {/* 판매 정보 */}
-          <div className="p-4 content-box">
+          <div className="sm:col-span-1 col-span-2 p-4 content-box">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="font-bold text-lg text-balance h-9">판매 정보</h2>
-              <button onClick={() => setCraftModalOpen(true)} className="transition-all bg-blue-400 dark:bg-bgdark font-bold text-white dark:text-gray-200 hover:bg-blue-500 dark:hover:bg-hoverdark shadow-md text-nowrap py-2 px-3 flex items-center justify-center rounded-md ">
+              <h2 className="sm:text-base text-sm font-bold  text-balance h-9">판매 정보</h2>
+              <button onClick={() => setCraftModalOpen(true)} className="flex transition-all bg-blue-400 dark:bg-bgdark font-bold text-white dark:text-gray-200 hover:bg-blue-500 dark:hover:bg-hoverdark shadow-md text-nowrap py-2 px-3  items-center justify-center rounded-md ">
                 영지효과
               </button>
             </div>
@@ -474,8 +472,8 @@ function CraftDetail() {
               <div className="flex justify-between items-center">
                 <div>시세</div>
                 <div className="flex justify-center items-center gap-1">
-                  <div>{priceStandard === "currentMinPrice" ? craftDetail.currentMinPrice : Math.round(craftDetail.ydayAvgPrice)}</div>
-                  <img className="w-5 h-5" src={goldIcon} alt="gold" />
+                  <div>{priceStandard === "currentMinPrice" ? craftDetail.currentMinPrice : Math.ceil(craftDetail.ydayAvgPrice)}</div>
+                  <img className="sm:w-5 sm:h-5 w-4 h-4" src={goldIcon} alt="gold" />
                 </div>
               </div>
               <div className="flex justify-between items-center">
@@ -484,31 +482,31 @@ function CraftDetail() {
                   {
                     // 기본 시세 판매 차익
                     priceStandard === "currentMinPrice" ? (
-                      <div>{isNaN(craftDetail.craft?.craftPriceAll + craftDetail.craft?.craftSellPrice) ? "0" : (craftDetail.craft?.craftPriceAll + craftDetail.craft?.craftSellPrice).toLocaleString()}</div>
+                      <div>{isNaN(craftDetail?.craft?.craftPriceAll + craftDetail?.craft?.craftSellPrice) ? "0" : (craftDetail?.craft?.craftPriceAll + craftDetail?.craft?.craftSellPrice).toLocaleString()}</div>
                     ) : (
-                      <div>{isNaN(craftDetail.ydayCraft?.ydayCraftPriceAll + craftDetail.ydayCraft?.ydayCraftSellPrice) ? "0" : (craftDetail.ydayCraft?.ydayCraftPriceAll + craftDetail.ydayCraft?.ydayCraftSellPrice).toLocaleString()}</div>
+                      <div>{isNaN(craftDetail?.ydayCraft?.ydayCraftPriceAll + craftDetail?.ydayCraft?.ydayCraftSellPrice) ? "0" : (craftDetail?.ydayCraft?.ydayCraftPriceAll + craftDetail?.ydayCraft?.ydayCraftSellPrice).toLocaleString()}</div>
                     )
                   }
-                  <img className="w-5 h-5" src={goldIcon} alt="gold" />
+                  <img className="sm:w-5 sm:h-5 w-4 h-4" src={goldIcon} alt="gold" />
                 </div>
               </div>
               <div className="flex justify-between items-center">
                 <div>판매 차익</div>
                 <div className="flex items-center gap-1">
                   {convert === "default" ? (
-                    <div>{priceStandard === "currentMinPrice" ? craftDetail.craft.craftSellPrice : craftDetail.ydayCraft.ydayCraftSellPrice}</div>
+                    <div>{priceStandard === "currentMinPrice" ? craftDetail.craft.craftSellPrice : craftDetail?.ydayCraft?.ydayCraftSellPrice}</div>
                   ) : (
-                    <div>{priceStandard === "currentMinPrice" ? craftDetail.convert?.convertCraftSellPrice : craftDetail.ydayConvert?.ydayConvertCraftSellPrice}</div>
+                    <div>{priceStandard === "currentMinPrice" ? craftDetail.convert?.convertCraftSellPrice : craftDetail?.ydayConvert?.ydayConvertCraftSellPrice}</div>
                   )}
-                  <img className="w-5 h-5" src={goldIcon} alt="gold" />
+                  <img className="sm:w-5 sm:h-5 w-4 h-4" src={goldIcon} alt="gold" />
                 </div>
               </div>
               <div className="flex justify-between items-center">
                 <div>원가 이익률</div>
 
                 {convert === "default" ? (
-                  <div className={`${priceStandard === "currentMinPrice" ? (craftDetail.craft.craftCostMargin >= 0 ? "text-red-400" : "text-blue-400") : craftDetail.ydayCraft.ydayCraftCostMargin >= 0 ? "text-red-400" : "text-blue-400"}`}>
-                    {priceStandard === "currentMinPrice" ? craftDetail.craft.craftCostMargin : craftDetail.ydayCraft.ydayCraftCostMargin}%
+                  <div className={`${priceStandard === "currentMinPrice" ? (craftDetail.craft.craftCostMargin >= 0 ? "text-red-400" : "text-blue-400") : craftDetail?.ydayCraft?.ydayCraftCostMargin >= 0 ? "text-red-400" : "text-blue-400"}`}>
+                    {priceStandard === "currentMinPrice" ? craftDetail.craft.craftCostMargin : craftDetail?.ydayCraft?.ydayCraftCostMargin}%
                   </div>
                 ) : (
                   <div
@@ -529,8 +527,8 @@ function CraftDetail() {
           </div>
           {/* 생활재료 교환 정보 */}
           {/*채광 벌목만 일반등급중 currentMinPrice가 있으면 변환 */}
-          <div className="p-4 content-box font-medium md:col-span-1 col-span-2">
-            <h2 className="font-bold text-lg mb-4">생활재료 교환 정보</h2>
+          <div className="relative p-4 content-box font-medium md:col-span-1 col-span-2">
+            <h2 className="sm:text-base text-sm font-bold  mb-4">생활재료 교환 정보</h2>
             <div className="grid grid-cols-[auto_0.3fr_auto] gap-5">
               {craftDetail.craftMaterials
                 .sort((a, b) => a.id - b.id)
@@ -539,16 +537,16 @@ function CraftDetail() {
                   const materialData: MaterialItem | undefined = Object.values(materialList)
                     .flat()
                     .find((a) => a.marketId === material.marketId);
-                  // console.log(index, materialData);
                   if (!materialData) return null;
-                  //목재, 철광석만 변환 가능
+
+                  // 목재, 철광석만 변환 가능
                   if (materialData.marketName === "목재" || materialData.marketName === "철광석") {
                     if (materialData.convert?.convertMaterial) {
                       return (
                         <React.Fragment key={index}>
                           <div className="flex items-center justify-start gap-2">
                             <div className="relative">
-                              <img className={`w-10 h-10 ${grade[materialData.convert.convertMaterial.grade]}`} src={itemIcon[materialData.marketName]} alt="재료아이템" />
+                              <img className={`w-10 h-10 ${grade[materialData.convert.convertMaterial.grade]}`} src={itemIcon[materialData.convert.convertMaterial.marketName as keyof typeof itemIcon]} alt="재료아이템" />
                               <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{materialData.convert.convertMaterial.grade === "고급" ? 25 : 5}</span>
                             </div>
                             <span className={textColors[materialData.convert.convertMaterial.grade]}>{materialData.convert.convertMaterial.marketName}</span>
@@ -565,7 +563,8 @@ function CraftDetail() {
                       );
                     }
                   }
-                  //모든 재료 변환 가능 (아비도스, 오레하)
+
+                  // 모든 재료 변환 가능 (아비도스, 오레하)
                   if (material.grade === "희귀" && material.marketName !== "진귀한 유물" && material.marketName !== "진귀한 가죽") {
                     const lastString = material.marketName.split(" ")[material.marketName.split(" ").length - 1];
                     if (materialData.convert?.convertMaterial) {
@@ -579,7 +578,7 @@ function CraftDetail() {
                             <span className={textColors[materialData.convert.convertMaterial.grade]}>{materialData.convert.convertMaterial.marketName}</span>
                           </div>
                           <i className="flex justify-center items-center xi-arrow-right"></i>
-                          <div className="flex items-center justify-start gap-2">
+                          <div className="flex justify-start items-center gap-2">
                             <div className="relative">
                               <img
                                 className={`w-10 h-10 ${grade.일반}`}
@@ -615,45 +614,71 @@ function CraftDetail() {
                   }
                 })}
             </div>
+            {/*교환가능한 재료가 없을때 */}
+            {craftDetail.craftMaterials
+              .sort((a, b) => a.id - b.id)
+              .map((material) => {
+                if (!materialList) return null;
+                const materialData: MaterialItem | undefined = Object.values(materialList)
+                  .flat()
+                  .find((a) => a.marketId === material.marketId);
+                if (!materialData) return null;
+                if (materialData?.convert?.convertMaterial) return 1;
+              })
+              .filter((a) => a).length === 0 && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-semibold">교환 가능한 재료가 없습니다.</div>}
           </div>
-          {/* 생활재료 가격 수정 */}
-          <div className="p-4 content-box md:col-span-1 col-span-2">
-            <h2 className="font-bold text-lg mb-4">재료 가격 수정</h2>
-            <div className="flex flex-col font-semibold">
-              <h2 className="font-bold text-lg my-4 order-1">교환 재료 가격 수정</h2>
+          <div className="flex flex-col gap-6 md:col-span-1 col-span-2">
+            {/* 생활재료 가격 수정 */}
+            <div className="p-4 content-box md:col-span-1 col-span-2">
+              <h2 className="sm:text-base text-sm font-bold  mb-4">재료 가격 수정</h2>
+              <div className="flex flex-col font-semibold">
+                {craftDetail.craftMaterials
+                  .sort((a, b) => a.id - b.id)
+                  .map((material) => (
+                    <React.Fragment key={material.id}>
+                      <div className="flex justify-between items-center mb-2">
+                        <div className="flex justify-center items-center gap-2">
+                          <div className="relative">
+                            <img src={material.iconLink} alt={material.marketName} className={"w-10 h-10 " + `${grade[material.grade]}`} />
+                            <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{material.bundleCount}</span>
+                          </div>
+                          <span className={textColors[material.grade]}>{material.marketName}</span>
+                        </div>
+                        {materialList && (
+                          <input
+                            onFocus={(e) => {
+                              setTimeout(() => {
+                                const length = e.target.value.length;
+                                e.target.setSelectionRange(length, length);
+                              }, 0);
+                            }}
+                            onChange={(e) => onMaterialPriceChange(e, material.marketId, material.subCode)}
+                            defaultValue={materialList[material.subCode][materialIndex[material.marketName]].currentMinPrice}
+                            className="bg-gray-50 dark:bg-ctdark w-24 text-right p-2 border-b border-bgdark dark:border-light"
+                            type="text"
+                          />
+                        )}
+                      </div>
+                    </React.Fragment>
+                  ))}
+              </div>
+            </div>
+            {/*교환 재료 가격 수정 */}
+            <div className="p-4 content-box font-semibold">
+              <h2 className="sm:text-base text-sm font-bold  mb-4">교환 재료 가격 수정</h2>
               {craftDetail.craftMaterials
                 .sort((a, b) => a.id - b.id)
                 .map((material) => (
                   <React.Fragment key={material.id}>
-                    <div className="flex justify-between items-center mb-2">
-                      <div className="flex justify-center items-center gap-2">
-                        <div className="relative">
-                          <img src={material.iconLink} alt={material.marketName} className={"w-10 h-10 " + `${grade[material.grade]}`} />
-                          <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{material.bundleCount}</span>
-                        </div>
-                        <span className={textColors[material.grade]}>{material.marketName}</span>
-                      </div>
-                      {materialList && (
-                        <input
-                          onFocus={(e) => {
-                            setTimeout(() => {
-                              const length = e.target.value.length;
-                              e.target.setSelectionRange(length, length);
-                            }, 0);
-                          }}
-                          onChange={(e) => onMaterialPriceChange(e, material.marketId, material.subCode)}
-                          defaultValue={materialList[material.subCode][materialIndex[material.marketName]].currentMinPrice}
-                          className="content-box w-24 text-right p-2 border-solid border border-bddark"
-                          type="text"
-                        />
-                      )}
-                    </div>
                     {
                       // marketName이 목재이면 부드러운목재 추가 단 이미 부드러운목재가 있으면 추가하지 않음
                       material.marketName === "목재" && materialList && !craftDetail.craftMaterials.find((a) => a.marketName === "부드러운 목재") && (
-                        <div className="flex justify-between items-center mb-2 order-3">
+                        <div className="flex justify-between items-center">
                           <div className="flex justify-center items-center gap-2">
-                            <img src={itemIcon["부드러운 목재"]} alt={"부드러운 목재"} className={"w-10 h-10 " + `${grade["고급"]}`} />
+                            <div className="relative">
+                              <img src={itemIcon["부드러운 목재"]} alt={"부드러운 목재"} className={"w-10 h-10 " + `${grade["고급"]}`} />
+                              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{material.bundleCount}</span>
+                            </div>
                             <span className={textColors["고급"]}>부드러운 목재</span>
                           </div>
                           <input
@@ -665,7 +690,7 @@ function CraftDetail() {
                             }}
                             onChange={(e) => onMaterialPriceChange(e, materialList[90300][1].marketId, 90300)}
                             defaultValue={materialList[90300][1].currentMinPrice}
-                            className="content-box w-24 text-right p-2 border-solid border border-bddark"
+                            className="bg-gray-50 dark:bg-ctdark w-24 text-right p-2 border-b border-bgdark dark:border-light"
                             type="text"
                           />
                         </div>
@@ -674,9 +699,12 @@ function CraftDetail() {
                     {
                       // marketName이 목재 이면 튼튼한목재 추가 단 이미 튼튼한목재가 있으면 추가하지 않음
                       material.marketName === "목재" && materialList && !craftDetail.craftMaterials.find((a) => a.marketName === "튼튼한 목재") && (
-                        <div className="flex justify-between items-center mb-2 order-3">
+                        <div className="flex justify-between items-center">
                           <div className="flex justify-center items-center gap-2">
-                            <img src={itemIcon["튼튼한 목재"]} alt={"튼튼한 목재"} className={"w-10 h-10 " + `${grade["희귀"]}`} />
+                            <div className="relative">
+                              <img src={itemIcon["튼튼한 목재"]} alt={"튼튼한 목재"} className={"w-10 h-10 " + `${grade["희귀"]}`} />
+                              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{material.bundleCount}</span>
+                            </div>
                             <span className={textColors["희귀"]}>튼튼한 목재</span>
                           </div>
                           <input
@@ -688,7 +716,7 @@ function CraftDetail() {
                             }}
                             onChange={(e) => onMaterialPriceChange(e, materialList[90300][2].marketId, 90300)}
                             defaultValue={materialList[90300][2].currentMinPrice}
-                            className="content-box w-24 text-right p-2 border-solid border border-bddark"
+                            className="bg-gray-50 dark:bg-ctdark w-24 text-right p-2 border-b border-bgdark dark:border-light"
                             type="text"
                           />
                         </div>
@@ -697,9 +725,12 @@ function CraftDetail() {
                     {
                       // marketName이 철광석이면 묵직한 철광석 추가 단 이미 묵직한 철광석이 있으면 추가하지 않음
                       material.marketName === "철광석" && materialList && !craftDetail.craftMaterials.find((a) => a.marketName === "묵직한 철광석") && (
-                        <div className="flex justify-between items-center mb-2 order-2">
+                        <div className="flex justify-between items-center">
                           <div className="flex justify-center items-center gap-2">
-                            <img src={itemIcon["묵직한 철광석"]} alt={"묵직한 철광석"} className={"w-10 h-10 " + `${grade["고급"]}`} />
+                            <div className="relative">
+                              <img src={itemIcon["묵직한 철광석"]} alt={"묵직한 철광석"} className={"w-10 h-10 " + `${grade["고급"]}`} />
+                              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{material.bundleCount}</span>
+                            </div>
                             <span className={textColors["고급"]}>묵직한 철광석</span>
                           </div>
                           <input
@@ -711,7 +742,7 @@ function CraftDetail() {
                             }}
                             onChange={(e) => onMaterialPriceChange(e, materialList[90400][1].marketId, 90400)}
                             defaultValue={materialList[90400][1].currentMinPrice}
-                            className="content-box w-24 text-right p-2 border-solid border border-bddark"
+                            className="bg-gray-50 dark:bg-ctdark w-24 text-right p-2 border-b border-bgdark dark:border-light"
                             type="text"
                           />
                         </div>
@@ -720,9 +751,12 @@ function CraftDetail() {
                     {
                       // marketName이 철광석이면 단단한 철광석 추가 단 이미 단단한 철광석이 있으면 추가하지 않음
                       material.marketName === "철광석" && materialList && !craftDetail.craftMaterials.find((a) => a.marketName === "단단한 철광석") && (
-                        <div className="flex justify-between items-center mb-2 order-2">
+                        <div className="flex justify-between items-center">
                           <div className="flex justify-center items-center gap-2">
-                            <img src={itemIcon["단단한 철광석"]} alt={"단단한 철광석"} className={"w-10 h-10 " + `${grade["희귀"]}`} />
+                            <div className="relative">
+                              <img src={itemIcon["단단한 철광석"]} alt={"단단한 철광석"} className={"w-10 h-10 " + `${grade["희귀"]}`} />
+                              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{material.bundleCount}</span>
+                            </div>
                             <span className={textColors["희귀"]}>단단한 철광석</span>
                           </div>
                           <input
@@ -734,7 +768,7 @@ function CraftDetail() {
                             }}
                             onChange={(e) => onMaterialPriceChange(e, materialList[90400][2].marketId, 90400)}
                             defaultValue={materialList[90400][2].currentMinPrice}
-                            className="content-box w-24 text-right p-2 border-solid border border-bddark"
+                            className="bg-gray-50 dark:bg-ctdark w-24 text-right p-2 border-b border-bgdark dark:border-light"
                             type="text"
                           />
                         </div>
@@ -742,6 +776,15 @@ function CraftDetail() {
                     }
                   </React.Fragment>
                 ))}
+              {/*교환가능한 재료가 없을때 */}
+              {craftDetail.craftMaterials
+                .map((material) => {
+                  if (material.marketName === "목재" && materialList && !craftDetail.craftMaterials.find((a) => a.marketName === "부드러운 목재")) return 1;
+                  if (material.marketName === "목재" && materialList && !craftDetail.craftMaterials.find((a) => a.marketName === "튼튼한 목재")) return 1;
+                  if (material.marketName === "철광석" && materialList && !craftDetail.craftMaterials.find((a) => a.marketName === "묵직한 철광석")) return 1;
+                  if (material.marketName === "철광석" && materialList && !craftDetail.craftMaterials.find((a) => a.marketName === "단단한 철광석")) return 1;
+                })
+                .filter((a) => a).length === 0 && <div className="flex justify-center items-center font-semibold">교환 가능한 재료가 없습니다.</div>}
             </div>
           </div>
         </div>
@@ -749,14 +792,14 @@ function CraftDetail() {
         {/* 재료 정보 */}
         <div className="p-4 content-box">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="font-bold text-lg">재료 정보</h2>
+            <h2 className="sm:text-base text-sm font-bold ">재료 정보</h2>
             {/*수수료 감소 수치; */}
-            <span className="text-sm text-zinc-400">수수료 감소율 : {craftEffect["제작수수료 감소"][0] + craftEffect["제작수수료 감소"][craftDetail.category]}%</span>
+            <span className=" text-zinc-400">수수료 감소율 : {craftEffect["제작수수료 감소"][0] + craftEffect["제작수수료 감소"][craftDetail.category]}%</span>
           </div>
           <div>
-            <div className="grid sm:grid-cols-[2fr_1fr_1fr_1fr_1fr] grid-cols-[1fr_1fr_1fr_1fr_2fr] gap-4 text-center font-bold mb-2">
+            <div className="grid sm:grid-cols-[2fr_1fr_1fr_1fr_1fr] grid-cols-[1fr_1fr_1fr_1.5fr] gap-4 text-center font-bold mb-2">
               <div className="flex justify-start items-center">재료</div>
-              <div className="flex justify-end items-center">단위</div>
+              <div className="sm:flex hidden justify-end items-center">단위</div>
               <div className="flex justify-end items-center">시세</div>
               <div className="flex justify-end items-center">개당 가격</div>
               <div className="flex justify-end items-center">총 비용</div>
@@ -767,7 +810,7 @@ function CraftDetail() {
                 .map((material) => {
                   if (!materialList) return null;
                   return (
-                    <div className="grid sm:grid-cols-[2fr_1fr_1fr_1fr_1fr] grid-cols-[1fr_1fr_1fr_1fr_2fr] gap-4 border-t border-solid border-bddark py-1 px-2" key={material.id}>
+                    <div className="grid sm:grid-cols-[2fr_1fr_1fr_1fr_1fr] grid-cols-[1fr_1fr_1fr_1.5fr] gap-4 border-t border-solid border-bddark py-1 px-2" key={material.id}>
                       <div className="flex items-center gap-2">
                         <div className="relative">
                           <img src={material.iconLink} alt={material.marketName} className={"w-10 h-10 " + `${grade[material.grade]}`} />
@@ -776,14 +819,14 @@ function CraftDetail() {
                         <span className={textColors[material.grade] + " sm:block hidden"}>{material.marketName}</span>
                       </div>
                       {/* <input defaultValue={material.currentMinPrice} className="bg-light dark:bg-bgdark dark:border-bddark border-bddark rounded-md p-2" type="text" /> */}
-                      <div className="flex justify-end items-center">{material.bundleCount} 개</div>
+                      <div className="sm:flex hidden justify-end items-center">{material.bundleCount} 개</div>
                       <div className="flex justify-end items-center gap-1">
                         <div className="flex justify-center items-center">
                           {convert === "default"
                             ? materialList[material.subCode][materialIndex[material.marketName]].currentMinPrice
                             : materialList[material.subCode][materialIndex[material.marketName]].convert?.convertPrice ?? materialList[material.subCode][materialIndex[material.marketName]].currentMinPrice}
                         </div>
-                        <img className="w-5 h-5" src={goldIcon} alt="gold" />
+                        <img className="sm:w-5 sm:h-5 w-4 h-4" src={goldIcon} alt="gold" />
                       </div>
                       <div className="flex justify-end items-center gap-1">
                         <div className="flex justify-center items-center">
@@ -795,7 +838,7 @@ function CraftDetail() {
                               100
                           ) / 100}
                         </div>
-                        <img className="w-5 h-5" src={goldIcon} alt="gold" />
+                        <img className="sm:w-5 sm:h-5 w-4 h-4" src={goldIcon} alt="gold" />
                       </div>
                       <div className="flex justify-end items-center gap-1">
                         <div className="flex justify-center items-center">
@@ -808,12 +851,12 @@ function CraftDetail() {
                               100
                           ) / 100}
                         </div>
-                        <img className="w-5 h-5" src={goldIcon} alt="gold" />
+                        <img className="sm:w-5 sm:h-5 w-4 h-4" src={goldIcon} alt="gold" />
                       </div>
                     </div>
                   );
                 })}
-              <div className="grid sm:grid-cols-[2fr_1fr_1fr_1fr_1fr] grid-cols-[1fr_1fr_1fr_1fr_2fr] gap-4 border-t border-solid border-bddark py-1 px-2">
+              <div className="grid sm:grid-cols-[2fr_1fr_1fr_1fr_1fr] grid-cols-[1fr_1fr_1fr_1.5fr] gap-4 border-t border-solid border-bddark py-1 px-2">
                 <div className="flex items-center">
                   <div className="relative">
                     <img src={itemIcon.골드} alt={"골드"} className={"w-10 h-10 " + `${grade["일반"]}`} />
@@ -821,18 +864,18 @@ function CraftDetail() {
                   </div>
                   <span className="ml-2 sm:block hidden">골드</span>
                 </div>
-                <div className="flex justify-end items-center">1 개</div>
+                <div className="sm:flex hidden justify-end items-center">1 개</div>
                 <div className="flex justify-end items-center gap-1">
                   <div className="flex justify-center items-center">{craftDetail.craftPrice}</div>
-                  <img className="w-5 h-5" src={goldIcon} alt="gold" />
+                  <img className="sm:w-5 sm:h-5 w-4 h-4" src={goldIcon} alt="gold" />
                 </div>
                 <div className="flex justify-end items-center gap-1">
                   <div className="flex justify-center items-center">1</div>
-                  <img className="w-5 h-5" src={goldIcon} alt="gold" />
+                  <img className="sm:w-5 sm:h-5 w-4 h-4" src={goldIcon} alt="gold" />
                 </div>
                 <div className="flex justify-end items-center gap-1">
                   <div className="flex justify-center items-center">{Math.floor(craftDetail.craftPrice * (1 - 0.01 * (craftEffect["제작수수료 감소"][0] + craftEffect["제작수수료 감소"][craftDetail.category])))}</div>
-                  <img className="w-5 h-5" src={goldIcon} alt="gold" />
+                  <img className="sm:w-5 sm:h-5 w-4 h-4" src={goldIcon} alt="gold" />
                 </div>
               </div>
             </div>
@@ -841,11 +884,11 @@ function CraftDetail() {
         {/* 영지 효과 입력창 - x열 제작수수료 감소, 활동력 감소, y열 전체, 특수, 물약, 폭탄, 수류탄, 로브, 기타 배템, 요리 */}
         <Modal isOpen={craftModalOpen} onClose={() => setCraftModalOpen(false)}>
           <div className="content-box p-8 flex flex-col gap-4 rounded-md">
-            <span className="text-xl font-semibold">영지 효과</span>
+            <span className=" font-semibold">영지 효과</span>
             {["제작수수료 감소", "제작시간 감소", "활동력 감소"].map((effect: string) => {
               return (
                 <div key={effect} className="flex flex-col gap-3">
-                  <span className="text-lg font-semibold">{effect}</span>
+                  <span className=" font-semibold">{effect}</span>
                   <div className="grid grid-cols-4 gap-4">
                     {["전체", "특수", "물약", "폭탄", "수류탄", "로브", "기타", "요리"].map((type: string, index) => {
                       return (

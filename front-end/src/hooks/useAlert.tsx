@@ -25,5 +25,7 @@ export const useAlert = () => {
 //AlertText 컴포넌트
 export function AlertText() {
   let alertBox = useSelector((state: any) => state.alertbox); //alertbox state
-  return <div className={`content-box font-bold fixed top-24 left-1/2 transform -translate-x-1/2 transition-all ease-in-out duration-1000 px-5 py-2.5 whitespace-nowrap bg-opacity-70 ${alertBox.state ? " translate-y-2 z-50 opacity-100" : " -z-10 opacity-0"}`}>{alertBox.text}</div>;
+  return (
+    <div className={`content-box border-2 border-solid  font-bold fixed top-24 left-1/2 transform -translate-x-1/2 transition-all ease-in-out duration-1000 px-5 py-2.5 whitespace-nowrap bg-opacity-70 ${alertBox.state ? " translate-y-2 z-50 opacity-100" : " -z-10 opacity-0"}`}>{alertBox.text}</div>
+  );
 }
