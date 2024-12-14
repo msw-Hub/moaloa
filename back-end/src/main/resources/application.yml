@@ -28,9 +28,9 @@ loa:
     key7: ${LOA_CRAFT_KEY7}
 
 jsonFile:
-  craftData: "back-end/src/main/resources/craftData.json"
-  gemData: "back-end/src/main/resources/gemData.json"
-  gemPrice: "back-end/src/main/resources/gemPrice.json"
+  craftData: "/var/app/current/craftData.json"
+  gemData: "/var/app/current/gemData.json"
+  gemPrice: "/var/app/current/gemPrice.json"
 
 turnstile:
   secret: ${TURNSTILE_SECRET}
