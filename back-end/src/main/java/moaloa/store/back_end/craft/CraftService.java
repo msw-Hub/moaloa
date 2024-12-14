@@ -358,7 +358,7 @@ public class CraftService {
             try {
                 conn = (HttpURLConnection) new URL(reqURL + craftItemEntity.getMarketId()).openConnection();
                 conn.setRequestMethod("GET");
-                conn.setRequestProperty("Authorization", "bearer " + craftApi[2]);
+                conn.setRequestProperty("Authorization", "bearer " + craftApi[1]);
                 conn.setRequestProperty("Accept", "application/json");
                 conn.setRequestProperty("Content-Type", "application/json");
                 conn.setDoOutput(true);
