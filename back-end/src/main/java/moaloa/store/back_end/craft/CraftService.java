@@ -93,7 +93,7 @@ public class CraftService {
                 for (String itemName : itemNames) {
                     HttpURLConnection conn = (HttpURLConnection) new URL(reqURL).openConnection();
                     conn.setRequestMethod("POST");
-                    conn.setRequestProperty("Authorization", "bearer " + craftApi[0]);
+                    conn.setRequestProperty("Authorization", "bearer " + craftApi[2]);
                     conn.setRequestProperty("Accept", "application/json");
                     conn.setRequestProperty("Content-Type", "application/json");
                     conn.setDoOutput(true);
