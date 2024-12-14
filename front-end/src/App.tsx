@@ -41,7 +41,7 @@ function App() {
     try {
       console.log(1, token);
       const response = await axios.post(
-        `${import.meta.env.VITE_APP_API_URL}/api/v1/verify-turnstile`,
+        `${import.meta.env.VITE_APP_API_URL}/api/v1/verify/turnstile`,
         { token },
         {
           headers: {
