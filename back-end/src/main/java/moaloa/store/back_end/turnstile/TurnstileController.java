@@ -5,17 +5,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/verify-turnstile")
+@RequestMapping("/api/v1/verify/")
 public class TurnstileController {
 
     private final TurnstileService turnstileService;
 
-    @PostMapping("")
+    @PostMapping("/turnstile")
     public ResponseEntity<?> verifyTurnstile(
             @RequestParam @NonNull String token,
             @RequestParam @NonNull String remoteIp
