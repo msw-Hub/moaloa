@@ -7,7 +7,6 @@ spring:
         use_sql_comments: true
     hibernate:
       ddl-auto: update
-    database-platform: org.hibernate.dialect.MySQLDialect
 logging:
   pattern:
     file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} : %msg%n"
@@ -15,6 +14,8 @@ logging:
     encoding: UTF-8
   encoding:
     charset: UTF-8
+
+debug: true
 
 loa:
   api:

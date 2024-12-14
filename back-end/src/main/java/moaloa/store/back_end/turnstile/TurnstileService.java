@@ -2,7 +2,6 @@ package moaloa.store.back_end.turnstile;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,8 @@ import java.net.URL;
 @RequiredArgsConstructor
 public class TurnstileService {
 
-    private final String secretKey;
+    @Value("${turnstile.secret}")
+    private String secretKey;
 
     public boolean verifyTurnstile(String token) {
         log.info("토큰 검증을 시작합니다. token: {}", token);
