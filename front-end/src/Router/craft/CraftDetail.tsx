@@ -160,7 +160,7 @@ function CraftDetail() {
 
   const getCraftDetail = async (id: number) => {
     return axios
-      .get(`/api/v1/craft/readData?craftItemId=${id}`)
+      .get(`${import.meta.env.VITE_APP_API_URL}/api/v1/craft/readData?craftItemId=${id}`)
       .then((res) => {
         return res.data;
       })

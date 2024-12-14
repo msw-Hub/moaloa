@@ -122,7 +122,7 @@ function CraftTest() {
   };
 
   function getCraftList() {
-    axios("/api/v1/craft/readDataAll")
+    axios(`${import.meta.env.VITE_APP_API_URL}/api/v1/craft/readDataAll`)
       .then((res) => {
         setCraftList(res.data.craftItemList);
         setMaterialList(materialConversion(res.data.제작재료시세));

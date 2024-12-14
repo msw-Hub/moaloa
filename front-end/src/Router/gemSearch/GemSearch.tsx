@@ -242,7 +242,7 @@ function GemSearch() {
   const [skillUseRate, setSkillUseRate] = useState<Record<string, any>>({});
   function skillUseRateSerchAPI() {
     axios
-      .get("/api/v1/gemData/readData")
+      .get(`${import.meta.env.VITE_APP_API_URL}/api/v1/gemData/readData`)
       .then((response) => {
         setSkillUseRate(response.data);
       })
@@ -257,7 +257,7 @@ function GemSearch() {
   const [liveGemLastUpdateTime, setLiveGemLastUpdateTime] = useState<string>("");
   function liveGemPriceSerchAPI() {
     axios
-      .get("/api/v1/gemApi/nowGemPrice")
+      .get(`${import.meta.env.VITE_APP_API_URL}/api/v1/gemApi/nowGemPrice`)
       .then((response) => {
         const gemPrices = liveGemList.map((a) => {
           return { name: a.name, price: response.data["시세"][a.name].buyPrice, Icon: a.icon, Grade: a.Grade };
