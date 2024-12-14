@@ -3,6 +3,7 @@ package moaloa.store.back_end.turnstile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +15,14 @@ import java.net.URL;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class TurnstileService {
 
-    @Value("${turnstile.secret}")
-    private String secretKey;
+    private final String secret;
+
+    @Autowired
+    public TurnstileService(@Value("${turnstile.secret}") String secret) {
+        this.secret = secret;
+    }
 
     public boolean verifyTurnstile(String token) {
         log.info("토큰 검증을 시작합니다. token: {}", token);
@@ -36,7 +40,7 @@ public class TurnstileService {
             conn.setDoOutput(true);
 
             // POST 요청 본문 구성
-            String jsonInputString = "{\"secret\": \"" + secretKey + "\", \"response\": \"" + token + "\"}";
+            String jsonInputString = "{\"secret\": \"" + secret + "\", \"response\": \"" + token + "\"}";
 
             // 응답 코드 확인
             // JSON 데이터 전송
