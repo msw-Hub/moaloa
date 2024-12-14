@@ -15,8 +15,6 @@ logging:
   encoding:
     charset: UTF-8
 
-debug: true
-
 loa:
   api:
     key0: ${LOA_API_KEY0}
