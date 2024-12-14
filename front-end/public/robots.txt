@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /cdn-cgi/
+Sitemap: https://moaloa.org/sitemap.xml

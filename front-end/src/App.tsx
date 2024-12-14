@@ -82,6 +82,7 @@ function App() {
             API키
           </button>
           <button
+            aria-label="다크모드"
             onClick={(): void => {
               setDarkMode("");
             }}
