@@ -5,10 +5,19 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import moaloa.store.back_end.craft.Dto.CraftMaterialLifeDto;
+import moaloa.store.back_end.craft.Dto.CraftRecipeDto;
+import moaloa.store.back_end.craft.Entity.CraftItemEntity;
+import moaloa.store.back_end.craft.Entity.CraftMaterialEntity;
+import moaloa.store.back_end.craft.Entity.CraftRecipeEntity;
+import moaloa.store.back_end.craft.Repositoy.CraftItemRepository;
+import moaloa.store.back_end.craft.Repositoy.CraftMaterialRepository;
+import moaloa.store.back_end.craft.Repositoy.CraftRecipeRepository;
 import moaloa.store.back_end.exception.custom.CraftApiGetException;
 import moaloa.store.back_end.exception.custom.CraftDataException;
-import moaloa.store.back_end.exception.custom.GemDataException;
+import moaloa.store.back_end.exception.custom.RenewTradeCountException;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -24,10 +33,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -35,8 +42,10 @@ import java.util.Objects;
 public class CraftService {
 
     private final String[] craftApi;
-    private final CraftRepository craftRepository;
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final CraftItemRepository craftItemRepository;
+    private final CraftMaterialRepository craftMaterialRepository;
+    private final CraftRecipeRepository craftRecipeRepository;
    /*
         "Subs" 항목 코드들
             90200: 식물채집 전리품
@@ -69,7 +78,6 @@ public class CraftService {
         map.put(60500, List.of("신속 로브", "진군", "각성","아드로핀"));
         return map;
     }
-
     @Value("${jsonFile.craftData}")
     private String filePath;
 
@@ -110,62 +118,90 @@ public class CraftService {
                     }
                     br.close();
 
-                    // 데이터 저장
-                    saveItemsOneByOne(result, code);
+                    String responseString = result.toString();
+                    log.info("responseString: {}", responseString);
+                    // 시세 데이터 갱신
+
+                    updateCraftPrice(responseString, code);
                     // 연결을 명시적으로 닫음
                     conn.disconnect();
                 }
             }
-            List<CraftEntity> craftEntities = craftRepository.findAll();
-            if(craftEntities.isEmpty()) {
-                log.error("CraftEntity가 비어있습니다.");
-                throw new CraftDataException("영지 제작 엔티티가 비어있습니다");
-            }
-            // JSON으로 변환 저장
-            String jsonResult = objectMapper.writeValueAsString(craftEntities);
-            saveJsonToFile(jsonResult);
+            //시세 갱신된 데이터를 json 파일로 저장. 이때, json 구조를 변경해야함
+            saveJsonToFile();
         } catch (Exception e) {
-            log.error("Craft API 호출 중 오류가 발생했습니다");
+            log.error("Craft API 호출 중 오류가 발생했습니다", e);
             throw new CraftApiGetException("로스트아크 API 호출 중 오류가 발생했습니다.");
+
         }
     }
 
-
-    // 로아 api 요청해서 받은 아이템 시세 데이터를 하나씩 저장
     @Transactional
-    protected void saveItemsOneByOne(StringBuilder result, int code) {
-        String responseString = result.toString();
+    protected void updateCraftPrice(String responseString, int code) {  //에러 핸들러 바꿔야함
+        try {
+            JSONObject jsonObject = new JSONObject(responseString);
+            if(jsonObject.has("Items")) {
+                JSONArray jsonArray = jsonObject.getJSONArray("Items");
+                if(jsonArray.isEmpty()) {
+                    throw new CraftDataException("JSON 데이터에 Items 항목이 존재하지 않습니다");
+                }
 
-        // JSON 응답 파싱
-        JSONObject responseJson = new JSONObject(responseString);
-        JSONArray itemsArray = responseJson.getJSONArray("Items");
+                for(int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject item = jsonArray.getJSONObject(i);
+                    int marketId = item.getInt("Id");
+                    String marketName = item.getString("Name");
+                    double currentMinPrice = item.getDouble("CurrentMinPrice");
+                    double recentPrice = item.getDouble("RecentPrice");
+                    double yDayAvgPrice = item.getDouble("YDayAvgPrice");
 
-        // 아이템을 하나씩 저장
-        for (int i = 0; i < itemsArray.length(); i++) {
-            JSONObject itemObject = itemsArray.getJSONObject(i);
 
-            if(itemObject.getString("Name").contains("결정")) {
-                continue;
+                    log.info("marketId: {}, marketName: {}, currentMinPrice: {}, recentPrice: {}, yDayAvgPrice: {}, code: {}",
+                            marketId, marketName, currentMinPrice, recentPrice, yDayAvgPrice, code);
+
+                    //제작 재료 아이템에 해당되는 아이템만 업데이트
+                    if ((code > 90000 && !marketName.contains("결정"))
+                            || (code == 60300 && !marketName.contains("빛나는"))
+                            || (code == 60200 && marketId == 101063)
+                            || (code == 60400 && (marketName.equals("신호탄") || marketName.equals("만능 물약") || marketName.equals("성스러운 부적")) && !marketName.contains("빛나는"))
+                            || (code == 60500 && (marketName.equals("신속 로브") || marketName.equals("진군의 깃발")) && !marketName.contains("빛나는"))
+                    ) {
+                        log.info("제작 재료에 해당되는 아이템입니다");
+                        CraftMaterialEntity craftMaterialEntity = craftMaterialRepository.findByMarketId(marketId);
+                        if (craftMaterialEntity == null) {
+                            log.warn("재료 아이템을 찾는 과정에서 DB에 존재하지 않는 아이템입니다 해당 아이템을 확인해 주시기 바랍니다. : {}", item);
+                            continue;
+                        }
+                        craftMaterialEntity.setCurrentMinPrice(currentMinPrice);
+                        craftMaterialEntity.setRecentPrice(recentPrice);
+                        craftMaterialEntity.setYDayAvgPrice(yDayAvgPrice);
+                        craftMaterialRepository.save(craftMaterialEntity);
+                    }
+                    // 제작 아이템에 해당 되는 아이템만 업데이트
+                    if (code < 90000) {
+                        log.info("제작 아이템에 해당되는 아이템입니다");
+                        List<CraftItemEntity> craftItemEntities = craftItemRepository.findAllByMarketId(marketId);
+                        if (craftItemEntities.isEmpty()) {
+                            log.warn("제작 아이템을 찾는 과정에서 DB에 존재하지 않는 아이템입니다 해당 아이템을 확인해 주시기 바랍니다. : {}", item);
+                            continue;
+                        } //같은 이름의 아이템이 여러개일 수 있음 - 한번에 다 바꾸기
+                        for (CraftItemEntity craftItemEntity : craftItemEntities) {
+                            craftItemEntity.setCurrentMinPrice(currentMinPrice);
+                            craftItemEntity.setRecentPrice(recentPrice);
+                            craftItemEntity.setYDayAvgPrice(yDayAvgPrice);
+                            craftItemRepository.save(craftItemEntity);
+                        }
+                    }
+                    log.info("현재 작업을 완료 아이템은 {} 입니다", marketName);
+                }
+            } else {
+                throw new CraftDataException("JSON 데이터에 Items 항목이 존재하지 않습니다");
             }
-
-            CraftEntity entity = craftRepository.findByName(itemObject.getString("Name"));
-            // 하나씩 저장
-            if (entity == null) {
-                // CraftEntity로 변환
-                entity = new CraftEntity();
-                entity.setItemId(itemObject.getInt("Id"));
-                entity.setSubCode(code);
-                entity.setName(itemObject.getString("Name"));
-                entity.setGrade(itemObject.getString("Grade"));
-                entity.setIconLink(itemObject.getString("Icon"));
-                entity.setBundleCount(itemObject.getInt("BundleCount"));
-            }
-            entity.setCurrentMinPrice(itemObject.getDouble("CurrentMinPrice"));
-            entity.setRecentPrice(itemObject.getDouble("RecentPrice"));
-            entity.setYDayAvgPrice(itemObject.getDouble("YDayAvgPrice"));
-            craftRepository.save(entity);
-            // 하나씩 저장
-            craftRepository.save(entity);  // 하나씩 저장
+        } catch (JSONException e) {
+            log.error("JSON 파싱 중 오류가 발생했습니다: {}", responseString, e);
+            throw new CraftDataException("JSON 데이터를 객체로 변환 중 오류가 발생했습니다. api 키 횟수의 문제가 있을 수 있습니다.");
+        } catch (Exception e) {
+            log.error("데이터 베이스 업데이트 중 오류가 발생했습니다", e);
+            throw new CraftDataException("데이터 베이스 업데이트 중 오류가 발생했습니다");
         }
     }
 
@@ -194,22 +230,46 @@ public class CraftService {
                 + "}";
     }
 
-    private void saveJsonToFile(String jsonData){
-        try {
-            // 현재 날짜와 시간을 얻음
-            String currentDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    public void saveJsonToFile() throws IOException {
+        // 레시피를 가져옴
+        List<CraftRecipeEntity> craftRecipeEntities = craftRecipeRepository.findAll();
 
-            // 전체 데이터를 JSON 객체에 저장
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("갱신 시간", currentDateTime); // 날짜 및 시간 추가
-            jsonObject.put("시세", new JSONArray(jsonData)); // craftEntities 데이터
+        // 현재 날짜와 시간을 얻음
+        String currentDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 
-            // JSON 파일로 저장
-            Files.write(Paths.get(filePath), jsonObject.toString(4).getBytes());
-        } catch (IOException e) {
-            throw new CraftDataException("JSON 파일 저장 중 오류가 발생했습니다");
-        }
+        // CraftRecipeEntity를 CraftRecipeDto로 변환
+        List<CraftRecipeDto> craftRecipeDtos = craftRecipeEntities.stream()
+                .map(craftRecipeEntity -> new CraftRecipeDto(craftRecipeEntity, craftRecipeEntity.getCraftItem())) // CraftRecipeDto 생성 시 필요한 Entity 추가
+                .collect(Collectors.toList());
+
+
+
+        // JSON 객체 생성
+        Map<String, Object> jsonMap = new HashMap<>();
+        jsonMap.put("갱신시간", currentDateTime);
+        jsonMap.put("craftItemList", craftRecipeDtos);
+        jsonMap.put("제작재료시세", materialAllMap());
+
+        // ObjectMapper를 사용하여 Map을 JSON으로 변환
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonString = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonMap);
+
+        // JSON 파일로 저장
+        Files.write(Paths.get(filePath), jsonString.getBytes());
     }
+
+    private Map<String, Object> materialAllMap(){
+        Map<String, Object> lifeMap = new HashMap<>();
+        int[] subCodes = {60200,60300,60400,60500,90200, 90300, 90400, 90500, 90600, 90700};
+        for (int subCode : subCodes) {
+            List<CraftMaterialLifeDto> craftMaterialDtos = craftMaterialRepository.findBySubCode(subCode).stream()
+                    .map(CraftMaterialLifeDto::new)
+                    .toList();
+            lifeMap.put(String.valueOf(subCode), craftMaterialDtos);
+        }
+        return lifeMap;
+    }
+
 
     public String readJsonFromFile() {
         try {
@@ -224,6 +284,134 @@ public class CraftService {
             return objectMapper.readValue(jsonData, Object.class);
         } catch (JsonProcessingException e) {
             throw new CraftDataException("JSON 데이터를 객체로 변환 중 오류가 발생했습니다");
+        }
+    }
+    public Map<String, Object> reParseJsonToObject(String jsonData, int craftItemId) {
+        try {
+            // JSON 데이터를 파싱
+            JSONObject jsonObject = new JSONObject(jsonData);
+
+            // 갱신시간 추출
+            String date = jsonObject.getString("갱신시간");
+
+            // 특정 craftItemId의 데이터를 객체로 추출
+            JSONArray jsonArray = jsonObject.getJSONArray("craftItemList");
+            JSONObject matchedItem = null;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject item = jsonArray.getJSONObject(i);
+                if (item.getInt("id") == craftItemId) {
+                    matchedItem = item;
+                    break;
+                }
+            }
+            // 만약 해당 아이템이 없다면 예외 처리
+            if (matchedItem == null) {
+                throw new CraftDataException("해당 아이템 ID를 찾을 수 없습니다: " + craftItemId);
+            }
+
+            // 제작 재료 배열에서 subCode 추출 및 중복 제거
+            List<Integer> subCodes = new ArrayList<>();
+            if (matchedItem.has("craftMaterials")) {
+                JSONArray craftMaterials = matchedItem.getJSONArray("craftMaterials");
+                for (int i = 0; i < craftMaterials.length(); i++) {
+                    JSONObject material = craftMaterials.getJSONObject(i);
+                    if (material.has("subCode")) {
+                        Integer subCode = material.getInt("subCode");
+                        if (!subCodes.contains(subCode)) { // 중복 확인
+                            subCodes.add(subCode);
+                        }
+                    }
+                }
+            }
+
+            // 결과 데이터 구성
+            Map<String, Object> craftItemData = new HashMap<>();
+            craftItemData.put("갱신시간", date);
+            craftItemData.put("제작아이템", matchedItem.toMap()); // JSONObject를 Map으로 변환
+            craftItemData.put("제작재료시세", materialMap(subCodes));
+
+            return craftItemData;
+        } catch (JSONException e) {
+            throw new CraftDataException("JSON 데이터를 객체로 변환 중 오류가 발생했습니다");
+        }
+    }
+
+    private Map<String, Object> materialMap(List<Integer> subCodes){
+        Map<String, Object> materialMap = new HashMap<>();
+        for (int subCode : subCodes) {
+            List<CraftMaterialLifeDto> craftMaterialDtos = craftMaterialRepository.findBySubCode(subCode).stream()
+                    .map(CraftMaterialLifeDto::new)
+                    .toList();
+            materialMap.put(String.valueOf(subCode), craftMaterialDtos);
+        }
+        return materialMap;
+    }
+
+
+    @Transactional
+    public void renewTradeCount() {
+        String reqURL = "https://developer-lostark.game.onstove.com/markets/items/";
+
+        List<CraftItemEntity> craftItemEntities = craftItemRepository.findAll();
+        for (CraftItemEntity craftItemEntity : craftItemEntities) {
+            HttpURLConnection conn = null;
+            try {
+                conn = (HttpURLConnection) new URL(reqURL + craftItemEntity.getMarketId()).openConnection();
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty("Authorization", "bearer " + craftApi[2]);
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setDoOutput(true);
+
+                int responseCode = conn.getResponseCode();
+                InputStreamReader streamReader;
+
+                if (responseCode == 200) {
+                    streamReader = new InputStreamReader(conn.getInputStream());
+                } else {
+                    streamReader = new InputStreamReader(conn.getErrorStream());
+                }
+                BufferedReader br = new BufferedReader(streamReader);
+                StringBuilder result = new StringBuilder();
+                String line;
+
+                while ((line = br.readLine()) != null) {
+                    result.append(line);
+                }
+                br.close();
+
+                log.info("현재 작업 중인 아이템 ID: {}", craftItemEntity.getMarketName());
+                log.info("Response: {}", result);
+
+                // JSON 파싱
+                JSONArray responseArray = new JSONArray(result.toString());
+                if (!responseArray.isEmpty()) {
+                    JSONObject firstItem = responseArray.getJSONObject(0); // 첫 번째 아이템 객체
+                    if (firstItem.has("Stats")) {
+                        JSONArray statsArray = firstItem.getJSONArray("Stats");
+                        if (statsArray.length() > 1) { // 두 번째 항목이 있는지 확인
+                            JSONObject secondStat = statsArray.getJSONObject(1); // 두 번째 날짜의 데이터
+                            if (secondStat.has("TradeCount")) {
+                                int tradeCount = secondStat.getInt("TradeCount");
+                                log.info("Item ID: {}, Second TradeCount: {}", craftItemEntity.getMarketId(), tradeCount);
+
+                                // 엔티티에 TradeCount 업데이트
+                                craftItemEntity.setTradeCount(tradeCount);
+                                craftItemRepository.save(craftItemEntity);
+                            }
+                        }
+                    }
+                }else {
+                    log.warn("해당 아이템에 대한 데이터가 존재하지 않습니다: {}", craftItemEntity);
+                }
+            } catch (Exception e) {
+                log.error("거래량 갱신 중 오류가 발생했습니다 {}", craftItemEntity);
+                throw new RenewTradeCountException("거래량 갱신 중 오류가 발생했습니다");
+            } finally {
+                if (conn != null) {
+                    conn.disconnect();
+                }
+            }
         }
     }
 }

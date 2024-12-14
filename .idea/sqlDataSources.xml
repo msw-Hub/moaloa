@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="f1ef4d80-a821-4303-b0d7-d251a8883418" name="moaloa Mapping">
+      <data-sources db="49747978-9373-4270-be1c-54343701a620" />
+      <scope>
+        <node kind="schema" qname="moaloa" />
+      </scope>
+    </mapping>
+  </component>
+</project>

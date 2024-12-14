@@ -1,10 +1,11 @@
 import axios from "axios";
-import classIconList from "../data/classIcon.json"; // JSON 파일 경로
-import liveGemList from "../data/liveGemList.json"; // JSON 파일 경로
-import React, { useState, useEffect } from "react";
-import classSkillData from "../data/classSkill.json"; // classSkill.json 파일 경로
+import classIconList from "../../data/classIcon.json"; // JSON 파일 경로
+import liveGemList from "../../data/liveGemList.json"; // JSON 파일 경로
+import React, { useState, useEffect, useRef } from "react";
+import classSkillData from "../../data/classSkill.json"; // classSkill.json 파일 경로
 import { useSelector } from "react-redux";
-import { RootState } from "../store/store";
+import { RootState } from "../../store/store";
+import { useAlert } from "../../hooks/useAlert";
 
 interface liveGemListTpye {
   name: string;
@@ -49,8 +50,8 @@ const classIconListTyped: ClassIconList = classIconList;
 const classSkill: ClassSkill = classSkillData;
 
 function GemSearch() {
-  /**class목록 추출 */
-  // const classSkillList = Object.keys(classSkill);
+  const alertBox = useAlert();
+
   //다크모드
   const darkMode = useSelector((state: RootState) => state.dark.isDark);
   // class 순서
@@ -60,6 +61,8 @@ function GemSearch() {
   const [classSkillCount, setClassSkillCount] = useState(0);
   /** 현재 전체 스킬 개수 (현재 총 API 점색 수) */
   const [nowClassSkillCount, setNowClassSkillCount] = useState(0);
+  const [isSearching, setIsSearching] = useState<boolean>(true);
+
   /** API 키 */
   const apiKey = useSelector((state: RootState) => state.apiKeys.apiKey);
   /** 체크한 직업 */
@@ -73,10 +76,10 @@ function GemSearch() {
   //검색된 보석 리스트
   const [gemListAll, setGemListAll] = useState<GemList[]>([]);
   //채용률
-  const [recruitmentRate, setRecruitmentRate] = useState<number>(30);
+  const [recruitmentRate, setRecruitmentRate] = useState<number>(70);
 
   //정렬 기준 설정
-  const [sort, setSort] = useState<string>("recruitmentRate");
+  const [sort, setSort] = useState<string>("price");
 
   //검색된 보석 리스트 정렬
   const [sortedGemList, setSortedGemList] = useState<GemList[]>([]);
@@ -110,39 +113,57 @@ function GemSearch() {
   }, [checked]);
 
   /** 직업 체크할 때마다 실시 칸 배열 저장 */
-  const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCheck = (className: string) => {
     setNowClassSkillCount(0);
-    e.stopPropagation();
-    const updatedList = e.target.checked ? [...checked, e.target.value] : checked.filter((item) => item !== e.target.value);
+    // const updatedList = e.target.checked ? [...checked, e.target.value] : checked.filter((item) => item !== e.target.value);
+    const updatedList = checked.includes(className) ? checked.filter((item) => item !== className) : [...checked, className];
 
     setChecked(updatedList);
   };
 
-  let count = 0; // 검색 카운트
-  let apicount = 0; // API 카운트
+  let count = useRef(0); // API 카운트
+  let apicount = useRef(0); // API 키 카운트
   const apikeycount = apiKey.reduce((a, b) => (b !== "" ? a + 1 : a), 0); // API 키 개수
 
-  /** API 실행 */
-  function gemSerchAPISend() {
-    count = 0;
+  function delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  async function gemSerchAPISend() {
+    count.current = 0;
     setGemListAll([]);
-    //api 키가 없을 때 경고창 띄우기
+    // API 키가 없을 때 경고창 띄우기
     if (apikeycount === 0) {
-      alert("API 키가 없습니다.");
+      alertBox("API키를 등록해주세요.");
       return;
     }
+    if (classSkillCount === 0) {
+      alertBox("클래스를 선택해주세요.");
+      return;
+    }
+    alertBox("검색이 멈추면 잠시 기다려주세요.");
+    setIsSearching(false);
 
     // 체크한 직업만큼 반복
-    checked.forEach((b) => {
+    for (const b of checked) {
       // 체크한 직업의 스킬만큼 반복
-      classSkill[b].forEach((className: Skill) => {
-        // 검색 API
-        apicount++;
-        if (Math.trunc(apicount / 100) === apikeycount) apicount = 0;
-        gemSerchAPI(className, b, Math.trunc(apicount / 100));
-      });
-    });
+      for (const className of classSkill[b]) {
+        apicount.current++;
+
+        // 딜레이 추가
+        await delay(100); // 0.1초 대기
+
+        // 검색 API 호출
+        await gemSerchAPI(className, b, apicount.current % apikeycount);
+      }
+    }
   }
+
+  useEffect(() => {
+    if (nowClassSkillCount === classSkillCount) {
+      setIsSearching(true);
+    }
+  }, [nowClassSkillCount]);
 
   /** Gem 검색 API */
   function gemSerchAPI(a: Skill, b: string, i: number) {
@@ -150,30 +171,13 @@ function GemSearch() {
       .post(
         "https://developer-lostark.game.onstove.com/auctions/items",
         {
-          ItemLevelMin: 0,
-          ItemLevelMax: 0,
-          ItemGradeQuality: null,
           SkillOptions: [
             {
               FirstOption: a.Value,
-              SecondOption: null,
-              MinValue: null,
-              MaxValue: null,
-            },
-          ],
-          EtcOptions: [
-            {
-              FirstOption: null,
-              SecondOption: null,
-              MinValue: null,
-              MaxValue: null,
             },
           ],
           Sort: "BUY_PRICE",
           CategoryCode: 210000,
-          CharacterClass: null,
-          ItemTier: itemTier,
-          ItemGrade: null,
           ItemName: `${gemLevel} ${itemTier === "3" ? (gemDamCol === "딜" ? "멸화" : "홍염") : gemDamCol === "딜" ? "겁화" : "작열"}`,
           PageNo: 0,
           SortCondition: "ASC",
@@ -188,7 +192,7 @@ function GemSearch() {
       )
       .then((response) => {
         const classGem = response?.data;
-        count++;
+        count.current++;
         let skillUseRateData = skillUseRate[b][gemDamCol == "딜" ? "겁" : "작"].find((c: { skillName: "string"; recruitmentRate: "number" }) => c.skillName == a.Text);
         if (skillUseRateData === undefined) skillUseRateData = { skillName: b, recruitmentRate: 0 };
         if (true) {
@@ -204,20 +208,14 @@ function GemSearch() {
             gemDamCol: gemDamCol,
           };
           setGemListAll((prevList) => [...prevList, apiSearchValue]);
-          setNowClassSkillCount(count);
-          // console.log(apiSearchValue);
+          setNowClassSkillCount(count.current);
         }
       })
       .catch((error) => {
         if (error.response && error.response.status === 429) {
-          count--;
-          if (apikeycount === i + 1) {
-            setTimeout(() => {
-              gemSerchAPI(a, b, 0);
-            }, 22000);
-          } else {
+          setTimeout(() => {
             gemSerchAPI(a, b, i + 1);
-          }
+          }, 22000);
         } else {
           let skillUseRateData = skillUseRate[b][gemDamCol == "딜" ? "겁" : "작"].find((c: { skillName: "string"; recruitmentRate: "number" }) => c.skillName == a.Text);
           if (skillUseRateData === undefined) skillUseRateData = { skillName: b, recruitmentRate: 0 };
@@ -234,8 +232,7 @@ function GemSearch() {
               gemDamCol: gemDamCol,
             };
             setGemListAll((prevList) => [...prevList, apiSearchValue]);
-            setNowClassSkillCount(count);
-            console.log(apiSearchValue);
+            setNowClassSkillCount(count.current);
           }
         }
       });
@@ -256,6 +253,8 @@ function GemSearch() {
 
   /**실시간 보석 시세 검색 api */
   const [liveGemPrice, setLiveGemPrice] = useState<liveGemListTpye[]>([]);
+  //갱신시간
+  const [liveGemLastUpdateTime, setLiveGemLastUpdateTime] = useState<string>("");
   function liveGemPriceSerchAPI() {
     axios
       .get("/api/v1/gemApi/nowGemPrice")
@@ -263,6 +262,7 @@ function GemSearch() {
         const gemPrices = liveGemList.map((a) => {
           return { name: a.name, price: response.data["시세"][a.name].buyPrice, Icon: a.icon, Grade: a.Grade };
         });
+        setLiveGemLastUpdateTime(response.data["갱신 시간"]);
 
         setLiveGemPrice(gemPrices);
       })
@@ -314,55 +314,59 @@ function GemSearch() {
 
   return (
     <>
-      <div className="h-full w-full max-w-[2000px] grid gap-4 mt-20 px-20 grid-rows-responsive grid-cols-responsive">
+      <div className="sm:text-sm text-xs 2xl:max-w-[1700px] max-w-[900px] h-full w-full 2xl:grid 2xl:grid-cols-[1.2fr_1fr] flex flex-col gap-4 p-4">
         <div className="flex flex-col gap-4 text-nowrap">
           {/* class 선택 창 */}
-          <div className="flex flex-row justify-center items-start py-4 px-4 gap-2 bg-gray-50 dark:bg-ctdark border rounded-sm shadow-md">
-            {classOrder.map((className) => (
-              <div key={className}>
-                {/* 통합 class 이름 */}
-                <h2 className="text-center font-bold mb-2">{className}</h2>
-                <div className="w-full flex flex-col justify-center items-start gap-2">
-                  {classIconListTyped[className].map((classIcon: ClassIcon) => (
-                    <label key={classIcon.Class} className="w-full flex flex-row items-center justify-center gap-2">
-                      <input className="hidden" value={classIcon.Class} id={classIcon.Class} type="checkbox" checked={checked.includes(classIcon.Class)} onChange={handleCheck} />
-                      <div className={`btn transition-all cursor-pointer w-full flex justify-start items-center gap-2 py-2 px-5 rounded-md  ${checked.includes(classIcon.Class) ? "bg-[#e3e3e3] dark:bg-bgdark text-white" : ""}`}>
+          <div className="content-box p-6 flex flex-col">
+            <div className="font-bold mb-4">클래스 선택</div>
+            <div className="flex sm:flex-row flex-col justify-evenly gap-2">
+              {classOrder.map((className) => (
+                <div key={className}>
+                  {/* 통합 class 이름 */}
+                  <h2 className="text-center font-bold my-2">{className}</h2>
+                  <div className="grid sm:grid-cols-1 grid-cols-3 gap-2">
+                    {classIconListTyped[className].map((classIcon: ClassIcon) => (
+                      <button onClick={() => handleCheck(classIcon.Class)} className={`flex  md:justify-start justify-center items-center rounded-md gap-2 py-2 px-3 classIconHover ${checked.includes(classIcon.Class) ? "active-btn" : "default-btn"}`}>
                         {/* class 이미지 아이콘 */}
-                        <img className={`w-7 h-7 ${darkMode === false ? " icon-filter" : null}`} src={classIcon.Icon} alt={classIcon.Class} />
+                        <img className={`md:block hidden transition-all w-5 h-5  ${darkMode === false && !checked.includes(classIcon.Class) ? " white-Mode-icon-filter" : null}`} src={classIcon.Icon} alt={classIcon.Class} />
                         {/* class 이름 */}
-                        <span className="font-semibold ">{classIcon.Class}</span>
-                      </div>
-                    </label>
-                  ))}
+                        <span className="font-bold">{classIcon.Class}</span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-          <div className="grid  grid-cols-[1fr_3fr] gap-4 ">
+          <div className="md:grid md:grid-cols-[1fr_3fr] flex flex-col gap-4 ">
             {/*보석 옵션 설정창*/}
             <div className="w-full flex justify-start items-center py-6 px-6 bg-gray-50 dark:bg-ctdark rounded-sm shadow-md">
               <div className="w-full flex flex-col justify-center items-start gap-4">
                 <div className="font-semibold">검색 옵션</div>
-                <div className="w-full grid grid-cols-[1.5fr_1fr_1fr] grid-rows-4 gap-2 text-sm font-semibold">
+                <div className="w-full grid md:grid-cols-[1.5fr_1fr] grid-cols-[1fr_2fr] grid-rows-4 gap-2 font-semibold">
                   {/*보석 티어*/}
-                  <span className="flex justify-center items-center">보석 티어</span>
-                  <button onClick={() => setItemTier("3")} className={"btn transition-all w-14 py-1 px-2 rounded-md " + `${itemTier == "3" ? "bg-[#e3e3e3] dark:bg-bgdark dark:text-white" : ""}`}>
-                    3티어
-                  </button>
-                  <button onClick={() => setItemTier("4")} className={"btn transition-all w-14 py-1 px-2 rounded-md " + `${itemTier == "4" ? "bg-[#e3e3e3] dark:bg-bgdark dark:text-white" : ""}`}>
-                    4티어
-                  </button>
+                  <span className="flex justify-center items-center">티어</span>
+                  <div className="flex justify-center items-center">
+                    <button onClick={() => setItemTier("3")} className={`w-1/2 rounded-l-md py-1 px-2 ${itemTier == "3" ? "active-btn" : "default-btn"}`}>
+                      3티어
+                    </button>
+                    <button onClick={() => setItemTier("4")} className={`w-1/2 rounded-r-md py-1 px-2 ${itemTier == "4" ? "active-btn" : "default-btn"}`}>
+                      4티어
+                    </button>
+                  </div>
                   {/*보석 종류*/}
-                  <span className="flex justify-center items-center">보석 종류</span>
-                  <button onClick={() => setGemDamCol("딜")} className={"btn transition-all w-14 py-1 px-2 rounded-md " + `${gemDamCol == "딜" ? "bg-[#e3e3e3] dark:bg-bgdark dark:text-white" : ""}`}>
-                    {itemTier === "3" ? "멸화" : "겁화"}
-                  </button>
-                  <button onClick={() => setGemDamCol("쿨감")} className={"btn transition-all w-14 py-1 px-2 rounded-md " + `${gemDamCol == "쿨감" ? "bg-[#e3e3e3] dark:bg-bgdark dark:text-white" : ""}`}>
-                    {itemTier === "3" ? "홍염" : "작열"}
-                  </button>
+                  <span className="flex justify-center items-center">종류</span>
+                  <div className="flex justify-center items-center">
+                    <button onClick={() => setGemDamCol("딜")} className={`w-1/2 rounded-l-md p-1 px-2 ${gemDamCol == "딜" ? "active-btn" : "default-btn"}`}>
+                      {itemTier === "3" ? "멸화" : "겁화"}
+                    </button>
+                    <button onClick={() => setGemDamCol("쿨감")} className={`w-1/2 rounded-r-md py-1 px-2 ${gemDamCol == "쿨감" ? "active-btn" : "default-btn"}`}>
+                      {itemTier === "3" ? "홍염" : "작열"}
+                    </button>
+                  </div>
                   {/*보석 레벨*/}
-                  <span className="flex justify-center items-center">보석 레벨</span>
-                  <select className="col-start-2 col-end-4 bg-[#e3e3e3] rounded-md dark:bg-bgdark text-center" onChange={(e) => setGemLevel(e.target.value)} defaultValue={gemLevel}>
+                  <span className="flex justify-center items-center">레벨</span>
+                  <select className="bg-blue-400 rounded-md dark:bg-bgdark text-center text-white shadow-md" onChange={(e) => setGemLevel(e.target.value)} defaultValue={gemLevel}>
                     <option className="font-semibold" value="5레벨">
                       5레벨
                     </option>
@@ -382,100 +386,74 @@ function GemSearch() {
                       10레벨
                     </option>
                   </select>
-                  <div className="flex justify-center items-center gap-2"></div>
                   {/* 스킬 사용율 % 설정, on/off 버튼에따라 활성화 비활성화 */}
-                  <div className="flex justify-center items-center gap-2 col-start-1 col-end-3 row-start-4">
+                  <div className="col-span-2 flex justify-center items-center gap-2">
                     <span>검색수</span>
                     <span>{`${nowClassSkillCount}/${classSkillCount}`}</span>
                   </div>
                   {/*검색 버튼*/}
-                  <button className="row-start-4 py-1 px-2 border-solid border border-bddark rounded-md hover:bg-[#373737] transition-all" onClick={() => gemSerchAPISend()}>
-                    검색
-                  </button>
+                  {isSearching ? (
+                    <button className="btn py-2 col-span-2" onClick={() => gemSerchAPISend()}>
+                      <span>검색</span>
+                    </button>
+                  ) : (
+                    <button className="btn py-2 col-span-2" onClick={() => alertBox("검색중 입니다.")}>
+                      <i className="xi-spinner-3 xi-spin xi-x"></i>
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
 
-            {/* <div className="basis-full flex justify-start items-start py-6 px-6 bg-gray-50 dark:bg-ctdark rounded-sm shadow-md">
-              <div className="h-full w-full flex flex-col justify-start items-start gap-4 ">
-                <div className="font-semibold">검색 필터</div>
-                <div className="grid grid-cols-[1.5fr_1fr_1fr] grid-rows-3 gap-2 text-sm font-semibold">
-                  <span className="col-start-1 flex justify-center items-center">정렬 기준</span>
-                  <select className="col-start-2 col-end-4 rounded-md bg-[#e3e3e3] dark:bg-bgdark text-center " onChange={(e) => setSort(e.target.value)} defaultValue={sort}>
-                    <option className="font-semibold" value="recruitmentRate">
-                      채용률
-                    </option>
-                    <option className="font-semibold" value="price">
-                      가격
-                    </option>
-                  </select>
-
-                  <div className="col-start-1 col-end-2 flex justify-center items-center gap-2">
-                    <span>채용률</span>
-                    <span className="w-10 flex justify-center items-center ">{recruitmentRate}%</span>
-                  </div>
-                  <input className="col-start-2 col-end-4 ml-2" onChange={(e) => setRecruitmentRate(Number(e.target.value))} type="range" min="0" max="100" step="5" defaultValue={30} />
-
-                  <span className="row-start-3 flex justify-center items-center">매물</span>
-
-                  <button onClick={() => setShowGemList1(!showGemList1)} className={"btn row-start-3 w-14 py-1 px-2 rounded-md " + `${showGemList1 == true ? "bg-[#e3e3e3] dark:bg-bgdark dark:text-white" : ""}`}>
-                    있음
-                  </button>
-                  <button onClick={() => setShowGemList2(!showGemList2)} className={"btn row-start-3 w-14 py-1 px-2 rounded-md " + `${showGemList2 == true ? "bg-[#e3e3e3] dark:bg-bgdark dark:text-white" : ""}`}>
-                    없음
-                  </button>
+            <div className="sm:block hidden row-start-1 row-end-3 col-start-2 py-6 px-6 bg-gray-50 dark:bg-ctdark rounded-sm shadow-md">
+              <div className="flex justify-between font-semibold mb-4">
+                <div className="">실시간 보석 시세</div>
+                <div className="flex justify-center items-center text-gray-400 gap-2">
+                  <i className="xi-clock-o xi-x"></i>
+                  <div className="h-auto">{liveGemLastUpdateTime}</div>
                 </div>
               </div>
-            </div> */}
 
-            <div className="row-start-1 row-end-3 col-start-2 py-6 px-6 bg-gray-50 dark:bg-ctdark rounded-sm shadow-md">
-              <div className="font-semibold mb-4">실시간 보석 시세</div>
-              {apikeycount === 0 ? (
-                <div className="h-3/4 flex justify-center items-center">API키를 등록해야 확인가능합니다.</div>
-              ) : (
-                <div className="grid grid-cols-[1fr_1.5fr_1.5fr_1.5fr_1.5fr] grid-rows-[0.5fr_0.5fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-2 text-center font-medium">
-                  <h3 className="col-start-2 col-span-2 text-center font-bold">3티어</h3>
-                  <h3 className="col-start-4 col-span-2 text-center font-bold">4티어</h3>
-                  <span className="col-span-1 font-semibold">레벨</span>
-                  <span className="col-span-1 font-semibold">멸화</span>
-                  <span className="col-span-1 font-semibold">홍염</span>
-                  <span className="col-span-1 font-semibold">겁화</span>
-                  <span className="col-span-1 font-semibold">작열</span>
-                  {[5, 6, 7, 8, 9, 10].map((level) => (
-                    <React.Fragment key={level}></React.Fragment>
-                  ))}
+              <div className="grid sm:grid-cols-[1fr_1.5fr_1.5fr_1.5fr_1.5fr] grid-rows-[0.5fr_0.5fr_1fr_1fr_1fr_1fr_1fr] gap-2 text-center font-medium">
+                <span className="sm:block hidden col-span-1 font-semibold">레벨</span>
+                <span className="col-span-1 font-semibold">멸화</span>
+                <span className="col-span-1 font-semibold">홍염</span>
+                <span className="col-span-1 font-semibold">겁화</span>
+                <span className="col-span-1 font-semibold">작열</span>
+                {[5, 6, 7, 8, 9, 10].map((level) => (
+                  <React.Fragment key={level}></React.Fragment>
+                ))}
 
-                  {liveGemPrice.map((gem, index: number) => (
-                    <React.Fragment key={gem.Icon}>
-                      {index % 4 === 0 && <span className="flex justify-center items-center font-semibold">{Math.floor(index / 4) + 5}레벨</span>}
-                      <div className="col-span-1 flex justify-end items-center gap-2">
-                        <span>{gem.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") || "N/A"}</span>
-                        <img className={`rounded-md p-0.5 w-10 h-10 ${gem.Grade}`} src={gem.Icon} />
-                      </div>
-                    </React.Fragment>
-                  ))}
-                </div>
-              )}
+                {liveGemPrice.map((gem, index: number) => (
+                  <React.Fragment key={gem.Icon}>
+                    {index % 4 === 0 && <span className="sm:flex hidden  justify-center items-center font-semibold">{Math.floor(index / 4) + 5}레벨</span>}
+                    <div className="col-span-1 flex justify-end items-center gap-2">
+                      <span>{gem.price.toLocaleString()}</span>
+                      <img className={`rounded-md p-0.5 w-8 h-8 ${gem.Grade}`} src={gem.Icon} />
+                    </div>
+                  </React.Fragment>
+                ))}
+              </div>
             </div>
           </div>
         </div>
         {/*검색된 보석 리스트 */}
         <div className="flex flex-col">
           {/*필터 설정창*/}
-          <div className="w-full flex justify-between items-start py-4 px-4 bg-gray-50 dark:bg-ctdark rounded-sm shadow-md mb-4">
-            <div className="w-full flex justify-center items-center gap-10 text-sm font-semibold">
+          <div className="w-full flex justify-between items-start  py-4 px-4 bg-gray-50 dark:bg-ctdark rounded-sm shadow-md mb-4">
+            <div className="w-full flex justify-evenly items-center flex-wrap gap-3 font-semibold">
               {/* 정렬 기준 선택 */}
-              <div className="flex justify-center items-center gap-3">
+              {/* <div className="flex justify-center items-center gap-3">
                 <span className="flex justify-center items-center">정렬 기준</span>
-                <select className="col-end-4 rounded-md px-4 py-1 bg-[#e3e3e3] dark:bg-bgdark text-center " onChange={(e) => setSort(e.target.value)} defaultValue={sort}>
-                  <option className="font-semibold" value="recruitmentRate">
+                <div className="grid grid-cols-2">
+                  <button onClick={() => setSort("recruitmentRate")} className={`rounded-l-md py-1 px-2 ${sort === "recruitmentRate" ? "active-btn" : "default-btn"}`}>
                     채용률
-                  </option>
-                  <option className="font-semibold" value="price">
+                  </button>
+                  <button onClick={() => setSort("price")} className={`rounded-r-md py-1 px-2 ${sort === "price" ? "active-btn" : "default-btn"}`}>
                     가격
-                  </option>
-                </select>
-              </div>
+                  </button>
+                </div>
+              </div> */}
 
               {/*채용률 조정해서 보이기 type = range */}
 
@@ -484,7 +462,7 @@ function GemSearch() {
                   <span>채용률</span>
                   <span className="w-10 flex justify-center items-center ">{recruitmentRate}%</span>
                 </div>
-                <input onChange={(e) => setRecruitmentRate(Number(e.target.value))} type="range" min="0" max="100" step="5" defaultValue={30} />
+                <input className="dark:accent-light" onChange={(e) => setRecruitmentRate(Number(e.target.value))} type="range" min="0" max="100" step="5" defaultValue={70} />
               </div>
 
               <div className="flex justify-center items-center gap-2">
@@ -493,10 +471,10 @@ function GemSearch() {
                 {/* <button onClick={() => setShowGemList("all")} className={"row-start-3 w-14 py-1 px-2 rounded-md hover:bg-[#373737] " + `${showGemList == "all" ? "bg-hover dark:bg-bgdark" : ""}`}>
                       전부
                     </button> */}
-                <button onClick={() => setShowGemList1(!showGemList1)} className={"btn w-14 py-1 px-2 rounded-md " + `${showGemList1 == true ? "bg-[#e3e3e3] dark:bg-bgdark dark:text-white" : ""}`}>
+                <button onClick={() => setShowGemList1(!showGemList1)} className={`rounded-md py-1 px-2 ${showGemList1 === true ? "active-btn" : "default-btn"}`}>
                   있음
                 </button>
-                <button onClick={() => setShowGemList2(!showGemList2)} className={"btn w-14 py-1 px-2 rounded-md " + `${showGemList2 == true ? "bg-[#e3e3e3] dark:bg-bgdark dark:text-white" : ""}`}>
+                <button onClick={() => setShowGemList2(!showGemList2)} className={`rounded-md py-1 px-2 ${showGemList2 === true ? "active-btn" : "default-btn"}`}>
                   없음
                 </button>
               </div>
@@ -504,13 +482,19 @@ function GemSearch() {
           </div>
           <div className="h-full flex flex-col justify-start items-center bg-gray-50  dark:bg-ctdark rounded-sm shadow-md text-nowrap">
             {/** 검색된 보석 리스트 table header */}
-            <div className="w-full py-4 grid grid-cols-[1fr_1.5fr_3fr_1fr_1fr_1fr_12px] text-center font-bold">
+            <div className="w-full py-4 grid min-[500px]:grid-cols-[1fr_1.5fr_3fr_1fr_1fr_1fr_12px] grid-cols-[1fr_1.5fr_3fr_1fr_1fr_12px] text-center font-bold">
               <div>아이콘</div>
               <div>직업</div>
-              <div>스킬 이름</div>
-              <div>가격</div>
-              <div>차익</div>
-              <div>채용률(%)</div>
+              <div>스킬</div>
+              <button onClick={() => setSort("price")} className={"flex justify-center items-center gap-1 " + `${sort === "price" ? "text-green-500" : null}`}>
+                <div>가격</div>
+                <i className="xi-caret-down-min"></i>
+              </button>
+              <button onClick={() => setSort("recruitmentRate")} className={"flex justify-center items-center gap-1 " + `${sort === "recruitmentRate" ? "text-green-500" : null}`}>
+                <div>채용률</div>
+                <i className="xi-caret-down-min"></i>
+              </button>
+              <div className="min-[500px]:block hidden">차익</div>
               {/*스크롤바 */}
               <div></div>
             </div>
@@ -521,17 +505,17 @@ function GemSearch() {
                 if (gem.price !== 0 && !showGemList1) return null;
                 if (gem.skillUseRate.recruitmentRate < recruitmentRate) return null;
                 return (
-                  <div key={gem.Icon} className="hover:bg-hover dark:hover:bg-gray-700 transition-colors grid grid-cols-[1fr_1.5fr_3fr_1fr_1fr_1fr] w-full font-medium">
+                  <div key={gem.Icon} className="hover:bg-hover dark:hover:bg-gray-700 transition-colors grid min-[500px]:grid-cols-[1fr_1.5fr_3fr_1fr_1fr_1fr] grid-cols-[1fr_1.5fr_3fr_1fr_1fr] w-full font-medium">
                     <div className="border border-bddark py-2  flex justify-center items-center">
                       <img src={gem.Icon} alt="스킬아이콘" className="w-8 h-8" />
                     </div>
                     <div className="border border-bddark py-2  flex items-center justify-center">{gem.className}</div>
                     <div className="border border-bddark py-2 flex items-center justify-center">{gem.skillName}</div>
                     <div className="border border-bddark py-2 flex items-center justify-center">{gem?.price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div>
-                    <div className="border border-bddark py-2 flex items-center justify-center">
-                      {gem.price === 0 ? 0 : (gem.price - Number(liveGemPrice[(Number(gem.gemLevel) - 5) * 4 + (gem.gemDamCol === "딜" ? 0 : 1) + (gem.Tier === "3" ? 0 : 1)]?.price ?? 0)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                    <div className="border border-bddark py-2 flex items-center justify-center">{Math.round(gem.skillUseRate.recruitmentRate)}%</div>
+                    <div className={"border border-bddark py-2  items-center justify-center min-[500px]:flex hidden"}>
+                      {gem.price === 0 ? 0 : (gem.price - Number(liveGemPrice[(Number(gem.gemLevel) - 5) * 4 + (gem.gemDamCol === "딜" ? 0 : 1) + (gem.Tier === "3" ? 0 : 2)]?.price ?? 0)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                     </div>
-                    <div className="border border-bddark py-2 flex items-center justify-center">{gem.skillUseRate.recruitmentRate}</div>
                   </div>
                 );
               })}

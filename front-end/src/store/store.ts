@@ -1,13 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import darkMode from "./darkMode";
-import modal from "./modal";
 import apiKey from "./apiKey";
+import alertbox from "./alertBox";
 
 const store = configureStore({
   reducer: {
     dark: darkMode.reducer,
-    modal: modal.reducer,
     apiKeys: apiKey.reducer,
+    alertbox: alertbox.reducer,
   },
 });
 
