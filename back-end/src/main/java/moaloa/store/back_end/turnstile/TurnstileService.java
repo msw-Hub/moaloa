@@ -1,46 +1,88 @@
 package moaloa.store.back_end.turnstile;
 
-
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class TurnstileService {
 
-    @Value("${turnstile.secret}")
-    private String secretKey;
+    private final String secret;
 
-    public TurnstileDto verifyTurnstile(String token) {
+    @Autowired
+    public TurnstileService(@Value("${turnstile.secret}") String secret) {
+        this.secret = secret;
+    }
+
+    @PostConstruct
+    public void init() {
+        log.info("Turnstile Secret Key: {}", secret);  // secret 값 확인을 위한 로그
+    }
+
+    public boolean verifyTurnstile(String token) {
         log.info("토큰 검증을 시작합니다. token: {}", token);
 
-        // 요청을 구성
-        String TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
-        String url = UriComponentsBuilder.fromHttpUrl(TURNSTILE_VERIFY_URL)
-                .queryParam("secret", secretKey)
-                .queryParam("response", token)
-                .toUriString();
+        String reqURL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
-        // RestTemplate을 이용한 HTTP 요청
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<TurnstileDto> response = restTemplate.postForEntity(url, null, TurnstileDto.class);
+        try {
+            // URL 객체 생성
+            URL url = new URL(reqURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-        if (response.getBody() != null) {
-            TurnstileDto responseBody = response.getBody();
-            if (responseBody.isSuccess()) {
-                // Turnstile 검증이 성공한 경우
-                return responseBody;
-            } else {
-                // Turnstile 검증이 실패한 경우
-                log.error("Turnstile 검증에 실패하였습니다. errorCodes: {}", (Object) responseBody.getErrorCodes());
+            // HTTP 메서드와 헤더 설정
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setDoOutput(true);
+
+            // POST 요청 본문 구성
+            String jsonInputString = "{\"secret\": \"" + secret + "\", \"response\": \"" + token + "\"}";
+
+            // 응답 코드 확인
+            // JSON 데이터 전송
+            try (OutputStream os = conn.getOutputStream()) {
+                byte[] input = jsonInputString.getBytes("utf-8");
+                os.write(input, 0, input.length);
             }
+
+            int responseCode = conn.getResponseCode();
+            InputStreamReader streamReader = (responseCode == 200) ?
+                    new InputStreamReader(conn.getInputStream()) : new InputStreamReader(conn.getErrorStream());
+
+            BufferedReader br = new BufferedReader(streamReader);
+            StringBuilder result = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                result.append(line);
+            }
+            br.close();
+
+            String responseString = result.toString();
+            log.info("responseString: {}", responseString);
+
+            // JSON 응답 파싱
+            JSONObject jsonObject = new JSONObject(responseString);
+            boolean success = jsonObject.getBoolean("success");
+            if (success) {
+                log.info("토큰 검증 성공");
+                return true;
+            } else {
+                log.info("토큰 검증 실패");
+                return false;
+            }
+        } catch (Exception e) {
+            log.error("토큰 검증 중 오류 발생", e);
+            return false;
         }
-        return null; // 실패 시 null 반환
     }
 }

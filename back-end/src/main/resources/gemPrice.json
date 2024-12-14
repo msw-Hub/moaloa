@@ -1,28 +1,28 @@
 {
-    "갱신 시간": "2024-12-14 19:57:51",
+    "갱신 시간": "2024-12-14 20:43:05",
     "시세": {
         "9레벨 겁화의 보석": {
             "buyPrice": 889000,
             "gemTier": 4
         },
         "5레벨 겁화의 보석": {
-            "buyPrice": 11300,
+            "buyPrice": 11500,
             "gemTier": 4
         },
         "9레벨 작열의 보석": {
-            "buyPrice": 889000,
+            "buyPrice": 886500,
             "gemTier": 4
         },
         "8레벨 겁화의 보석": {
-            "buyPrice": 322000,
+            "buyPrice": 322800,
             "gemTier": 4
         },
         "6레벨 작열의 보석": {
-            "buyPrice": 34800,
+            "buyPrice": 35900,
             "gemTier": 4
         },
         "8레벨 홍염의 보석": {
-            "buyPrice": 34500,
+            "buyPrice": 34000,
             "gemTier": 3
         },
         "9레벨 홍염의 보석": {
@@ -30,43 +30,43 @@
             "gemTier": 3
         },
         "5레벨 홍염의 보석": {
-            "buyPrice": 1200,
+            "buyPrice": 1209,
             "gemTier": 3
         },
         "7레벨 멸화의 보석": {
-            "buyPrice": 11000,
+            "buyPrice": 11200,
             "gemTier": 3
         },
         "7레벨 홍염의 보석": {
-            "buyPrice": 11000,
+            "buyPrice": 11200,
             "gemTier": 3
         },
         "10레벨 작열의 보석": {
-            "buyPrice": 1970000,
+            "buyPrice": 1987777,
             "gemTier": 4
         },
         "5레벨 작열의 보석": {
-            "buyPrice": 11190,
+            "buyPrice": 11500,
             "gemTier": 4
         },
         "10레벨 멸화의 보석": {
-            "buyPrice": 320000,
+            "buyPrice": 325000,
             "gemTier": 3
         },
         "7레벨 겁화의 보석": {
-            "buyPrice": 104900,
+            "buyPrice": 105000,
             "gemTier": 4
         },
         "8레벨 작열의 보석": {
-            "buyPrice": 312999,
+            "buyPrice": 307800,
             "gemTier": 4
         },
         "8레벨 멸화의 보석": {
-            "buyPrice": 34500,
+            "buyPrice": 34450,
             "gemTier": 3
         },
         "6레벨 멸화의 보석": {
-            "buyPrice": 3650,
+            "buyPrice": 3640,
             "gemTier": 3
         },
         "6레벨 홍염의 보석": {
@@ -74,11 +74,11 @@
             "gemTier": 3
         },
         "10레벨 겁화의 보석": {
-            "buyPrice": 3025000,
+            "buyPrice": 3040000,
             "gemTier": 4
         },
         "10레벨 홍염의 보석": {
-            "buyPrice": 303000,
+            "buyPrice": 309900,
             "gemTier": 3
         },
         "6레벨 겁화의 보석": {
@@ -86,15 +86,15 @@
             "gemTier": 4
         },
         "7레벨 작열의 보석": {
-            "buyPrice": 104990,
+            "buyPrice": 104800,
             "gemTier": 4
         },
         "5레벨 멸화의 보석": {
-            "buyPrice": 1200,
+            "buyPrice": 1210,
             "gemTier": 3
         },
         "9레벨 멸화의 보석": {
-            "buyPrice": 103500,
+            "buyPrice": 103900,
             "gemTier": 3
         }
     }

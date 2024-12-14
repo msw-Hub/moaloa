@@ -8,23 +8,23 @@
     }, {
       "marketId" : 6882104,
       "marketName" : "수줍은 들꽃",
-      "currentMinPrice" : 99.0,
+      "currentMinPrice" : 100.0,
       "grade" : "고급"
     }, {
       "marketId" : 6882107,
       "marketName" : "화사한 들꽃",
-      "currentMinPrice" : 78.0,
+      "currentMinPrice" : 65.0,
       "grade" : "희귀"
     }, {
       "marketId" : 6882109,
       "marketName" : "아비도스 들꽃",
-      "currentMinPrice" : 644.0,
+      "currentMinPrice" : 645.0,
       "grade" : "희귀"
     } ],
     "60500" : [ {
       "marketId" : 101211,
       "marketName" : "신속 로브",
-      "currentMinPrice" : 23.0,
+      "currentMinPrice" : 24.0,
       "grade" : "희귀"
     }, {
       "marketId" : 101101,
@@ -35,22 +35,22 @@
     "90400" : [ {
       "marketId" : 6882401,
       "marketName" : "철광석",
-      "currentMinPrice" : 50.0,
+      "currentMinPrice" : 51.0,
       "grade" : "일반"
     }, {
       "marketId" : 6882404,
       "marketName" : "묵직한 철광석",
-      "currentMinPrice" : 98.0,
+      "currentMinPrice" : 99.0,
       "grade" : "고급"
     }, {
       "marketId" : 6884407,
       "marketName" : "단단한 철광석",
-      "currentMinPrice" : 499.0,
+      "currentMinPrice" : 495.0,
       "grade" : "희귀"
     }, {
       "marketId" : 6884408,
       "marketName" : "아비도스 철광석",
-      "currentMinPrice" : 644.0,
+      "currentMinPrice" : 643.0,
       "grade" : "희귀"
     } ],
     "60400" : [ {
@@ -61,7 +61,7 @@
     }, {
       "marketId" : 101191,
       "marketName" : "성스러운 부적",
-      "currentMinPrice" : 23.0,
+      "currentMinPrice" : 24.0,
       "grade" : "희귀"
     }, {
       "marketId" : 101042,
@@ -72,22 +72,22 @@
     "90300" : [ {
       "marketId" : 6882301,
       "marketName" : "목재",
-      "currentMinPrice" : 49.0,
+      "currentMinPrice" : 51.0,
       "grade" : "일반"
     }, {
       "marketId" : 6882304,
       "marketName" : "부드러운 목재",
-      "currentMinPrice" : 99.0,
+      "currentMinPrice" : 100.0,
       "grade" : "고급"
     }, {
       "marketId" : 6884307,
       "marketName" : "튼튼한 목재",
-      "currentMinPrice" : 497.0,
+      "currentMinPrice" : 508.0,
       "grade" : "희귀"
     }, {
       "marketId" : 6884308,
       "marketName" : "아비도스 목재",
-      "currentMinPrice" : 636.0,
+      "currentMinPrice" : 644.0,
       "grade" : "희귀"
     } ],
     "60300" : [ {
@@ -98,12 +98,12 @@
     }, {
       "marketId" : 101011,
       "marketName" : "화염 수류탄",
-      "currentMinPrice" : 21.0,
+      "currentMinPrice" : 22.0,
       "grade" : "희귀"
     }, {
       "marketId" : 101151,
       "marketName" : "암흑 수류탄",
-      "currentMinPrice" : 23.0,
+      "currentMinPrice" : 22.0,
       "grade" : "희귀"
     }, {
       "marketId" : 101221,
@@ -113,12 +113,12 @@
     }, {
       "marketId" : 101912,
       "marketName" : "파괴 폭탄",
-      "currentMinPrice" : 28.0,
+      "currentMinPrice" : 27.0,
       "grade" : "희귀"
     }, {
       "marketId" : 101171,
       "marketName" : "부식 폭탄",
-      "currentMinPrice" : 25.0,
+      "currentMinPrice" : 27.0,
       "grade" : "희귀"
     }, {
       "marketId" : 101261,
@@ -144,12 +144,12 @@
     }, {
       "marketId" : 6885608,
       "marketName" : "오레하 태양 잉어",
-      "currentMinPrice" : 493.0,
+      "currentMinPrice" : 472.0,
       "grade" : "희귀"
     }, {
       "marketId" : 6885609,
       "marketName" : "아비도스 태양 잉어",
-      "currentMinPrice" : 649.0,
+      "currentMinPrice" : 651.0,
       "grade" : "희귀"
     } ],
     "60200" : [ {
@@ -161,27 +161,27 @@
     "90500" : [ {
       "marketId" : 6882501,
       "marketName" : "두툼한 생고기",
-      "currentMinPrice" : 66.0,
+      "currentMinPrice" : 65.0,
       "grade" : "일반"
     }, {
       "marketId" : 6882504,
       "marketName" : "다듬은 생고기",
-      "currentMinPrice" : 130.0,
+      "currentMinPrice" : 131.0,
       "grade" : "고급"
     }, {
       "marketId" : 6885508,
       "marketName" : "오레하 두툼한 생고기",
-      "currentMinPrice" : 454.0,
+      "currentMinPrice" : 456.0,
       "grade" : "희귀"
     }, {
       "marketId" : 6885509,
       "marketName" : "아비도스 두툼한 생고기",
-      "currentMinPrice" : 830.0,
+      "currentMinPrice" : 833.0,
       "grade" : "희귀"
     }, {
       "marketId" : 6885505,
       "marketName" : "진귀한 가죽",
-      "currentMinPrice" : 4.0,
+      "currentMinPrice" : 8.0,
       "grade" : "희귀"
     } ],
     "90700" : [ {
@@ -192,22 +192,22 @@
     }, {
       "marketId" : 6882704,
       "marketName" : "희귀한 유물",
-      "currentMinPrice" : 100.0,
+      "currentMinPrice" : 99.0,
       "grade" : "고급"
     }, {
       "marketId" : 6885708,
       "marketName" : "오레하 유물",
-      "currentMinPrice" : 561.0,
+      "currentMinPrice" : 564.0,
       "grade" : "희귀"
     }, {
       "marketId" : 6885709,
       "marketName" : "아비도스 유물",
-      "currentMinPrice" : 648.0,
+      "currentMinPrice" : 662.0,
       "grade" : "희귀"
     }, {
       "marketId" : 6885705,
       "marketName" : "진귀한 유물",
-      "currentMinPrice" : 5.0,
+      "currentMinPrice" : 8.0,
       "grade" : "희귀"
     } ]
   },
@@ -382,8 +382,8 @@
     "craftTime" : 1800,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_78.png",
     "grade" : "희귀",
-    "currentMinPrice" : 7.0,
-    "recentPrice" : 9.0,
+    "currentMinPrice" : 8.0,
+    "recentPrice" : 7.0,
     "tradeCount" : 253,
     "craftMaterials" : [ {
       "id" : 25,
@@ -429,7 +429,7 @@
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_76.png",
     "grade" : "영웅",
     "currentMinPrice" : 13.0,
-    "recentPrice" : 14.0,
+    "recentPrice" : 12.0,
     "tradeCount" : 372,
     "craftMaterials" : [ {
       "id" : 26,
@@ -483,8 +483,8 @@
     "craftTime" : 1800,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_51.png",
     "grade" : "희귀",
-    "currentMinPrice" : 23.0,
-    "recentPrice" : 23.0,
+    "currentMinPrice" : 24.0,
+    "recentPrice" : 24.0,
     "tradeCount" : 43054,
     "craftMaterials" : [ {
       "id" : 11,
@@ -566,8 +566,8 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_115.png",
     "grade" : "희귀",
-    "currentMinPrice" : 54.0,
-    "recentPrice" : 54.0,
+    "currentMinPrice" : 53.0,
+    "recentPrice" : 53.0,
     "tradeCount" : 92613,
     "craftMaterials" : [ {
       "id" : 28,
@@ -594,8 +594,8 @@
     "craftTime" : 3600,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_216.png",
     "grade" : "희귀",
-    "currentMinPrice" : 1458.0,
-    "recentPrice" : 1457.0,
+    "currentMinPrice" : 1459.0,
+    "recentPrice" : 1459.0,
     "tradeCount" : 2499,
     "craftMaterials" : [ {
       "id" : 20,
@@ -667,8 +667,8 @@
     "craftTime" : 3600,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_208.png",
     "grade" : "희귀",
-    "currentMinPrice" : 929.0,
-    "recentPrice" : 929.0,
+    "currentMinPrice" : 920.0,
+    "recentPrice" : 920.0,
     "tradeCount" : 267,
     "craftMaterials" : [ {
       "id" : 19,
@@ -740,8 +740,8 @@
     "craftTime" : 3600,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_215.png",
     "grade" : "희귀",
-    "currentMinPrice" : 416.0,
-    "recentPrice" : 416.0,
+    "currentMinPrice" : 417.0,
+    "recentPrice" : 417.0,
     "tradeCount" : 2728,
     "craftMaterials" : [ {
       "id" : 19,
@@ -886,8 +886,8 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_8_171.png",
     "grade" : "고급",
-    "currentMinPrice" : 240.0,
-    "recentPrice" : 240.0,
+    "currentMinPrice" : 307.0,
+    "recentPrice" : 309.0,
     "tradeCount" : 14951,
     "craftMaterials" : [ {
       "id" : 19,
@@ -959,8 +959,8 @@
     "craftTime" : 1800,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_52.png",
     "grade" : "희귀",
-    "currentMinPrice" : 23.0,
-    "recentPrice" : 23.0,
+    "currentMinPrice" : 24.0,
+    "recentPrice" : 24.0,
     "tradeCount" : 691,
     "craftMaterials" : [ {
       "id" : 25,
@@ -1005,7 +1005,7 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_97.png",
     "grade" : "희귀",
-    "currentMinPrice" : 60.0,
+    "currentMinPrice" : 59.0,
     "recentPrice" : 60.0,
     "tradeCount" : 15,
     "craftMaterials" : [ {
@@ -1125,8 +1125,8 @@
     "craftTime" : 3600,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_10.png",
     "grade" : "영웅",
-    "currentMinPrice" : 26.0,
-    "recentPrice" : 26.0,
+    "currentMinPrice" : 27.0,
+    "recentPrice" : 27.0,
     "tradeCount" : 89375,
     "craftMaterials" : [ {
       "id" : 26,
@@ -1171,8 +1171,8 @@
     "craftTime" : 3600,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_72.png",
     "grade" : "영웅",
-    "currentMinPrice" : 34.0,
-    "recentPrice" : 34.0,
+    "currentMinPrice" : 35.0,
+    "recentPrice" : 35.0,
     "tradeCount" : 146713,
     "craftMaterials" : [ {
       "id" : 26,
@@ -1226,8 +1226,8 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_71.png",
     "grade" : "희귀",
-    "currentMinPrice" : 11.0,
-    "recentPrice" : 11.0,
+    "currentMinPrice" : 10.0,
+    "recentPrice" : 10.0,
     "tradeCount" : 447836,
     "craftMaterials" : [ {
       "id" : 23,
@@ -1456,7 +1456,7 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_85.png",
     "grade" : "희귀",
-    "currentMinPrice" : 43.0,
+    "currentMinPrice" : 42.0,
     "recentPrice" : 46.0,
     "tradeCount" : 40,
     "craftMaterials" : [ {
@@ -1493,8 +1493,8 @@
     "craftTime" : 1800,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_1.png",
     "grade" : "희귀",
-    "currentMinPrice" : 21.0,
-    "recentPrice" : 21.0,
+    "currentMinPrice" : 22.0,
+    "recentPrice" : 22.0,
     "tradeCount" : 923,
     "craftMaterials" : [ {
       "id" : 7,
@@ -1539,7 +1539,7 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_82.png",
     "grade" : "희귀",
-    "currentMinPrice" : 37.0,
+    "currentMinPrice" : 36.0,
     "recentPrice" : 38.0,
     "tradeCount" : 0,
     "craftMaterials" : [ {
@@ -1576,7 +1576,7 @@
     "craftTime" : 1800,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_47.png",
     "grade" : "희귀",
-    "currentMinPrice" : 23.0,
+    "currentMinPrice" : 22.0,
     "recentPrice" : 23.0,
     "tradeCount" : 39532,
     "craftMaterials" : [ {
@@ -1705,8 +1705,8 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_86.png",
     "grade" : "희귀",
-    "currentMinPrice" : 47.0,
-    "recentPrice" : 40.0,
+    "currentMinPrice" : 49.0,
+    "recentPrice" : 49.0,
     "tradeCount" : 731,
     "craftMaterials" : [ {
       "id" : 7,
@@ -1742,8 +1742,8 @@
     "craftTime" : 1800,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_21.png",
     "grade" : "희귀",
-    "currentMinPrice" : 28.0,
-    "recentPrice" : 28.0,
+    "currentMinPrice" : 27.0,
+    "recentPrice" : 27.0,
     "tradeCount" : 10252,
     "craftMaterials" : [ {
       "id" : 11,
@@ -1788,8 +1788,8 @@
     "craftTime" : 1800,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_49.png",
     "grade" : "희귀",
-    "currentMinPrice" : 25.0,
-    "recentPrice" : 26.0,
+    "currentMinPrice" : 27.0,
+    "recentPrice" : 27.0,
     "tradeCount" : 2956,
     "craftMaterials" : [ {
       "id" : 11,
@@ -1926,7 +1926,7 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_88.png",
     "grade" : "희귀",
-    "currentMinPrice" : 52.0,
+    "currentMinPrice" : 51.0,
     "recentPrice" : 35.0,
     "tradeCount" : 3,
     "craftMaterials" : [ {
@@ -1963,7 +1963,7 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_89.png",
     "grade" : "희귀",
-    "currentMinPrice" : 40.0,
+    "currentMinPrice" : 39.0,
     "recentPrice" : 40.0,
     "tradeCount" : 5615,
     "craftMaterials" : [ {
@@ -2000,7 +2000,7 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_90.png",
     "grade" : "희귀",
-    "currentMinPrice" : 59.0,
+    "currentMinPrice" : 60.0,
     "recentPrice" : 60.0,
     "tradeCount" : 5313,
     "craftMaterials" : [ {
@@ -2037,8 +2037,8 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_91.png",
     "grade" : "희귀",
-    "currentMinPrice" : 66.0,
-    "recentPrice" : 66.0,
+    "currentMinPrice" : 65.0,
+    "recentPrice" : 65.0,
     "tradeCount" : 2379,
     "craftMaterials" : [ {
       "id" : 11,
@@ -2111,8 +2111,8 @@
     "craftTime" : 1800,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_7.png",
     "grade" : "희귀",
-    "currentMinPrice" : 13.0,
-    "recentPrice" : 13.0,
+    "currentMinPrice" : 14.0,
+    "recentPrice" : 14.0,
     "tradeCount" : 7658,
     "craftMaterials" : [ {
       "id" : 2,
@@ -2231,8 +2231,8 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_71.png",
     "grade" : "희귀",
-    "currentMinPrice" : 11.0,
-    "recentPrice" : 11.0,
+    "currentMinPrice" : 10.0,
+    "recentPrice" : 10.0,
     "tradeCount" : 447836,
     "craftMaterials" : [ {
       "id" : 19,
@@ -2277,8 +2277,8 @@
     "craftTime" : 2700,
     "iconLink" : "https://cdn-lostark.game.onstove.com/efui_iconatlas/use/use_9_71.png",
     "grade" : "희귀",
-    "currentMinPrice" : 11.0,
-    "recentPrice" : 11.0,
+    "currentMinPrice" : 10.0,
+    "recentPrice" : 10.0,
     "tradeCount" : 447836,
     "craftMaterials" : [ {
       "id" : 15,
@@ -2724,5 +2724,5 @@
     } ],
     "ydayAvgPrice" : 67.7
   } ],
-  "갱신시간" : "2024-12-14 20:21:13"
+  "갱신시간" : "2024-12-14 21:14:48"
 }

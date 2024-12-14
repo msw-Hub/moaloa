@@ -40,8 +40,8 @@ jobs:
       with:
         aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        application_name: springboot-developer
-        environment_name: Springboot-developer-env
+        application_name: moaloa-springboot
+        environment_name: Moaloa-springboot-env-1
         version_label: github-action-${{steps.current-time.outputs.formattedTime}}
         region: ap-northeast-2
         deployment_package: ./back-end/build/libs/${{env.artifact}}
