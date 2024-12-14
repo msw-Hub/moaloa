@@ -7,17 +7,16 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/verify/")
+@RequestMapping("/api/v1/verify")
 public class TurnstileController {
 
     private final TurnstileService turnstileService;
 
     @PostMapping("/turnstile")
     public ResponseEntity<?> verifyTurnstile(
-            @RequestParam @NonNull String token,
-            @RequestParam @NonNull String remoteIp
+            @RequestParam @NonNull String token
     ) {
-        TurnstileDto response = turnstileService.verifyTurnstile(token, remoteIp);
+        TurnstileDto response = turnstileService.verifyTurnstile(token);
 
         if (response != null && response.isSuccess()) {
             // 성공 시

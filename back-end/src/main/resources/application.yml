@@ -1,0 +1,39 @@
+spring:
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQLDialect
+logging:
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} : %msg%n"
+  file:
+    encoding: UTF-8
+  encoding:
+    charset: UTF-8
+
+loa:
+  api:
+    key1: ${LOA_API_KEY1}
+    key2: ${LOA_API_KEY2}
+    key3: ${LOA_API_KEY3}
+    key4: ${LOA_API_KEY4}
+    key5: ${LOA_API_KEY5}
+  craft:
+    key6: ${LOA_CRAFT_KEY6}
+    key7: ${LOA_CRAFT_KEY7}
+    key8: ${LOA_CRAFT_KEY8}
+    key9: ${LOA_CRAFT_KEY9}
+    key10: ${LOA_CRAFT_KEY10}
+
+jsonFile:
+  craftData: ${JSONFILE_CRAFT_DATA}
+  gemData: ${JSONFILE_GEM_DATA}
+  gemPrice: ${JSONFILE_GEM_PRICE}
+
+turnstile:
+  secret: ${TURNSTILE_SECRET}

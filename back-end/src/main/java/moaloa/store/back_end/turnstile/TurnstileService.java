@@ -14,10 +14,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequiredArgsConstructor
 public class TurnstileService {
 
-    @Value("${turnstile.secretKey}")
+    @Value("${turnstile.secret}")
     private String secretKey;
 
-    public TurnstileDto verifyTurnstile(String token, String remoteIp) {
+    public TurnstileDto verifyTurnstile(String token) {
         log.info("토큰 검증을 시작합니다. token: {}", token);
 
         // 요청을 구성
@@ -25,7 +25,6 @@ public class TurnstileService {
         String url = UriComponentsBuilder.fromHttpUrl(TURNSTILE_VERIFY_URL)
                 .queryParam("secret", secretKey)
                 .queryParam("response", token)
-                .queryParam("remoteip", remoteIp)
                 .toUriString();
 
         // RestTemplate을 이용한 HTTP 요청
