@@ -24,8 +24,10 @@ loa:
     key4: ${LOA_API_KEY4}
     key5: ${LOA_API_KEY5}
   craft:
+    key0: ${LOA_CRAFT_KEY0}
     key6: ${LOA_CRAFT_KEY6}
     key7: ${LOA_CRAFT_KEY7}
+    key8: ${LOA_CRAFT_KEY8}
 
 jsonFile:
   craftData: "/var/app/current/craftData.json"
