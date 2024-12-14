@@ -85,7 +85,6 @@ public class CraftService {
     public void getLoaApi() {
         String reqURL = "https://developer-lostark.game.onstove.com/markets/items";
         Map<Integer, List<String>> codeToItemsMap = subsCodeMap();
-        log.info("craftApi: {}", craftApi[0]);
         try {
             for (Map.Entry<Integer, List<String>> entry : codeToItemsMap.entrySet()) {
                 int code = entry.getKey();

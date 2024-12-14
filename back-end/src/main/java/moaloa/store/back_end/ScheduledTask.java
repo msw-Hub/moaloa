@@ -45,8 +45,6 @@ public class ScheduledTask {
         isRunning = true;
         try {
             log.info("======================CraftData Start======================");
-            String currentDir = System.getProperty("user.dir");
-            System.out.println("현재 작업 디렉토리: " + currentDir);
             craftService.getLoaApi();
             log.info("======================CraftData End======================");
         } finally {
@@ -55,38 +53,38 @@ public class ScheduledTask {
     }
 
 
-//    //보석 시세 갱신
-//    @Async
-//    @Retryable(
-//            retryFor = {
-//                    GemDataException.class,  //json 파일 읽기, 쓰기, 파싱 문제 or 데이터베이스에 없는 보석일 경우
-//                    GemPriceApiException.class //가격 요청 api 했을 시에, 키 문제 있거나 데이터 넣을때 문제발생
-//            },
-//            maxAttempts = 5,
-//            backoff = @Backoff(delay = 80000) //1분 20초
-//    )
-//    @Scheduled(fixedDelay = 1000 * 60 * 30) // 30분 (1000 = 1초)
-//    public void renewGemPrice() {
-//        log.info("======================GemPrice Start======================");
-//        gemApiService.getGemPrice();
-//        log.info("======================GemPrice End======================");
-//    }
-//
-//
-//    //제작아이템 거래량 갱신
-//    @Async
-//    @Retryable(
-//            retryFor = { RenewTradeCountException.class }, //api 요청시 키 문제 있거나 데이터 넣을때 문제발생
-//            maxAttempts = 5,
-//            backoff = @Backoff(delay = 80000)
-//    )
-//    @Scheduled(cron = "0 5 0 * * ?") // 매일 0시 5분
-//    public void renewTradeCount() {
-//        log.info("======================TradeCount Start======================");
-//        craftService.renewTradeCount();
-//        log.info("======================TradeCount End======================");
-//    }
-//
+    //보석 시세 갱신
+    @Async
+    @Retryable(
+            retryFor = {
+                    GemDataException.class,  //json 파일 읽기, 쓰기, 파싱 문제 or 데이터베이스에 없는 보석일 경우
+                    GemPriceApiException.class //가격 요청 api 했을 시에, 키 문제 있거나 데이터 넣을때 문제발생
+            },
+            maxAttempts = 5,
+            backoff = @Backoff(delay = 80000) //1분 20초
+    )
+    @Scheduled(fixedDelay = 1000 * 60 * 30) // 30분 (1000 = 1초)
+    public void renewGemPrice() {
+        log.info("======================GemPrice Start======================");
+        gemApiService.getGemPrice();
+        log.info("======================GemPrice End======================");
+    }
+
+
+    //제작아이템 거래량 갱신
+    @Async
+    @Retryable(
+            retryFor = { RenewTradeCountException.class }, //api 요청시 키 문제 있거나 데이터 넣을때 문제발생
+            maxAttempts = 5,
+            backoff = @Backoff(delay = 80000)
+    )
+    @Scheduled(cron = "0 5 0 * * ?") // 매일 0시 5분
+    public void renewTradeCount() {
+        log.info("======================TradeCount Start======================");
+        craftService.renewTradeCount();
+        log.info("======================TradeCount End======================");
+    }
+
 //    //크롤링하고 로아 API 호출해서 데이터 쌓음
 //    @Async
 //    @Scheduled(cron = "0 0 2 ? * FRI") // 매주 금요일 새벽 2시
