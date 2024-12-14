@@ -20,39 +20,41 @@ import org.springframework.stereotype.Component;
 @EnableRetry
 public class ScheduledTask {
 
-//    private final CrawlingService crawlingService;
-//    private final GemDataService gemDataService;
-//    private final GemApiService gemApiService;
-//    private final CraftService craftService;
-//
-//    private boolean isRunning = false;
-//    //제작아이템 시세 갱신
-//    @Async
-//    @Retryable(
-//            retryFor = {
-//                    CraftApiGetException.class, //api 요청시 키 문제 있거나 데이터 넣을때 문제발생
-//                    CraftDataException.class
-//            },
-//            maxAttempts = 5,
-//            backoff = @Backoff(delay = 80000) //1분 20초
-//    )
-//    @Scheduled(fixedDelay = 1000 * 60)
-//    public void renewCraftData() {
-//        if (isRunning) {
-//            log.warn("renewCraftData is already running. Skipping this execution.");
-//            return;
-//        }
-//        isRunning = true;
-//        try {
-//            log.info("======================CraftData Start======================");
-//            craftService.getLoaApi();
-//            log.info("======================CraftData End======================");
-//        } finally {
-//            isRunning = false;
-//        }
-//    }
-//
-//
+    private final CrawlingService crawlingService;
+    private final GemDataService gemDataService;
+    private final GemApiService gemApiService;
+    private final CraftService craftService;
+
+    private boolean isRunning = false;
+    //제작아이템 시세 갱신
+    @Async
+    @Retryable(
+            retryFor = {
+                    CraftApiGetException.class, //api 요청시 키 문제 있거나 데이터 넣을때 문제발생
+                    CraftDataException.class
+            },
+            maxAttempts = 5,
+            backoff = @Backoff(delay = 80000) //1분 20초
+    )
+    @Scheduled(fixedDelay = 1000 * 60)
+    public void renewCraftData() {
+        if (isRunning) {
+            log.warn("renewCraftData is already running. Skipping this execution.");
+            return;
+        }
+        isRunning = true;
+        try {
+            log.info("======================CraftData Start======================");
+            String currentDir = System.getProperty("user.dir");
+            System.out.println("현재 작업 디렉토리: " + currentDir);
+            craftService.getLoaApi();
+            log.info("======================CraftData End======================");
+        } finally {
+            isRunning = false;
+        }
+    }
+
+
 //    //보석 시세 갱신
 //    @Async
 //    @Retryable(
