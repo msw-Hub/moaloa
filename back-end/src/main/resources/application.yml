@@ -19,6 +19,7 @@ debug: true
 
 loa:
   api:
+    key0: ${LOA_API_KEY0}
     key1: ${LOA_API_KEY1}
     key2: ${LOA_API_KEY2}
     key3: ${LOA_API_KEY3}
@@ -27,14 +28,11 @@ loa:
   craft:
     key6: ${LOA_CRAFT_KEY6}
     key7: ${LOA_CRAFT_KEY7}
-    key8: ${LOA_CRAFT_KEY8}
-    key9: ${LOA_CRAFT_KEY9}
-    key10: ${LOA_CRAFT_KEY10}
 
 jsonFile:
-  craftData: ${JSONFILE_CRAFT_DATA}
-  gemData: ${JSONFILE_GEM_DATA}
-  gemPrice: ${JSONFILE_GEM_PRICE}
+  craftData: "back-end/src/main/resources/craftData.json"
+  gemData: "back-end/src/main/resources/gemData.json"
+  gemPrice: "back-end/src/main/resources/gemPrice.json"
 
 turnstile:
   secret: ${TURNSTILE_SECRET}

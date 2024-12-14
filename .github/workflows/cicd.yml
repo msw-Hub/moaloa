@@ -35,29 +35,6 @@ jobs:
       run: echo "artifact=$(ls ./build/libs)" >> $GITHUB_ENV
       working-directory: back-end
 
-    - name: Set up environment variables
-      run: |
-        echo "LOA_API_KEY1=${{ secrets.LOA_API_KEY1 }}" >> $GITHUB_ENV
-        echo "LOA_API_KEY2=${{ secrets.LOA_API_KEY2 }}" >> $GITHUB_ENV
-        echo "LOA_API_KEY3=${{ secrets.LOA_API_KEY3 }}" >> $GITHUB_ENV
-        echo "LOA_API_KEY4=${{ secrets.LOA_API_KEY4 }}" >> $GITHUB_ENV
-        echo "LOA_API_KEY5=${{ secrets.LOA_API_KEY5 }}" >> $GITHUB_ENV
-        echo "LOA_CRAFT_KEY6=${{ secrets.LOA_CRAFT_KEY6 }}" >> $GITHUB_ENV
-        echo "LOA_CRAFT_KEY7=${{ secrets.LOA_CRAFT_KEY7 }}" >> $GITHUB_ENV
-        echo "LOA_CRAFT_KEY8=${{ secrets.LOA_CRAFT_KEY8 }}" >> $GITHUB_ENV
-        echo "LOA_CRAFT_KEY9=${{ secrets.LOA_CRAFT_KEY9 }}" >> $GITHUB_ENV
-        echo "LOA_CRAFT_KEY10=${{ secrets.LOA_CRAFT_KEY10 }}" >> $GITHUB_ENV
-        echo "JSONFILE_CRAFT_DATA=${{ secrets.JSONFILE_CRAFT_DATA }}" >> $GITHUB_ENV
-        echo "JSONFILE_GEM_DATA=${{ secrets.JSONFILE_GEM_DATA }}" >> $GITHUB_ENV
-        echo "JSONFILE_GEM_PRICE=${{ secrets.JSONFILE_GEM_PRICE }}" >> $GITHUB_ENV
-        echo "TURNSTILE_SECRET=${{ secrets.TURNSTILE_SECRET }}" >> $GITHUB_ENV
-
-    - name: Check environment variables
-      run: |
-        echo "TURNSTILE_SECRET=${TURNSTILE_SECRET}"
-      env:
-        TURNSTILE_SECRET: ${{ secrets.TURNSTILE_SECRET }}
-
     - name: Beanstalk Deploy
       uses: einaregilsson/beanstalk-deploy@v20
       with:
