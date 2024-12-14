@@ -33,6 +33,7 @@ jobs:
 
     - name: Set artifact
       run: echo "artifact=$(ls ./build/libs)" >> $GITHUB_ENV
+      working-directory: back-end
 
     - name: Beanstalk Deploy
       uses: einaregilsson/beanstalk-deploy@v20
