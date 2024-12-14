@@ -6,6 +6,7 @@ import moaloa.store.back_end.exception.custom.CrawlingClickException;
 import moaloa.store.back_end.exception.custom.CrawlingRunningException;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.stereotype.Service;
@@ -192,9 +193,12 @@ public class CrawlingService {
 
     @Transactional
     public void crawlAndClick() {
-        System.setProperty("webdriver.chrome.driver", "C:/Temp/chromedriver.exe"); // 여기에 실제 경로를 입력하세요.
+//        System.setProperty("webdriver.chrome.driver", "C:/Temp/chromedriver.exe"); // 여기에 실제 경로를 입력하세요.
         // WebDriver 인스턴스 생성
-        WebDriver driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+
+        WebDriver driver = new ChromeDriver(options);
         try {
             String url = "https://kloa.gg/characters";
             driver.get(url);

@@ -17,12 +17,11 @@ public class TurnstileService {
     @Value("${turnstile.secretKey}")
     private String secretKey;
 
-    private static final String TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
-
     public TurnstileDto verifyTurnstile(String token, String remoteIp) {
         log.info("토큰 검증을 시작합니다. token: {}", token);
 
         // 요청을 구성
+        String TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
         String url = UriComponentsBuilder.fromHttpUrl(TURNSTILE_VERIFY_URL)
                 .queryParam("secret", secretKey)
                 .queryParam("response", token)
