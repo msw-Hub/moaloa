@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 public class TurnstileConfig {
 
     @Bean
-    public String turnstileService(
+    public String secretKey(
             @Value("${turnstile.secret}") String secretKey
     ) {
         return secretKey;
