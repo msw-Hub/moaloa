@@ -18,8 +18,7 @@ import java.net.URL;
 @RequiredArgsConstructor
 public class TurnstileService {
 
-    @Value("${turnstile.secret}")
-    private String secretKey;
+    private final String secretKey;
 
     public boolean verifyTurnstile(String token) {
         log.info("토큰 검증을 시작합니다. token: {}", token);
