@@ -1,5 +1,6 @@
 package moaloa.store.back_end.turnstile;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -22,6 +23,11 @@ public class TurnstileService {
     @Autowired
     public TurnstileService(@Value("${turnstile.secret}") String secret) {
         this.secret = secret;
+    }
+
+    @PostConstruct
+    public void init() {
+        log.info("Turnstile Secret Key: {}", secret);  // secret 값 확인을 위한 로그
     }
 
     public boolean verifyTurnstile(String token) {

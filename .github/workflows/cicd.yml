@@ -52,6 +52,12 @@ jobs:
         echo "JSONFILE_GEM_PRICE=${{ secrets.JSONFILE_GEM_PRICE }}" >> $GITHUB_ENV
         echo "TURNSTILE_SECRET=${{ secrets.TURNSTILE_SECRET }}" >> $GITHUB_ENV
 
+    - name: Check environment variables
+      run: |
+        echo "TURNSTILE_SECRET=${TURNSTILE_SECRET}"
+      env:
+        TURNSTILE_SECRET: ${{ secrets.TURNSTILE_SECRET }}
+
     - name: Beanstalk Deploy
       uses: einaregilsson/beanstalk-deploy@v20
       with:
