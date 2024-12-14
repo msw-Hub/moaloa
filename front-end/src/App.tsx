@@ -39,6 +39,7 @@ function App() {
 
   const handleVerify = async (token: string) => {
     try {
+      console.log(1, token);
       const response = await axios.post(
         `${import.meta.env.VITE_APP_API_URL}/api/v1/verify-turnstile`,
         { token },
@@ -58,6 +59,7 @@ function App() {
         setIsCleared(false);
       }
     } catch (error) {
+      console.log(1, token);
       console.error("Turnstile 검증 중 에러 발생:", error);
       setIsCleared(false);
     }
