@@ -98,7 +98,7 @@ function CraftTest() {
   const [craftList, setCraftList] = useState<CraftItem[]>([]);
   const [craftModalOpen, setCraftModalOpen] = useState(false);
   const [craftEffect, setCraftEffect] = useState<CraftEffect>(getInitialCraftEffect);
-  const [categoryMenu, setCategoryMenu] = useState<boolean[]>(() => JSON.parse(localStorage.getItem("categoryMenu") || `"[true, false, false, false, false, false, false, false]"`));
+  const [categoryMenu, setCategoryMenu] = useState<boolean[]>(() => JSON.parse(localStorage.getItem("categoryMenu") || `[true, false, false, false, false, false, false, false]`));
   const [searchName, setSearchName] = useState<string>("");
   const [materialList, setMaterialList] = useState<Material>();
   //시세 기준 (현재 최저가 : currentMinPrice, 전날가격 : ydayAvgPrice )
@@ -542,7 +542,7 @@ function CraftTest() {
                 </div>
 
                 {/* 판매 차익 */}
-                <span className={"flex gap-2 items-center justify-end font-semibold " + `${sort === "craftSellPrice" ? "text-green-500" : null}`}>
+                <span className={"flex gap-2 items-center justify-end font-semibold"}>
                   {convert === "default" ? (
                     <div>{priceStandard === "currentMinPrice" ? craft?.craft?.craftSellPrice : craft?.ydayCraft?.ydayCraftSellPrice}</div>
                   ) : (
@@ -551,7 +551,7 @@ function CraftTest() {
                   <img className="sm:w-5 sm:h-5 w-4 h-4" src="/itemIcon/gold.webp" alt="gold" />
                 </span>
                 {/* 원가이익률(%) */}
-                <span className={"flex gap-1  items-center justify-end font-semibold " + `${sort === "craftCostMargin" ? "text-green-500" : null}`}>
+                <span className={"flex gap-1  items-center justify-end font-semibold"}>
                   {convert === "default" ? (
                     <div className="">{priceStandard === "currentMinPrice" ? craft?.craft.craftCostMargin : craft?.ydayCraft?.ydayCraftCostMargin}</div>
                   ) : (

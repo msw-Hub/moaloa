@@ -184,7 +184,7 @@ function CraftDetail() {
   useEffect(() => {
     if (!craftDetail) return;
     calculateCraftValues(craftDetail);
-  }, [materialList]);
+  }, [materialList, craftEffect]);
 
   useEffect(() => {
     localStorage.setItem("craftEffect", JSON.stringify(craftEffect));
@@ -527,7 +527,7 @@ function CraftDetail() {
           </div>
           {/* 생활재료 교환 정보 */}
           {/*채광 벌목만 일반등급중 currentMinPrice가 있으면 변환 */}
-          <div className="relative p-4 content-box font-medium md:col-span-1 col-span-2">
+          <div className="min-h-32 relative p-4 content-box font-medium md:col-span-1 col-span-2">
             <h2 className="sm:text-base text-sm font-bold  mb-4">생활재료 교환 정보</h2>
             <div className="grid grid-cols-[auto_0.3fr_auto] gap-5">
               {craftDetail.craftMaterials
@@ -625,7 +625,7 @@ function CraftDetail() {
                 if (!materialData) return null;
                 if (materialData?.convert?.convertMaterial) return 1;
               })
-              .filter((a) => a).length === 0 && <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-semibold">교환 가능한 재료가 없습니다.</div>}
+              .filter((a) => a).length === 0 && <div className="absolute top-1/2 left-1/2 -translate-x-1/2  font-semibold">교환 가능한 재료가 없습니다.</div>}
           </div>
           <div className="flex flex-col gap-6 md:col-span-1 col-span-2">
             {/* 생활재료 가격 수정 */}
@@ -654,7 +654,7 @@ function CraftDetail() {
                             }}
                             onChange={(e) => onMaterialPriceChange(e, material.marketId, material.subCode)}
                             defaultValue={materialList[material.subCode][materialIndex[material.marketName]].currentMinPrice}
-                            className="bg-gray-50 dark:bg-ctdark w-24 text-right p-2 border-b border-bgdark dark:border-light"
+                            className="bg-gray-50 dark:bg-ctdark w-24 text-right p-2 rounded-sm border border-bddark dark:border-bddark"
                             type="text"
                           />
                         )}
@@ -690,7 +690,7 @@ function CraftDetail() {
                             }}
                             onChange={(e) => onMaterialPriceChange(e, materialList[90300][1].marketId, 90300)}
                             defaultValue={materialList[90300][1].currentMinPrice}
-                            className="bg-gray-50 dark:bg-ctdark w-24 text-right p-2 border-b border-bgdark dark:border-light"
+                            className="bg-gray-50 dark:bg-ctdark w-24 text-right p-2 rounded-sm border border-bddark dark:border-bddark"
                             type="text"
                           />
                         </div>
@@ -716,7 +716,7 @@ function CraftDetail() {
                             }}
                             onChange={(e) => onMaterialPriceChange(e, materialList[90300][2].marketId, 90300)}
                             defaultValue={materialList[90300][2].currentMinPrice}
-                            className="bg-gray-50 dark:bg-ctdark w-24 text-right p-2 border-b border-bgdark dark:border-light"
+                            className="bg-gray-50 dark:bg-ctdark w-24 text-right p-2 rounded-sm border border-bddark dark:border-bddark"
                             type="text"
                           />
                         </div>
@@ -742,7 +742,7 @@ function CraftDetail() {
                             }}
                             onChange={(e) => onMaterialPriceChange(e, materialList[90400][1].marketId, 90400)}
                             defaultValue={materialList[90400][1].currentMinPrice}
-                            className="bg-gray-50 dark:bg-ctdark w-24 text-right p-2 border-b border-bgdark dark:border-light"
+                            className="bg-gray-50 dark:bg-ctdark w-24 text-right p-2 rounded-sm border border-bddark dark:border-bddark"
                             type="text"
                           />
                         </div>
@@ -768,7 +768,7 @@ function CraftDetail() {
                             }}
                             onChange={(e) => onMaterialPriceChange(e, materialList[90400][2].marketId, 90400)}
                             defaultValue={materialList[90400][2].currentMinPrice}
-                            className="bg-gray-50 dark:bg-ctdark w-24 text-right p-2 border-b border-bgdark dark:border-light"
+                            className="bg-gray-50 dark:bg-ctdark w-24 text-right p-2 rounded-sm border border-bddark dark:border-bddark"
                             type="text"
                           />
                         </div>

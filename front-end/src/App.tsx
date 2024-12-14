@@ -31,7 +31,7 @@ function App() {
           <span className="text-2xl font-extrabold logotext">MoaLoa</span>
           <i onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="xi-close xi-x font-black cursor-pointer"></i>
         </div>
-        <button onClick={() => navigate("/gemSerch")} className={"navBtn hover:bg-[#d2d2d2] w-full flex items-center justify-center " + `${location.pathname === "/gemSerch" ? "bg-[#d2d2d2] dark:bg-hoverdark" : ""}`}>
+        <button onClick={() => navigate("/")} className={"navBtn hover:bg-[#d2d2d2] w-full flex items-center justify-center " + `${location.pathname === "/" ? "bg-[#d2d2d2] dark:bg-hoverdark" : ""}`}>
           보석검색
         </button>
         <button onClick={() => navigate("/craft")} className={"navBtn hover:bg-[#d2d2d2] w-full flex items-center justify-center " + `${location.pathname.startsWith("/craft") ? "bg-[#d2d2d2] dark:bg-hoverdark" : ""}`}>
@@ -65,7 +65,7 @@ function App() {
           </div>
           {/*메뉴*/}
           <div className="md:flex items-center justify-center h-full gap-4 hidden">
-            <button onClick={() => navigate("/gemSerch")} className={"navBtn flex items-center justify-center " + `${location.pathname === "/gemSerch" ? "bg-[#2652e6] dark:bg-ctdark" : ""}`}>
+            <button onClick={() => navigate("/")} className={"navBtn flex items-center justify-center " + `${location.pathname === "/" ? "bg-[#2652e6] dark:bg-ctdark" : ""}`}>
               보석검색
             </button>
             <button onClick={() => navigate("/craft")} className={"navBtn flex items-center justify-center " + `${location.pathname.startsWith("/craft") ? "bg-[#2652e6] dark:bg-ctdark" : ""}`}>
@@ -122,9 +122,8 @@ function App() {
         {/*라우터*/}
         <Routes>
           {/*메인페이지*/}
-          <Route path="/" element={<div></div>}></Route>
           {/*보석 검색 페이지*/}
-          <Route path="/gemSerch" element={<GemSearch></GemSearch>}></Route>
+          <Route path="/" element={<GemSearch></GemSearch>}></Route>
           {/*영지 제작 페이지*/}
           <Route path="/craft" element={<Craft></Craft>}></Route>
           {/*영지 제작 페이지 detail*/}
