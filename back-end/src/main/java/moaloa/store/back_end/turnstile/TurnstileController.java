@@ -16,9 +16,9 @@ public class TurnstileController {
     public ResponseEntity<?> verifyTurnstile(
             @RequestParam @NonNull String token
     ) {
-        TurnstileDto response = turnstileService.verifyTurnstile(token);
+        boolean response = turnstileService.verifyTurnstile(token);
 
-        if (response != null && response.isSuccess()) {
+        if (response) {
             // 성공 시
             return ResponseEntity.ok().body("success");
         } else {
