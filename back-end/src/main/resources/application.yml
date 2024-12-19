@@ -34,3 +34,11 @@ jsonFile:
 
 turnstile:
   secret: ${TURNSTILE_SECRET}
+
+server:
+  ssl:
+    key-store: ${SSL_KEYSTORE_PATH}
+    key-store-password: ${SSL_KEYSTORE_PASSWORD}
+    key-store-type: JKS
+    key-alias: ${SSL_KEY_ALIAS}
+    key-password: ${SSL_KEY_PASSWORD}
