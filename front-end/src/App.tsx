@@ -40,15 +40,11 @@ function App() {
 
   const handleVerify = async (token: string) => {
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_APP_API_URL}/api/v1/verify-turnstile`,
-        { token },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/api/v1/verify/turnstile?token=${token}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (response.status === 200) {
         console.log("Turnstile 검증 성공");
