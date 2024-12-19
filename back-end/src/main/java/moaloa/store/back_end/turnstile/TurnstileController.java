@@ -12,7 +12,7 @@ public class TurnstileController {
 
     private final TurnstileService turnstileService;
 
-    @PostMapping("/turnstile")
+    @GetMapping("/turnstile")
     public ResponseEntity<?> verifyTurnstile(
             @RequestParam @NonNull String token
     ) {
