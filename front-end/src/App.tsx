@@ -12,6 +12,7 @@ import Auction from "./Router/auction/auction";
 import { AlertText } from "./hooks/useAlert";
 import Cookies from "js-cookie"; // 쿠키 관리 라이브러리
 import Turnstile from "./components/Turnstile"; // Turnstile 컴포넌트
+import axios from "axios";
 // import axios from "axios";
 
 function App() {
@@ -39,31 +40,26 @@ function App() {
 
   const handleVerify = async (token: string) => {
     try {
-      //   console.log(1, token);
-      //   const response = await axios.post(
-      //     `${import.meta.env.VITE_APP_API_URL}/api/v1/verify-turnstile`,
-      //     { token },
-      //     {
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //       },
-      //     }
-      //   );
+      const response = await axios.post(
+        `${import.meta.env.VITE_APP_API_URL}/api/v1/verify-turnstile`,
+        { token },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      //   if (response.status === 200) {
-      //     console.log("Turnstile 검증 성공");
-      //     Cookies.set("cf_clearance", token, { expires: 0.5 }); // 쿠키 유효 기간: 0.5일 (12시간)
-      //     setIsCleared(true);
-      //   } else {
-      //     console.log("Turnstile 검증 실패");
-      //     setIsCleared(false);
-      //   }
-      // } catch (error) {
-      //   console.log(1, token);
-      //   console.error("Turnstile 검증 중 에러 발생:", error);
-      //   setIsCleared(false);
-      if (token) setIsCleared(true);
+      if (response.status === 200) {
+        console.log("Turnstile 검증 성공");
+        Cookies.set("cf_clearance", token, { expires: 0.5 }); // 쿠키 유효 기간: 0.5일 (12시간)
+        setIsCleared(true);
+      } else {
+        console.log("Turnstile 검증 실패");
+        setIsCleared(false);
+      }
     } catch (error) {
+      console.log(1, token);
       console.error("Turnstile 검증 중 에러 발생:", error);
       setIsCleared(false);
     }
