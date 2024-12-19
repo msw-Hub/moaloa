@@ -9,10 +9,9 @@ public class CraftKeyConfig {
 
     @Bean
     public String[] craftApi(
-            @Value("${loa.craft.key0}") String craftKey0,
             @Value("${loa.craft.key6}") String craftKey6,
             @Value("${loa.craft.key7}") String craftKey7
     ) {
-        return new String[]{craftKey6, craftKey0+craftKey7};
+        return new String[]{craftKey6, craftKey7};
     }
 }
