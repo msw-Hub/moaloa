@@ -31,31 +31,25 @@ function App() {
   useEffect(() => {
     const clearanceToken = Cookies.get("cf_clearance");
     if (clearanceToken) {
-      console.log("cf_clearance 쿠키가 존재합니다:", clearanceToken);
       setIsCleared(true);
-    } else {
-      console.log("cf_clearance 쿠키가 없습니다. 인증 필요.");
     }
   }, []);
 
   const handleVerify = async (token: string) => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/api/v1/verify/turnstile?token=${token}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/api/v1/verify/turnstile?token=${token}`, {});
 
       if (response.status === 200) {
-        console.log("Turnstile 검증 성공");
-        Cookies.set("cf_clearance", token, { expires: 0.5 }); // 쿠키 유효 기간: 0.5일 (12시간)
-        setIsCleared(true);
-      } else {
-        console.log("Turnstile 검증 실패");
-        setIsCleared(false);
+        if (response.data === "success") {
+          console.log("Turnstile 검증 성공");
+          Cookies.set("cf_clearance", token, { expires: 0.5 }); // 쿠키 유효 기간: 0.5일 (12시간)
+          setIsCleared(true);
+        } else {
+          console.error("Turnstile 검증 실패: ", response.data);
+          setIsCleared(false);
+        }
       }
     } catch (error) {
-      console.log(1, token);
       console.error("Turnstile 검증 중 에러 발생:", error);
       setIsCleared(false);
     }
