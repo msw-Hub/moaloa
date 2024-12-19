@@ -14,6 +14,10 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -26,22 +30,29 @@ public class ScheduledTask {
     private final CraftService craftService;
 
     private boolean isRunning = false;
-    //제작아이템 시세 갱신
+
+    // 생활재료 데이터 갱신
     @Async
     @Retryable(
             retryFor = {
-                    CraftApiGetException.class, //api 요청시 키 문제 있거나 데이터 넣을때 문제발생
+                    CraftApiGetException.class, // API 요청 시 키 문제 또는 데이터 삽입 문제
                     CraftDataException.class
             },
             maxAttempts = 5,
-            backoff = @Backoff(delay = 80000) //1분 20초
+            backoff = @Backoff(delay = 80000) // 1분 20초
     )
-    @Scheduled(fixedDelay = 1000 * 60)
+    @Scheduled(fixedDelay = 1000 * 60) // 1분
     public void renewCraftData() {
+        if (isWithinBlockedTime()) {
+            log.warn("renewCraftData is disabled on Wednesday between 6:00 and 10:00. Skipping this execution.");
+            return;
+        }
+
         if (isRunning) {
             log.warn("renewCraftData is already running. Skipping this execution.");
             return;
         }
+
         isRunning = true;
         try {
             log.info("======================CraftData Start======================");
@@ -53,37 +64,58 @@ public class ScheduledTask {
     }
 
 
-    //보석 시세 갱신
+    // 보석 시세 갱신
     @Async
     @Retryable(
             retryFor = {
-                    GemDataException.class,  //json 파일 읽기, 쓰기, 파싱 문제 or 데이터베이스에 없는 보석일 경우
-                    GemPriceApiException.class //가격 요청 api 했을 시에, 키 문제 있거나 데이터 넣을때 문제발생
+                    GemDataException.class,  // json 파일 읽기, 쓰기, 파싱 문제 or 데이터베이스에 없는 보석일 경우
+                    GemPriceApiException.class // 가격 요청 API 시 키 문제 또는 데이터 삽입 문제
             },
             maxAttempts = 5,
-            backoff = @Backoff(delay = 80000) //1분 20초
+            backoff = @Backoff(delay = 80000) // 1분 20초
     )
     @Scheduled(fixedDelay = 1000 * 60 * 30) // 30분 (1000 = 1초)
     public void renewGemPrice() {
+        if (isWithinBlockedTime()) {
+            log.warn("renewGemPrice is disabled on Wednesday between 6:00 and 10:00. Skipping this execution.");
+            return;
+        }
+
         log.info("======================GemPrice Start======================");
         gemApiService.getGemPrice();
         log.info("======================GemPrice End======================");
     }
 
-
-    //제작아이템 거래량 갱신
+    // 제작아이템 거래량 갱신
     @Async
     @Retryable(
-            retryFor = { RenewTradeCountException.class }, //api 요청시 키 문제 있거나 데이터 넣을때 문제발생
+            retryFor = { RenewTradeCountException.class }, // API 요청 시 키 문제 또는 데이터 삽입 문제
             maxAttempts = 5,
             backoff = @Backoff(delay = 80000)
     )
     @Scheduled(cron = "0 5 0 * * ?") // 매일 0시 5분
     public void renewTradeCount() {
+        if (isWithinBlockedTime()) {
+            log.warn("renewTradeCount is disabled on Wednesday between 6:00 and 10:00. Skipping this execution.");
+            return;
+        }
+
         log.info("======================TradeCount Start======================");
         craftService.renewTradeCount();
         log.info("======================TradeCount End======================");
     }
+
+    // 제한 시간 확인 메서드
+    private boolean isWithinBlockedTime() {
+        LocalDateTime now = LocalDateTime.now();
+        DayOfWeek blockDay = DayOfWeek.WEDNESDAY;
+        LocalTime startBlockTime = LocalTime.of(6, 0);
+        LocalTime endBlockTime = LocalTime.of(10, 0);
+
+        return now.getDayOfWeek() == blockDay &&
+                !now.toLocalTime().isBefore(startBlockTime) && !now.toLocalTime().isAfter(endBlockTime);
+    }
+
 
 //    //크롤링하고 로아 API 호출해서 데이터 쌓음
 //    @Async
