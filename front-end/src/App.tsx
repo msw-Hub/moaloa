@@ -31,18 +31,22 @@ function App() {
   useEffect(() => {
     const clearanceToken = Cookies.get("cf_clearance");
     if (clearanceToken) {
-      setIsCleared(true);
+      setIsCleared(true); // 쿠키가 있으면 바로 검증 완료로 처리
+    } else {
+      setIsCleared(false);
     }
   }, []);
 
   const handleVerify = async (token: string) => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/api/v1/verify/turnstile?token=${token}`, {});
+      const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/api/v1/verify/turnstile?token=${token}`);
 
       if (response.status === 200) {
         if (response.data === "success") {
           console.log("Turnstile 검증 성공");
-          Cookies.set("cf_clearance", token, { expires: 0.5 }); // 쿠키 유효 기간: 0.5일 (12시간)
+          const expiryDate = new Date();
+          expiryDate.setMinutes(expiryDate.getMinutes() + 30); // 30분 후 만료
+          Cookies.set("cf_clearance", token, { expires: expiryDate, path: "/" });
           setIsCleared(true);
         } else {
           console.error("Turnstile 검증 실패: ", response.data);
@@ -133,10 +137,10 @@ function App() {
             </div>
             {/*api모달*/}
             <Modal isOpen={apiKeyModalOpen} onClose={() => setApiKeyModalOpen(false)}>
-              <div className="flex flex-col items-center bg-light dark:bg-ctdark text-ctdark dark:text-light rounded-md p-8 md:w-[500px] w-[350px] gap-2">
+              <div className="sm:text-sm text-xs flex flex-col items-center bg-light dark:bg-ctdark text-ctdark dark:text-light rounded-md p-8 md:w-[500px] w-[350px] gap-2">
                 {/* API KEY 입력 5칸 */}
                 <div className="w-full flex justify-between items-center">
-                  <span className="font-bold text-lg">API키 입력</span>
+                  <span className="sm:text-base text-sm font-bold">API키 입력</span>
                   <button onClick={() => window.open("https://developer-lostark.game.onstove.com/", "_blank")} className="btn py-2 px-4">
                     API키 발급
                   </button>

@@ -318,12 +318,12 @@ function GemSearch() {
         <div className="flex flex-col gap-4 text-nowrap">
           {/* class 선택 창 */}
           <div className="content-box p-6 flex flex-col">
-            <div className="font-bold mb-4">클래스 선택</div>
+            <div className="sm:text-base text-sm font-bold mb-4">클래스 선택</div>
             <div className="flex sm:flex-row flex-col justify-evenly gap-2">
               {classOrder.map((className) => (
                 <div key={className}>
                   {/* 통합 class 이름 */}
-                  <h2 className="text-center font-bold my-2">{className}</h2>
+                  <h2 className="sm:text-base text-sm text-center font-bold my-2">{className}</h2>
                   <div className="grid sm:grid-cols-1 grid-cols-3 gap-2">
                     {classIconListTyped[className].map((classIcon: ClassIcon) => (
                       <button onClick={() => handleCheck(classIcon.Class)} className={`flex  md:justify-start justify-center items-center rounded-md gap-2 py-2 px-3 classIconHover ${checked.includes(classIcon.Class) ? "active-btn" : "default-btn"}`}>
@@ -342,7 +342,7 @@ function GemSearch() {
             {/*보석 옵션 설정창*/}
             <div className="w-full flex justify-start items-center py-6 px-6 bg-gray-50 dark:bg-ctdark rounded-sm shadow-md">
               <div className="w-full flex flex-col justify-center items-start gap-4">
-                <div className="font-semibold">검색 옵션</div>
+                <div className="sm:text-base text-sm font-semibold">검색 옵션</div>
                 <div className="w-full grid md:grid-cols-[1.5fr_1fr] grid-cols-[1fr_2fr] grid-rows-4 gap-2 font-semibold">
                   {/*보석 티어*/}
                   <span className="flex justify-center items-center">티어</span>
@@ -407,7 +407,7 @@ function GemSearch() {
 
             <div className="sm:block hidden row-start-1 row-end-3 col-start-2 py-6 px-6 bg-gray-50 dark:bg-ctdark rounded-sm shadow-md">
               <div className="flex justify-between font-semibold mb-4">
-                <div className="">실시간 보석 시세</div>
+                <div className="sm:text-base text-sm">실시간 보석 시세</div>
                 <div className="flex justify-center items-center text-gray-400 gap-2">
                   <i className="xi-clock-o xi-x"></i>
                   <div className="h-auto">{liveGemLastUpdateTime}</div>
