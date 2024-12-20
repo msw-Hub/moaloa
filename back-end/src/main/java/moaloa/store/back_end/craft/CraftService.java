@@ -119,7 +119,6 @@ public class CraftService {
                     br.close();
 
                     String responseString = result.toString();
-                    log.info("responseString: {}", responseString);
                     // 시세 데이터 갱신
 
                     updateCraftPrice(responseString, code);
@@ -155,9 +154,6 @@ public class CraftService {
                     double yDayAvgPrice = item.getDouble("YDayAvgPrice");
 
 
-                    log.info("marketId: {}, marketName: {}, currentMinPrice: {}, recentPrice: {}, yDayAvgPrice: {}, code: {}",
-                            marketId, marketName, currentMinPrice, recentPrice, yDayAvgPrice, code);
-
                     //제작 재료 아이템에 해당되는 아이템만 업데이트
                     if ((code > 90000 && !marketName.contains("결정"))
                             || (code == 60300 && !marketName.contains("빛나는"))
@@ -165,7 +161,6 @@ public class CraftService {
                             || (code == 60400 && (marketName.equals("신호탄") || marketName.equals("만능 물약") || marketName.equals("성스러운 부적")) && !marketName.contains("빛나는"))
                             || (code == 60500 && (marketName.equals("신속 로브") || marketName.equals("진군의 깃발")) && !marketName.contains("빛나는"))
                     ) {
-                        log.info("제작 재료에 해당되는 아이템입니다");
                         CraftMaterialEntity craftMaterialEntity = craftMaterialRepository.findByMarketId(marketId);
                         if (craftMaterialEntity == null) {
                             log.warn("재료 아이템을 찾는 과정에서 DB에 존재하지 않는 아이템입니다 해당 아이템을 확인해 주시기 바랍니다. : {}", item);
@@ -178,7 +173,6 @@ public class CraftService {
                     }
                     // 제작 아이템에 해당 되는 아이템만 업데이트
                     if (code < 90000) {
-                        log.info("제작 아이템에 해당되는 아이템입니다");
                         List<CraftItemEntity> craftItemEntities = craftItemRepository.findAllByMarketId(marketId);
                         if (craftItemEntities.isEmpty()) {
                             log.warn("제작 아이템을 찾는 과정에서 DB에 존재하지 않는 아이템입니다 해당 아이템을 확인해 주시기 바랍니다. : {}", item);
@@ -191,7 +185,6 @@ public class CraftService {
                             craftItemRepository.save(craftItemEntity);
                         }
                     }
-                    log.info("현재 작업을 완료 아이템은 {} 입니다", marketName);
                 }
             } else {
                 throw new CraftDataException("JSON 데이터에 Items 항목이 존재하지 않습니다");

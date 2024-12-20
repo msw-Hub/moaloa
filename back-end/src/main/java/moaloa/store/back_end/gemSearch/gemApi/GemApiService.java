@@ -191,7 +191,6 @@ public class GemApiService {
 
         try {
             for (String gemName : gemCategory) {
-                log.info("현재 요청중인 보석 이름: {}", gemName);
                 HttpURLConnection conn = (HttpURLConnection) new URL(reqURL).openConnection();
                 conn.setRequestMethod("POST");
                 conn.setRequestProperty("Authorization", "bearer " + craftApi[1]);
