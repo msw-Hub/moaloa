@@ -17,12 +17,12 @@ logging:
 
 loa:
   api:
-    key0: "aa"
-    key1: "aa"
-    key2: "aa"
-    key3: "aa"
-    key4: "aa"
-    key5: "aa"
+    key0: ${LOA_API_KEY0}
+    key1: ${LOA_API_KEY1}
+    key2: ${LOA_API_KEY2}
+    key3: ${LOA_API_KEY3}
+    key4: ${LOA_API_KEY4}
+    key5: ${LOA_API_KEY5}
   craft:
     key6: ${LOA_CRAFT_KEY6}
     key7: ${LOA_CRAFT_KEY7}

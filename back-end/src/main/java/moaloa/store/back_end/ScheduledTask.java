@@ -117,27 +117,27 @@ public class ScheduledTask {
     }
 
 
-//    //크롤링하고 로아 API 호출해서 데이터 쌓음
-//    @Async
-//    @Scheduled(cron = "0 0 2 ? * FRI") // 매주 금요일 새벽 2시
-//    public void crawlingAndGemApi() {
-//        try {
+    //크롤링하고 로아 API 호출해서 데이터 쌓음
+    @Async
+    @Scheduled(cron = "0 0 3 ? * FRI") // 매주 금요일 새벽 3시
+    public void crawlingAndGemApi() {
+        try {
 //            // 1. 닉네임 크롤링
 //            performCrawling();
-//
-//            // 2. 로아 API 호출
-//            callLoaApi();
-//
-//            // 3. 직업 각인 데이터 크롤링
-//            calculateEngraveRate();
-//
-//            // 4. 데이터 집계 및 저장
-//            aggregateGemData();
-//        } catch (Exception e) {
-//            log.error("크롤링 및 API 호출 중 문제 발생", e);
-//            throw e;
-//        }
-//    }
+
+            // 2. 로아 API 호출
+            callLoaApi();
+
+            // 3. 직업 각인 데이터 크롤링
+            calculateEngraveRate();
+
+            // 4. 데이터 집계 및 저장
+            aggregateGemData();
+        } catch (Exception e) {
+            log.error("크롤링 및 API 호출 중 문제 발생", e);
+            throw e;
+        }
+    }
 //    @Retryable(
 //            retryFor = {
 //                    CrawlingRunningException.class, // 클릭을 제외한 크롤링 중 문제 발생
@@ -151,38 +151,38 @@ public class ScheduledTask {
 //        crawlingService.crawlAndClick();
 //        log.info("======================Crawling End======================");
 //    }
-//    @Retryable(
-//            retryFor = {
-//                    UserNotFoundException.class, // CrawlingEntity에 유저가 없을 때
-//                    GemApiGetException.class // API 요청 중 문제 발생 >> 대부분은 로아측 서버 문제나 키 문제
-//            },
-//            maxAttempts = 5,
-//            backoff = @Backoff(delay = 120000) // 2분 후 재시도
-//    )
-//    private void callLoaApi() {
-//        log.info("======================LoaAPI Start======================");
-//        gemApiService.loaAPI();
-//        log.info("======================LoaAPI End======================");
-//    }
-//    @Retryable(
-//            retryFor = { GemDataException.class }, // 클로아측 api 요청에 문제 발생 ( 데이터가 비었거나 내용이 변경된경우)
-//            maxAttempts = 5,
-//            backoff = @Backoff(delay = 30000) // 30초 후 재시도
-//    )
-//    private void calculateEngraveRate() {
-//        log.info("======================EngraveRate Start======================");
-//        gemDataService.engraveRate();
-//        log.info("======================EngraveRate End======================");
-//    }
-//
-//    @Retryable(
-//            retryFor = { GemAggregationException.class }, // 집계 중 문제 발생 (db가 비었거나, json파일로 저장할때 문제 발생)
-//            maxAttempts = 5,
-//            backoff = @Backoff(delay = 30000) // 30초 후 재시도
-//    )
-//    private void aggregateGemData() {
-//        log.info("======================AggregateGemData Start======================");
-//        gemDataService.aggregateAndSaveGemData();
-//        log.info("======================AggregateGemData End======================");
-//    }
+    @Retryable(
+            retryFor = {
+                    UserNotFoundException.class, // CrawlingEntity에 유저가 없을 때
+                    GemApiGetException.class // API 요청 중 문제 발생 >> 대부분은 로아측 서버 문제나 키 문제
+            },
+            maxAttempts = 5,
+            backoff = @Backoff(delay = 120000) // 2분 후 재시도
+    )
+    private void callLoaApi() {
+        log.info("======================LoaAPI Start======================");
+        gemApiService.loaAPI();
+        log.info("======================LoaAPI End======================");
+    }
+    @Retryable(
+            retryFor = { GemDataException.class }, // 클로아측 api 요청에 문제 발생 ( 데이터가 비었거나 내용이 변경된경우)
+            maxAttempts = 5,
+            backoff = @Backoff(delay = 30000) // 30초 후 재시도
+    )
+    private void calculateEngraveRate() {
+        log.info("======================EngraveRate Start======================");
+        gemDataService.engraveRate();
+        log.info("======================EngraveRate End======================");
+    }
+
+    @Retryable(
+            retryFor = { GemAggregationException.class }, // 집계 중 문제 발생 (db가 비었거나, json파일로 저장할때 문제 발생)
+            maxAttempts = 5,
+            backoff = @Backoff(delay = 30000) // 30초 후 재시도
+    )
+    private void aggregateGemData() {
+        log.info("======================AggregateGemData Start======================");
+        gemDataService.aggregateAndSaveGemData();
+        log.info("======================AggregateGemData End======================");
+    }
 }
