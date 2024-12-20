@@ -50,12 +50,12 @@ const Turnstile: React.FC<TurnstileProps> = ({ siteKey, onVerify }) => {
       widgetIdRef.current = id;
     }
 
-    // 컴포넌트 언마운트 시 위젯 리셋
-    return () => {
-      if (window.turnstile && widgetIdRef.current) {
-        window.turnstile.reset(widgetIdRef.current);
-      }
-    };
+    // // 컴포넌트 언마운트 시 위젯 리셋
+    // return () => {
+    //   if (window.turnstile && widgetIdRef.current) {
+    //     window.turnstile.reset(widgetIdRef.current);
+    //   }
+    // };
   }, [siteKey, onVerify, shouldRender]);
 
   if (!shouldRender) {
