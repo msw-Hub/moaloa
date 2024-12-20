@@ -884,11 +884,11 @@ function CraftDetail() {
         {/* 영지 효과 입력창 - x열 제작수수료 감소, 활동력 감소, y열 전체, 특수, 물약, 폭탄, 수류탄, 로브, 기타 배템, 요리 */}
         <Modal isOpen={craftModalOpen} onClose={() => setCraftModalOpen(false)}>
           <div className="content-box p-8 flex flex-col gap-4 rounded-md">
-            <span className=" font-semibold">영지 효과</span>
+            <span className="sm:text-base text-sm font-semibold">영지 효과</span>
             {["제작수수료 감소", "제작시간 감소", "활동력 감소"].map((effect: string) => {
               return (
                 <div key={effect} className="flex flex-col gap-3">
-                  <span className=" font-semibold">{effect}</span>
+                  <span className="sm:text-base text-sm font-semibold">{effect}</span>
                   <div className="grid grid-cols-4 gap-4">
                     {["전체", "특수", "물약", "폭탄", "수류탄", "로브", "기타", "요리"].map((type: string, index) => {
                       return (
