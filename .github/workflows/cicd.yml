@@ -6,49 +6,43 @@ on:
 
 jobs:
   build:
+    if: ${{ contains(github.event.head_commit.message, '[BE]') }} # 커밋 메시지에 [BE]가 포함된 경우에만 실행
     runs-on: ubuntu-latest
+
     steps:
-      - name: Check commit message
-        id: check-message
-        run: echo "COMMIT_MESSAGE=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
+    - uses: actions/checkout@v3
 
-      - name: Verify commit message
-        if: contains(env.COMMIT_MESSAGE, '[BE]')
-        run: echo "Commit contains [BE], proceeding with deployment."
+    - uses: actions/setup-java@v3
+      with:
+        distribution: 'corretto'
+        java-version: '17'
 
-      - uses: actions/checkout@v3
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+      working-directory: back-end
 
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'corretto'
-          java-version: '17'
+    - name: Build with Gradle
+      run: ./gradlew clean build
+      working-directory: back-end
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-        working-directory: back-end
+    - name: Get current time
+      uses: josStorer/get-current-time@v2.0.2
+      id: current-time
+      with:
+        format: YYYY-MM-DDTHH-mm-ss
+        utcOffset: "+09:00"
 
-      - name: Build with Gradle
-        run: ./gradlew clean build
-        working-directory: back-end
+    - name: Set artifact
+      run: echo "artifact=$(ls ./build/libs)" >> $GITHUB_ENV
+      working-directory: back-end
 
-      - name: Get current time
-        uses: josStorer/get-current-time@v2.0.2
-        id: current-time
-        with:
-          format: YYYY-MM-DDTHH-mm-ss
-          utcOffset: "+09:00"
-
-      - name: Set artifact
-        run: echo "artifact=$(ls ./build/libs)" >> $GITHUB_ENV
-        working-directory: back-end
-
-      - name: Beanstalk Deploy
-        uses: einaregilsson/beanstalk-deploy@v20
-        with:
-          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: moaloa-springboot
-          environment_name: Moaloa-springboot-env
-          version_label: github-action-${{steps.current-time.outputs.formattedTime}}
-          region: ap-northeast-2
-          deployment_package: ./back-end/build/libs/${{env.artifact}}
+    - name: Beanstalk Deploy
+      uses: einaregilsson/beanstalk-deploy@v20
+      with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        application_name: moaloa-springboot
+        environment_name: Moaloa-springboot-env
+        version_label: github-action-${{steps.current-time.outputs.formattedTime}}
+        region: ap-northeast-2
+        deployment_package: ./back-end/build/libs/${{env.artifact}}
