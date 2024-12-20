@@ -37,4 +37,12 @@ public class GemDataController {
         gemDataService.engraveRate();
         return ResponseEntity.ok("각 각인의 비율을 계산하였습니다");
     }
+
+
+    //데이터베이스에 값넣고 가장 먼저 실행해야함.
+    @GetMapping("/saveJsonToFile")
+    public ResponseEntity<?> saveJsonToFile() {
+        String jsonString = gemDataService.getJsonData();
+        return ResponseEntity.ok(jsonString);
+    }
 }

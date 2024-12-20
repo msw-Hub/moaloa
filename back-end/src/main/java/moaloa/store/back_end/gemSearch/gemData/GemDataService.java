@@ -34,6 +34,7 @@ public class GemDataService {
 
     private final GemApiRepository gemApiRepository;
     private final EngraveCountCache engraveCountCache;
+    private final GemDataRepository gemDataRepository;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -355,24 +356,32 @@ public class GemDataService {
             }
         });
 
+        log.info("집계된 데이터: {}", aggregatedData);
+        log.info("필터링 및 정렬된 데이터: {}", filteredAndSortedData);
+
+
         try {
-            // JSON으로 변환
-            String jsonResult = objectMapper.writeValueAsString(filteredAndSortedData);
-            // JSON 데이터를 파일에 저장 (덮어쓰기)
-            saveJsonToFile(jsonResult);
+            // JSON을 데이터베이스에 저장
+            String jsonData = objectMapper.writeValueAsString(filteredAndSortedData);
+            // 기존 데이터 삭제
+            gemDataRepository.deleteAll(); // 모든 데이터를 삭제
+            // 새로운 데이터 저장
+            GemDataEntity newGemData = new GemDataEntity();
+            newGemData.setJsonString(jsonData);
+            gemDataRepository.save(newGemData);
+
         } catch (JsonProcessingException e) {
             throw new GemAggregationException("JSON 파일로 변환 중 오류가 발생했습니다");
         }
     }
 
-
-    private void saveJsonToFile(String jsonData){
-        try {
-            Files.write(Paths.get(filePath), jsonData.getBytes());
-        } catch (IOException e) {
-            throw new GemAggregationException("JSON 파일 저장 중 오류가 발생했습니다");
-        }
-    }
+//    private void saveJsonToFile(String jsonData){
+//        try {
+//            Files.write(Paths.get(filePath), jsonData.getBytes());
+//        } catch (IOException e) {
+//            throw new GemAggregationException("JSON 파일 저장 중 오류가 발생했습니다");
+//        }
+//    }
 
     public String readJsonFromFile() {
         try {
@@ -387,6 +396,24 @@ public class GemDataService {
             return objectMapper.readValue(jsonData, Object.class);
         } catch (JsonProcessingException e) {
             throw new GemDataException("JSON 데이터를 객체로 변환 중 오류가 발생했습니다");
+        }
+    }
+
+    public String getJsonData() {
+        GemDataEntity gemData = gemDataRepository.findAll().stream().findFirst().orElse(null);
+        if(gemData == null){
+            return null;
+        }
+        String jsonString = gemData.getJsonString();
+
+        if (jsonString == null) {
+            return "저장된 JSON 데이터가 없습니다.";
+        }
+        try {
+            Files.write(Paths.get(filePath), jsonString.getBytes());
+            return "데이터베이스에서 파일로 JSON 파일이 성공적으로 저장되었습니다.";
+        } catch (IOException e) {
+            throw new GemAggregationException("JSON 파일 저장 중 오류가 발생했습니다");
         }
     }
 }
