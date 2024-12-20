@@ -160,14 +160,15 @@ public class GemApiService {
                             engraveCountCache.updateActualUserCount(engraveName, 1);
 
                         } else {
-                            log.error("Skills 데이터가 없습니다.");
+                            log.warn("Skills 데이터가 없습니다.");
                         }
                     } else {
-                        log.error("Effects 데이터가 없습니다.");
+                        log.warn("Effects 데이터가 없습니다.");
                     }
                 } catch (JSONException e) {
-                    log.error("JSON 파싱 오류: {}", e.getMessage());
-                    throw new GemApiGetException("JSON 파싱 오류: " + e.getMessage());
+                    log.warn("키 혹은 닉네임 변경으로 인한 오류일 수 있습니다. // JSON 파싱 오류: {}", e.getMessage());
+                    log.info("해당 유저 : {}", userNickName);
+                    continue;
                 }
                 userCount++;  // 요청 후 사용자 카운트 증가
             }
@@ -258,7 +259,9 @@ public class GemApiService {
                 newGemPriceEntity.setBuyPrice(buyPrice);
                 gemPriceRepository.save(newGemPriceEntity);
             }
-        } else throw new GemPriceApiException("로아 api 요청은 정상 처리되었으나, 보석 데이터가 없습니다.");
+        } else {
+            log.warn("로아 api 요청은 정상 처리되었으나, 보석 데이터가 없습니다. 아마 해당 보석 매물이 없는 것으로 보입니다.");
+        }
     }
 
     private String createJsonInputString(String gemName) {
