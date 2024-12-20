@@ -23,6 +23,7 @@ interface TurnstileRenderOptions {
 
 const Turnstile: React.FC<TurnstileProps> = ({ siteKey, onVerify }) => {
   const turnstileRef = useRef<HTMLDivElement>(null);
+  const widgetIdRef = useRef<string | null>(null);
   const [shouldRender, setShouldRender] = useState<boolean>(true);
 
   useEffect(() => {
@@ -37,9 +38,8 @@ const Turnstile: React.FC<TurnstileProps> = ({ siteKey, onVerify }) => {
     const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)").matches;
     const theme = storedTheme || (prefersDarkScheme ? "dark" : "light");
 
-    let id = "";
     if (window.turnstile && turnstileRef.current && shouldRender) {
-      id = window.turnstile.render(turnstileRef.current, {
+      const id = window.turnstile.render(turnstileRef.current, {
         sitekey: siteKey,
         callback: (token: string) => {
           onVerify(token);
@@ -47,13 +47,15 @@ const Turnstile: React.FC<TurnstileProps> = ({ siteKey, onVerify }) => {
         },
         theme: theme,
       });
+      widgetIdRef.current = id;
     }
 
-    return () => {
-      if (window.turnstile && id) {
-        window.turnstile.reset(id);
-      }
-    };
+    // // 컴포넌트 언마운트 시 위젯 리셋
+    // return () => {
+    //   if (window.turnstile && widgetIdRef.current) {
+    //     window.turnstile.reset(widgetIdRef.current);
+    //   }
+    // };
   }, [siteKey, onVerify, shouldRender]);
 
   if (!shouldRender) {
