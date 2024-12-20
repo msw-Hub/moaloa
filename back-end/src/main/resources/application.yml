@@ -21,7 +21,7 @@ loa:
     key2: "aa"
     key3: "aa"
     key4: "aa"
-    key5: "aa"
+    key5: "bb"
   craft:
     key6: ${LOA_CRAFT_KEY6}
     key7: ${LOA_CRAFT_KEY7}
