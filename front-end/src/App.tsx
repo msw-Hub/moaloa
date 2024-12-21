@@ -49,7 +49,7 @@ function App() {
           Cookies.set("cf_clearance", token, { expires: expiryDate, path: "/" });
           setTimeout(() => {
             setIsCleared(true);
-          }, 1000); // 1초 후 인증 완료로 처리
+          }, 3000); // 1초 후 인증 완료로 처리
         } else {
           console.error("Turnstile 검증 실패: ", response.data);
           setIsCleared(false);
