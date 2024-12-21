@@ -505,7 +505,7 @@ function GemSearch() {
                 if (gem.price !== 0 && !showGemList1) return null;
                 if (gem.skillUseRate.recruitmentRate < recruitmentRate) return null;
                 return (
-                  <div key={gem.Icon} className="hover:bg-hover dark:hover:bg-gray-700 transition-colors grid min-[500px]:grid-cols-[1fr_1.5fr_3fr_1fr_1fr_1fr] grid-cols-[1fr_1.5fr_3fr_1fr_1fr] w-full font-medium">
+                  <div key={gem.skillValue} className="hover:bg-hover dark:hover:bg-gray-700 transition-colors grid min-[500px]:grid-cols-[1fr_1.5fr_3fr_1fr_1fr_1fr] grid-cols-[1fr_1.5fr_3fr_1fr_1fr] w-full font-medium">
                     <div className="border border-bddark py-2  flex justify-center items-center">
                       <img src={gem.Icon} alt="스킬아이콘" className="w-8 h-8" />
                     </div>
