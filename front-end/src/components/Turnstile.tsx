@@ -43,7 +43,9 @@ const Turnstile: React.FC<TurnstileProps> = ({ siteKey, onVerify }) => {
         sitekey: siteKey,
         callback: (token: string) => {
           onVerify(token);
-          setShouldRender(false);
+          setTimeout(() => {
+            setShouldRender(false);
+          }, 2000);
         },
         theme: theme,
       });
