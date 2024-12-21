@@ -48,7 +48,7 @@ function App() {
           expiryDate.setMinutes(expiryDate.getMinutes() + 30); // 30분 후 만료
           Cookies.set("cf_clearance", token, { expires: expiryDate, path: "/" });
           setTimeout(() => {
-            setIsCleared(false);
+            setIsCleared(true);
           }, 2000);
         } else {
           console.error("Turnstile 검증 실패: ", response.data);
