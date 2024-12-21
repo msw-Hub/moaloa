@@ -47,7 +47,9 @@ function App() {
           const expiryDate = new Date();
           expiryDate.setMinutes(expiryDate.getMinutes() + 30); // 30분 후 만료
           Cookies.set("cf_clearance", token, { expires: expiryDate, path: "/" });
-          setIsCleared(true);
+          setTimeout(() => {
+            setIsCleared(true);
+          }, 1000); // 1초 후 인증 완료로 처리
         } else {
           console.error("Turnstile 검증 실패: ", response.data);
           setIsCleared(false);
