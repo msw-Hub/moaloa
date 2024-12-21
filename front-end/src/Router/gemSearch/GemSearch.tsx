@@ -194,7 +194,7 @@ function GemSearch() {
         const classGem = response?.data;
         count.current++;
         let skillUseRateData = skillUseRate[b][gemDamCol == "딜" ? "겁" : "작"].find((c: { skillName: "string"; recruitmentRate: "number" }) => c.skillName == a.Text);
-        if (skillUseRateData === undefined) skillUseRateData = { skillName: b, recruitmentRate: 0 };
+        if (skillUseRateData === undefined) skillUseRateData = { skillName: a.Text, recruitmentRate: 0 };
         if (true) {
           const apiSearchValue = {
             skillValue: a.Value,
@@ -218,7 +218,7 @@ function GemSearch() {
           }, 22000);
         } else {
           let skillUseRateData = skillUseRate[b][gemDamCol == "딜" ? "겁" : "작"].find((c: { skillName: "string"; recruitmentRate: "number" }) => c.skillName == a.Text);
-          if (skillUseRateData === undefined) skillUseRateData = { skillName: b, recruitmentRate: 0 };
+          if (skillUseRateData === undefined) skillUseRateData = { skillName: a.Text, recruitmentRate: 0 };
           if (true) {
             const apiSearchValue = {
               skillValue: a.Value,
