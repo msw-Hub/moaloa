@@ -10,10 +10,6 @@ import { setApiKey } from "./store/apiKey";
 import { useState } from "react";
 import Auction from "./Router/auction/auction";
 import { AlertText } from "./hooks/useAlert";
-// import Cookies from "js-cookie"; // 쿠키 관리 라이브러리
-// import Turnstile from "./components/Turnstile"; // Turnstile 컴포넌트
-// import axios from "axios";
-// import axios from "axios";
 
 function App() {
   const navigate = useNavigate();
@@ -23,43 +19,7 @@ function App() {
   const apiKey = useSelector<RootState, string[]>((state) => state.apiKeys.apiKey);
   const [apiKeyModalOpen, setApiKeyModalOpen] = useState(false); //api모달
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false); //모바일용 메뉴바
-  const [darkMode, setDarkMode] = useDarkMode();
-
-  // const [isCleared, setIsCleared] = useState<boolean>(false); // Turnstile 인증 여부
-
-  // // cf_clearance 쿠키 체크
-  // useEffect(() => {
-  //   const clearanceToken = Cookies.get("cf_clearance");
-  //   if (clearanceToken) {
-  //     setIsCleared(true); // 쿠키가 있으면 바로 검증 완료로 처리
-  //   } else {
-  //     setIsCleared(false);
-  //   }
-  // }, []);
-
-  // const handleVerify = async (token: string) => {
-  //   try {
-  //     const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/api/v1/verify/turnstile?token=${token}`);
-
-  //     if (response.status === 200) {
-  //       if (response.data === "success") {
-  //         console.log("Turnstile 검증 성공");
-  //         const expiryDate = new Date();
-  //         expiryDate.setMinutes(expiryDate.getMinutes() + 30); // 30분 후 만료
-  //         Cookies.set("cf_clearance", token, { expires: expiryDate, path: "/" });
-  //         setTimeout(() => {
-  //           setIsCleared(true);
-  //         }, 2000);
-  //       } else {
-  //         console.error("Turnstile 검증 실패: ", response.data);
-  //         setIsCleared(false);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error("Turnstile 검증 중 에러 발생:", error);
-  //     setIsCleared(false);
-  //   }
-  // };
+  const [darkMode, setDarkMode] = useDarkMode(); //다크모드
 
   return (
     <>
@@ -151,6 +111,13 @@ function App() {
                 placeholder="API 키"
               />
             ))}
+            <button
+              onClick={() => {
+                setApiKeyModalOpen(false);
+              }}
+              className="mt-4 h-10 btn w-full">
+              닫기
+            </button>
           </div>
         </Modal>
         {/*모바일용 메뉴바 */}
