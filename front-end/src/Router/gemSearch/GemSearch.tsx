@@ -212,6 +212,11 @@ function GemSearch() {
         }
       })
       .catch((error) => {
+        if (error.response && error.response.status === 401) {
+          alertBox(`${i + 1}번째 API키 오류`);
+          setIsSearching(true);
+          return;
+        }
         if (error.response && error.response.status === 429) {
           setTimeout(() => {
             gemSerchAPI(a, b, i + 1);
