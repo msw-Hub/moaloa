@@ -673,7 +673,7 @@ function CraftDetail() {
                     {
                       // marketName이 목재이면 부드러운목재 추가 단 이미 부드러운목재가 있으면 추가하지 않음
                       material.marketName === "목재" && materialList && !craftDetail.craftMaterials.find((a) => a.marketName === "부드러운 목재") && (
-                        <div className="flex justify-between items-center">
+                        <div className="flex justify-between items-center mb-2">
                           <div className="flex justify-center items-center gap-2">
                             <div className="relative">
                               <img src={itemIcon["부드러운 목재"]} alt={"부드러운 목재"} className={"w-10 h-10 " + `${grade["고급"]}`} />
@@ -699,7 +699,7 @@ function CraftDetail() {
                     {
                       // marketName이 목재 이면 튼튼한목재 추가 단 이미 튼튼한목재가 있으면 추가하지 않음
                       material.marketName === "목재" && materialList && !craftDetail.craftMaterials.find((a) => a.marketName === "튼튼한 목재") && (
-                        <div className="flex justify-between items-center">
+                        <div className="flex justify-between items-center mb-2">
                           <div className="flex justify-center items-center gap-2">
                             <div className="relative">
                               <img src={itemIcon["튼튼한 목재"]} alt={"튼튼한 목재"} className={"w-10 h-10 " + `${grade["희귀"]}`} />
@@ -725,7 +725,7 @@ function CraftDetail() {
                     {
                       // marketName이 철광석이면 묵직한 철광석 추가 단 이미 묵직한 철광석이 있으면 추가하지 않음
                       material.marketName === "철광석" && materialList && !craftDetail.craftMaterials.find((a) => a.marketName === "묵직한 철광석") && (
-                        <div className="flex justify-between items-center">
+                        <div className="flex justify-between items-center mb-2">
                           <div className="flex justify-center items-center gap-2">
                             <div className="relative">
                               <img src={itemIcon["묵직한 철광석"]} alt={"묵직한 철광석"} className={"w-10 h-10 " + `${grade["고급"]}`} />
@@ -751,7 +751,7 @@ function CraftDetail() {
                     {
                       // marketName이 철광석이면 단단한 철광석 추가 단 이미 단단한 철광석이 있으면 추가하지 않음
                       material.marketName === "철광석" && materialList && !craftDetail.craftMaterials.find((a) => a.marketName === "단단한 철광석") && (
-                        <div className="flex justify-between items-center">
+                        <div className="flex justify-between items-center mb-2">
                           <div className="flex justify-center items-center gap-2">
                             <div className="relative">
                               <img src={itemIcon["단단한 철광석"]} alt={"단단한 철광석"} className={"w-10 h-10 " + `${grade["희귀"]}`} />
