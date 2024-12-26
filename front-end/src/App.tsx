@@ -10,7 +10,6 @@ import { setApiKey } from "./store/apiKey";
 import { useState } from "react";
 import Auction from "./Router/auction/auction";
 import { AlertText } from "./hooks/useAlert";
-import Material from "./Router/material/material";
 
 function App() {
   const navigate = useNavigate();
@@ -84,9 +83,6 @@ function App() {
             <button onClick={() => navigate("/craft")} className={"navBtn flex items-center justify-center " + `${location.pathname.startsWith("/craft") ? "bg-[#2652e6] dark:bg-ctdark" : ""}`}>
               영지제작
             </button>
-            <button onClick={() => navigate("/material")} className={"navBtn flex items-center justify-center " + `${location.pathname === "/material" ? "bg-[#2652e6] dark:bg-ctdark" : ""}`}>
-              생활재료
-            </button>
             <button onClick={() => navigate("/auction")} className={"navBtn flex items-center justify-center " + `${location.pathname === "/auction" ? "bg-[#2652e6] dark:bg-ctdark" : ""}`}>
               경매계산
             </button>
@@ -154,8 +150,6 @@ function App() {
             <Route path="/craft" element={<Craft></Craft>}></Route>
             {/*영지 제작 페이지 detail*/}
             <Route path="/craft/:id" element={<CraftDetail></CraftDetail>}></Route>
-            {/*생활 재료 판매 페이지*/}
-            <Route path="/material" element={<Material></Material>}></Route>
             {/*경매 계산 페이지*/}
             <Route path="/auction" element={<Auction></Auction>}></Route>
           </Routes>
