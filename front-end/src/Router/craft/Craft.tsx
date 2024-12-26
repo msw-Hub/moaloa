@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Modal } from "../../components/modal";
 import { useNavigate } from "react-router-dom";
+import { useAlert } from "../../hooks/useAlert";
 
 interface CraftMaterial {
   id: number;
@@ -95,6 +96,8 @@ const getInitialCraftEffect = (): CraftEffect => {
 };
 
 function CraftTest() {
+  const alertBox = useAlert();
+
   const [craftList, setCraftList] = useState<CraftItem[]>([]);
   const [craftModalOpen, setCraftModalOpen] = useState(false);
   const [craftEffect, setCraftEffect] = useState<CraftEffect>(getInitialCraftEffect);
@@ -128,6 +131,7 @@ function CraftTest() {
         setMaterialList(materialConversion(res.data.제작재료시세));
       })
       .catch((err) => {
+        alertBox("목록을 불러오는데 실패했습니다.");
         console.error(err);
       });
   }

@@ -28,13 +28,28 @@ function App() {
           <span className="text-2xl font-extrabold logotext">MoaLoa</span>
           <i onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="xi-close xi-x font-black cursor-pointer"></i>
         </div>
-        <button onClick={() => navigate("/")} className={"navBtn hover:bg-[#d2d2d2] w-full flex items-center justify-center " + `${location.pathname === "/" ? "bg-[#d2d2d2] dark:bg-hoverdark" : ""}`}>
+        <button
+          onClick={() => {
+            navigate("/");
+            setMobileMenuOpen(false);
+          }}
+          className={"navBtn hover:bg-[#d2d2d2] w-full flex items-center justify-center " + `${location.pathname === "/" ? "bg-[#d2d2d2] dark:bg-hoverdark" : ""}`}>
           보석검색
         </button>
-        <button onClick={() => navigate("/craft")} className={"navBtn hover:bg-[#d2d2d2] w-full flex items-center justify-center " + `${location.pathname.startsWith("/craft") ? "bg-[#d2d2d2] dark:bg-hoverdark" : ""}`}>
+        <button
+          onClick={() => {
+            navigate("/craft");
+            setMobileMenuOpen(false);
+          }}
+          className={"navBtn hover:bg-[#d2d2d2] w-full flex items-center justify-center " + `${location.pathname.startsWith("/craft") ? "bg-[#d2d2d2] dark:bg-hoverdark" : ""}`}>
           영지제작
         </button>
-        <button onClick={() => navigate("/auction")} className={"navBtn hover:bg-[#d2d2d2] w-full flex items-center justify-center " + `${location.pathname === "/auction" ? "bg-[#d2d2d2] dark:bg-hoverdark" : ""}`}>
+        <button
+          onClick={() => {
+            navigate("/auction");
+            setMobileMenuOpen(false);
+          }}
+          className={"navBtn hover:bg-[#d2d2d2] w-full flex items-center justify-center " + `${location.pathname === "/auction" ? "bg-[#d2d2d2] dark:bg-hoverdark" : ""}`}>
           경매계산
         </button>
       </div>
@@ -122,20 +137,23 @@ function App() {
         </Modal>
         {/*모바일용 메뉴바 */}
       </nav>
-      <div className="min-h-screen flex flex-col justify-between items-center mt-16 pt-10">
-        {/*nav여백*/}
-        {/*라우터*/}
-        <Routes>
-          {/*메인페이지*/}
-          {/*보석 검색 페이지*/}
-          <Route path="/" element={<GemSearch></GemSearch>}></Route>
-          {/*영지 제작 페이지*/}
-          <Route path="/craft" element={<Craft></Craft>}></Route>
-          {/*영지 제작 페이지 detail*/}
-          <Route path="/craft/:id" element={<CraftDetail></CraftDetail>}></Route>
-          {/*경매 계산 페이지*/}
-          <Route path="/auction" element={<Auction></Auction>}></Route>
-        </Routes>
+      <div className="min-h-screen flex flex-col justify-between items-center">
+        <div className="w-full h-full flex flex-col items-center justify-center">
+          {/*nav여백*/}
+          <div className="h-20"></div>
+          {/*라우터*/}
+          <Routes>
+            {/*메인페이지*/}
+            {/*보석 검색 페이지*/}
+            <Route path="/" element={<GemSearch></GemSearch>}></Route>
+            {/*영지 제작 페이지*/}
+            <Route path="/craft" element={<Craft></Craft>}></Route>
+            {/*영지 제작 페이지 detail*/}
+            <Route path="/craft/:id" element={<CraftDetail></CraftDetail>}></Route>
+            {/*경매 계산 페이지*/}
+            <Route path="/auction" element={<Auction></Auction>}></Route>
+          </Routes>
+        </div>
         <footer className="sm:text-sm text-xs font-semibold flex flex-col justify-center text-center items-center py-6">
           <div>@2024 moaloa All rights reserved</div>
           <div>This site is not associated with Smilegate RPG & Smilegate Stove.</div>

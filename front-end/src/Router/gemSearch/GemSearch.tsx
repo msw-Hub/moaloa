@@ -252,6 +252,7 @@ function GemSearch() {
         setSkillUseRate(response.data);
       })
       .catch((error) => {
+        alertBox("스킬 데이터를 불러오는데 실패했습니다.");
         console.error("API request failed:", error.message);
       });
   }
