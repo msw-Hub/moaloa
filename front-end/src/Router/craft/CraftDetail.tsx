@@ -401,8 +401,8 @@ function CraftDetail() {
     craftDetail && (
       <div className="sm:text-sm text-xs p-2 flex flex-col gap-6 md:min-w-[750px]">
         <div className="flex flex-col justify-center items-center gap-4">
-          <img className={grade[craftDetail.grade] + " w-20 h-20"} src={craftDetail.iconLink} alt="" />
-          <h1 className={"text-2xl font-bold " + `${textColors[craftDetail.grade]}`}>{craftDetail.craftName}</h1>
+          <img className={grade[craftDetail?.grade] + " w-20 h-20"} src={craftDetail?.iconLink} alt="" />
+          <h1 className={"text-2xl font-bold " + `${textColors[craftDetail?.grade]}`}>{craftDetail?.craftName}</h1>
           <p className=" text-gray-500">갱신시간: {time}</p>
         </div>
         {/*판매 기준 설정, 재료정보 변환, 영지 효과 */}
@@ -434,15 +434,15 @@ function CraftDetail() {
             <div className="space-y-2 font-medium">
               <div className="flex justify-between items-center">
                 <div>제작단위</div>
-                <div>{craftDetail.craftQuantity}</div>
+                <div>{craftDetail?.craftQuantity}</div>
               </div>
               <div className="flex justify-between items-center">
                 <div>활동력</div>
-                <div>{Math.floor(craftDetail.activityPrice * (1 - 0.01 * (craftEffect["활동력 감소"][0] + craftEffect["활동력 감소"][craftDetail.category])))}</div>
+                <div>{Math.floor(craftDetail?.activityPrice * (1 - 0.01 * (craftEffect["활동력 감소"][0] + craftEffect["활동력 감소"][craftDetail?.category])))}</div>
               </div>
               <div className="flex justify-between items-center">
                 <div>제작시간</div>
-                <div>{craftTimeInSeconds(craftDetail.craftTime)}</div>
+                <div>{craftTimeInSeconds(craftDetail?.craftTime)}</div>
               </div>
               <div className="flex justify-between items-center">
                 <div>경험치</div>
@@ -469,13 +469,13 @@ function CraftDetail() {
             <div className="space-y-2 font-medium">
               <div className="flex justify-between items-center">
                 <div>판매단위</div>
-                <div>{craftDetail.bundleCount}</div>
+                <div>{craftDetail?.bundleCount}</div>
               </div>
 
               <div className="flex justify-between items-center">
                 <div>시세</div>
                 <div className="flex justify-center items-center gap-1">
-                  <div>{priceStandard === "currentMinPrice" ? craftDetail.currentMinPrice : Math.ceil(craftDetail.ydayAvgPrice)}</div>
+                  <div>{priceStandard === "currentMinPrice" ? craftDetail?.currentMinPrice : Math.ceil(craftDetail?.ydayAvgPrice)}</div>
                   <img className="sm:w-5 sm:h-5 w-4 h-4" src={goldIcon} alt="gold" />
                 </div>
               </div>
@@ -497,9 +497,9 @@ function CraftDetail() {
                 <div>판매 차익</div>
                 <div className="flex items-center gap-1">
                   {convert === "default" ? (
-                    <div>{priceStandard === "currentMinPrice" ? craftDetail.craft.craftSellPrice : craftDetail?.ydayCraft?.ydayCraftSellPrice}</div>
+                    <div>{priceStandard === "currentMinPrice" ? craftDetail?.craft?.craftSellPrice : craftDetail?.ydayCraft?.ydayCraftSellPrice}</div>
                   ) : (
-                    <div>{priceStandard === "currentMinPrice" ? craftDetail.convert?.convertCraftSellPrice : craftDetail?.ydayConvert?.ydayConvertCraftSellPrice}</div>
+                    <div>{priceStandard === "currentMinPrice" ? craftDetail?.convert?.convertCraftSellPrice : craftDetail?.ydayConvert?.ydayConvertCraftSellPrice}</div>
                   )}
                   <img className="sm:w-5 sm:h-5 w-4 h-4" src={goldIcon} alt="gold" />
                 </div>
@@ -508,21 +508,21 @@ function CraftDetail() {
                 <div>원가 이익률</div>
 
                 {convert === "default" ? (
-                  <div className={`${priceStandard === "currentMinPrice" ? (craftDetail.craft.craftCostMargin >= 0 ? "text-red-400" : "text-blue-400") : craftDetail?.ydayCraft?.ydayCraftCostMargin >= 0 ? "text-red-400" : "text-blue-400"}`}>
-                    {priceStandard === "currentMinPrice" ? craftDetail.craft.craftCostMargin : craftDetail?.ydayCraft?.ydayCraftCostMargin}%
+                  <div className={`${priceStandard === "currentMinPrice" ? (craftDetail?.craft?.craftCostMargin >= 0 ? "text-red-400" : "text-blue-400") : craftDetail?.ydayCraft?.ydayCraftCostMargin >= 0 ? "text-red-400" : "text-blue-400"}`}>
+                    {priceStandard === "currentMinPrice" ? craftDetail?.craft?.craftCostMargin : craftDetail?.ydayCraft?.ydayCraftCostMargin}%
                   </div>
                 ) : (
                   <div
                     className={`${
                       priceStandard === "currentMinPrice"
-                        ? craftDetail.convert?.convertCraftCostMargin !== undefined && craftDetail.convert.convertCraftCostMargin >= 0
+                        ? craftDetail?.convert?.convertCraftCostMargin !== undefined && craftDetail?.convert?.convertCraftCostMargin >= 0
                           ? "text-red-400"
                           : "text-blue-400"
-                        : craftDetail.ydayConvert?.ydayConvertCraftCostMargin !== undefined && craftDetail.ydayConvert.ydayConvertCraftCostMargin >= 0
+                        : craftDetail?.ydayConvert?.ydayConvertCraftCostMargin !== undefined && craftDetail?.ydayConvert?.ydayConvertCraftCostMargin >= 0
                         ? "text-red-400"
                         : "text-blue-400"
                     }`}>
-                    {priceStandard === "currentMinPrice" ? craftDetail.convert?.convertCraftCostMargin : craftDetail.ydayConvert?.ydayConvertCraftCostMargin}%
+                    {priceStandard === "currentMinPrice" ? craftDetail?.convert?.convertCraftCostMargin : craftDetail?.ydayConvert?.ydayConvertCraftCostMargin}%
                   </div>
                 )}
               </div>
@@ -543,24 +543,24 @@ function CraftDetail() {
                   if (!materialData) return null;
 
                   // 목재, 철광석만 변환 가능
-                  if (materialData.marketName === "목재" || materialData.marketName === "철광석") {
-                    if (materialData.convert?.convertMaterial) {
+                  if (materialData?.marketName === "목재" || materialData?.marketName === "철광석") {
+                    if (materialData?.convert?.convertMaterial) {
                       return (
                         <React.Fragment key={index}>
                           <div className="flex items-center justify-start gap-2">
                             <div className="relative">
-                              <img className={`w-10 h-10 ${grade[materialData.convert.convertMaterial.grade]}`} src={itemIcon[materialData.convert.convertMaterial.marketName as keyof typeof itemIcon]} alt="재료아이템" />
-                              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{materialData.convert.convertMaterial.grade === "고급" ? 25 : 5}</span>
+                              <img className={`w-10 h-10 ${grade[materialData?.convert?.convertMaterial.grade]}`} src={itemIcon[materialData?.convert?.convertMaterial.marketName as keyof typeof itemIcon]} alt="재료아이템" />
+                              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{materialData?.convert?.convertMaterial.grade === "고급" ? 25 : 5}</span>
                             </div>
-                            <span className={textColors[materialData.convert.convertMaterial.grade]}>{materialData.convert.convertMaterial.marketName}</span>
+                            <span className={textColors[materialData?.convert?.convertMaterial?.grade]}>{materialData?.convert?.convertMaterial?.marketName}</span>
                           </div>
                           <i className="flex justify-center items-center xi-arrow-right"></i>
                           <div className="flex items-center justify-start gap-2">
                             <div className="relative">
-                              <img className={`w-10 h-10 ${grade[materialData.grade]}`} src={itemIcon[materialData.marketName as keyof typeof itemIcon]} alt="재료아이템" />
+                              <img className={`w-10 h-10 ${grade[materialData?.grade]}`} src={itemIcon[materialData?.marketName as keyof typeof itemIcon]} alt="재료아이템" />
                               <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">50</span>
                             </div>
-                            <span className={textColors[materialData.grade]}>{materialData.marketName}</span>
+                            <span className={textColors[materialData?.grade]}>{materialData?.marketName}</span>
                           </div>
                         </React.Fragment>
                       );
@@ -568,17 +568,17 @@ function CraftDetail() {
                   }
 
                   // 모든 재료 변환 가능 (아비도스, 오레하)
-                  if (material.grade === "희귀" && material.marketName !== "진귀한 유물" && material.marketName !== "진귀한 가죽") {
+                  if (material?.grade === "희귀" && material?.marketName !== "진귀한 유물" && material?.marketName !== "진귀한 가죽") {
                     const lastString = material.marketName.split(" ")[material.marketName.split(" ").length - 1];
-                    if (materialData.convert?.convertMaterial) {
+                    if (materialData?.convert?.convertMaterial) {
                       return (
                         <React.Fragment key={index}>
                           <div className="flex items-center justify-start gap-2">
                             <div className="relative">
-                              <img className={`w-10 h-10 ${grade[materialData.convert.convertMaterial.grade]}`} src={itemIcon[materialData.convert.convertMaterial.marketName as keyof typeof itemIcon]} alt="재료아이템" />
-                              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{materialData.convert.convertMaterial.grade === "고급" ? 50 : 100}</span>
+                              <img className={`w-10 h-10 ${grade[materialData?.convert?.convertMaterial?.grade]}`} src={itemIcon[materialData?.convert?.convertMaterial?.marketName as keyof typeof itemIcon]} alt="재료아이템" />
+                              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{materialData?.convert?.convertMaterial?.grade === "고급" ? 50 : 100}</span>
                             </div>
-                            <span className={textColors[materialData.convert.convertMaterial.grade]}>{materialData.convert.convertMaterial.marketName}</span>
+                            <span className={textColors[materialData?.convert?.convertMaterial?.grade]}>{materialData?.convert?.convertMaterial?.marketName}</span>
                           </div>
                           <i className="flex justify-center items-center xi-arrow-right"></i>
                           <div className="flex justify-start items-center gap-2">
@@ -606,10 +606,10 @@ function CraftDetail() {
                           <i className="flex justify-center items-center xi-arrow-right"></i>
                           <div className="flex justify-start items-center gap-2">
                             <div className="relative">
-                              <img className={`w-10 h-10 ${grade[materialData.grade]}`} src={itemIcon[materialData.marketName as keyof typeof itemIcon]} alt="재료아이템" />
+                              <img className={`w-10 h-10 ${grade[materialData?.grade]}`} src={itemIcon[materialData?.marketName as keyof typeof itemIcon]} alt="재료아이템" />
                               <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">10</span>
                             </div>
-                            <span className={textColors[materialData.grade]}>{materialData.marketName}</span>
+                            <span className={textColors[materialData?.grade]}>{materialData?.marketName}</span>
                           </div>
                         </React.Fragment>
                       );
@@ -635,7 +635,7 @@ function CraftDetail() {
             <div className="p-4 content-box md:col-span-1 col-span-2">
               <h2 className="sm:text-base text-sm font-bold  mb-4">재료 가격 수정</h2>
               <div className="flex flex-col font-semibold">
-                {craftDetail.craftMaterials
+                {craftDetail?.craftMaterials
                   .sort((a, b) => a.id - b.id)
                   .map((material) => (
                     <React.Fragment key={material.id}>
