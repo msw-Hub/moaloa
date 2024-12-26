@@ -367,7 +367,7 @@ function CraftTest() {
 
       //현재 최저가, 기본 시세, 원가이익률
       else if (priceStandard === "currentMinPrice" && convert === "default" && sort === "craftCostMargin") {
-        return b?.craft.craftCostMargin - a?.craft?.craftCostMargin;
+        return b?.craft?.craftCostMargin - a?.craft?.craftCostMargin;
       }
 
       //전날 평균가, 변환 시세, 판매차익
@@ -557,7 +557,7 @@ function CraftTest() {
                 {/* 원가이익률(%) */}
                 <span className={"flex gap-1  items-center justify-end font-semibold"}>
                   {convert === "default" ? (
-                    <div className="">{priceStandard === "currentMinPrice" ? craft?.craft.craftCostMargin : craft?.ydayCraft?.ydayCraftCostMargin}</div>
+                    <div className="">{priceStandard === "currentMinPrice" ? craft?.craft?.craftCostMargin : craft?.ydayCraft?.ydayCraftCostMargin}</div>
                   ) : (
                     <div className="">{priceStandard === "currentMinPrice" ? craft?.convert?.convertCraftCostMargin : craft?.ydayConvert?.ydayConvertCraftCostMargin}</div>
                   )}
