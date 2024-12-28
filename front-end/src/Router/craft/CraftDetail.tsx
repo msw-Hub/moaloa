@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import itemIcon from "../../data/itemIcon.json";
 import { Modal } from "../../components/modal";
 import { useAlert } from "../../hooks/useAlert";
+import { CraftMetas } from "../../metadatas/metadatas";
 
 interface CraftMaterial {
   id: number;
@@ -400,6 +401,7 @@ function CraftDetail() {
   return (
     craftDetail && (
       <div className="sm:text-sm text-xs p-2 flex flex-col gap-6 md:min-w-[750px]">
+        <CraftMetas></CraftMetas>
         <div className="flex flex-col justify-center items-center gap-4">
           <img className={grade[craftDetail?.grade] + " w-20 h-20"} src={craftDetail?.iconLink} alt="" />
           <h1 className={"text-2xl font-bold " + `${textColors[craftDetail?.grade]}`}>{craftDetail?.craftName}</h1>
