@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAlert } from "../../hooks/useAlert";
+import { AuctionMetas } from "../../metadatas/metadatas";
 
 interface Auction {
   commission: number; //판매 수수료
@@ -101,12 +102,13 @@ function Auction() {
 
   return (
     <div className="md:text-base text-sm grid grid-cols-2 gap-4 max-w-[550px] w-full font-medium p-2">
+      <AuctionMetas></AuctionMetas>
       {/* 가격 , 인원 , 이득률 퍼센트 설정 */}
       <div className="content-box col-span-2 grid grid-cols-1 gap-4 p-4 font-medium">
-        <div className="font-bold">경매 계산기</div>
+        <h1 className="font-bold">경매 계산기</h1>
         <input className="content-box border-solid border border-bddark p-4" onFocus={(e) => e.target.select()} type="number" placeholder="가격" onChange={(e) => setAuctionPrice(Number(e.target.value))} />
         <div className="flex justify-evenly items-center  text-nowrap">
-          {[4, 8, 16, 25].map((v) => (
+          {[4, 8, 16, 35].map((v) => (
             <div key={v} className="flex justify-center items-center gap-1 cursor-pointer" onClick={() => setPeople(v)}>
               {people === v ? <i className="xi-radiobox-checked xi-x text-blue-400 dark:text-light"></i> : <i className="xi-radiobox-blank xi-x text-blue-400 dark:text-light"></i>}
               {v == 25 ? "필드보스" : `${v}인`}

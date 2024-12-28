@@ -6,6 +6,7 @@ import classSkillData from "../../data/classSkill.json"; // classSkill.json 파�
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { useAlert } from "../../hooks/useAlert";
+import { GemSearchMetas } from "../../metadatas/metadatas";
 
 interface liveGemListTpye {
   name: string;
@@ -320,6 +321,7 @@ function GemSearch() {
 
   return (
     <>
+      <GemSearchMetas></GemSearchMetas>
       <div className="sm:text-sm text-xs 2xl:max-w-[1700px] max-w-[900px] h-full w-full 2xl:grid 2xl:grid-cols-[1.2fr_1fr] flex flex-col gap-4 p-4">
         <div className="flex flex-col gap-4 text-nowrap">
           {/* class 선택 창 */}

@@ -3,6 +3,7 @@ import axios from "axios";
 import { Modal } from "../../components/modal";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../hooks/useAlert";
+import { CraftMetas } from "../../metadatas/metadatas";
 
 interface CraftMaterial {
   id: number;
@@ -396,6 +397,7 @@ function CraftTest() {
 
   return (
     <div className="sm:text-sm text-xs w-full h-full flex justify-center gap-4 font-semibold xl:flex-row flex-col xl:items-start items-center p-2">
+      <CraftMetas></CraftMetas>
       {/* 카테고리 버튼 관심, 특수, 물약, 폭탄, 수류탄, 로브, 기타, 음식, */}
       <div className="grid grid-cols-1 gap-4">
         <div className="flex flex-col justify-center items-start content-box p-4 gap-4 ">
