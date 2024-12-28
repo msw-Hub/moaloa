@@ -151,6 +151,8 @@ function App() {
         {/*모바일용 메뉴바 */}
       </nav>
       <div className="min-h-screen flex flex-col justify-between items-center">
+        {/*현재 페이지가 / 이면 div 박스 추가 */}
+        {location.pathname === "/" ? <div></div> : null}
         <div className="w-full h-full flex flex-col items-center justify-center">
           {/*nav여백*/}
           <div className="h-20"></div>
