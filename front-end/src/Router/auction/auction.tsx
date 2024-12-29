@@ -111,7 +111,7 @@ function Auction() {
           {[4, 8, 16, 35].map((v) => (
             <div key={v} className="flex justify-center items-center gap-1 cursor-pointer" onClick={() => setPeople(v)}>
               {people === v ? <i className="xi-radiobox-checked xi-x text-blue-400 dark:text-light"></i> : <i className="xi-radiobox-blank xi-x text-blue-400 dark:text-light"></i>}
-              {v == 25 ? "필드보스" : `${v}인`}
+              {v == 35 ? "필드보스[35인]" : `${v}인`}
             </div>
           ))}
         </div>
