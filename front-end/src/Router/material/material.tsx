@@ -70,6 +70,7 @@ function Material() {
       //변환했을때 이득이면 convert에 변환가격과 변환재료를 넣어줌
       let convertSellPrice = 0;
       let high = 0;
+
       if (material[2].currentMinPrice >= material[3].currentMinPrice) {
         convertSellPrice = Math.ceil(material[2].currentMinPrice * 0.05);
         high = 2;
@@ -80,7 +81,7 @@ function Material() {
       material.forEach((item, index) => {
         //판매 수량 가정
 
-        //판매수수료 제외 금액
+        //판매수수료 포함 금액 1개 판매했을때 비용
         const sellPrice = item.currentMinPrice - Math.ceil(item.currentMinPrice * 0.05);
 
         //변환 재료가 일반일때
@@ -102,22 +103,35 @@ function Material() {
             };
           }
         }
-        //변환 재료가 고급일때
+        //변환 재료가 고급일때 일반으로 바꾸는 게 이득인지 아비도스로 바꾸는게 이득인지
         else if (index == 1) {
           const quantity = 2500;
+
+          //1. 고급 재료를 경매장에 그대로 판매 금액 계산
+          const sellPrice1 = ((item.currentMinPrice - Math.ceil(item.currentMinPrice * 0.05)) * quantity) / 100;
+          // 2. 고급 재료를 일반 재료로 교환후 판매 금액 계산 비율은 1:2
+          const sellPrice2 = ((material[0].currentMinPrice - Math.ceil(material[0].currentMinPrice * 0.05)) * quantity) / 50;
+
           //가루 변환후 오레하 제작 개수
           const convertItemCount = (quantity * 16) / 100;
           //변환된 오레하 판매 수수료
           const convertPee = (convertItemCount / 100) * convertSellPrice;
           //총 수수료 제외 비용
-          const convertTotalPrice = (convertItemCount / 100) * material[high].currentMinPrice - convertPee;
+          const sellPrice3 = (convertItemCount / 100) * material[high].currentMinPrice - convertPee;
 
-          if (convertTotalPrice > (sellPrice * quantity) / 100) {
+          if (sellPrice1 < sellPrice2 && sellPrice2 > sellPrice3) {
             item.convert = {
-              proportion: Math.round((convertTotalPrice / ((sellPrice * quantity) / 100)) * 1000) / 1000,
-              sellPriceAll: (sellPrice * quantity) / 100,
-              convertPrice: convertTotalPrice,
-              convertMaterial: material[high],
+              proportion: Math.round((sellPrice2 / sellPrice1) * 1000) / 1000,
+              sellPriceAll: sellPrice1,
+              convertPrice: sellPrice2,
+              convertMaterial: material[0],
+            };
+          } else if (sellPrice1 < sellPrice3 && sellPrice2 < sellPrice3) {
+            item.convert = {
+              proportion: Math.round((sellPrice3 / sellPrice1) * 1000) / 1000,
+              sellPriceAll: sellPrice1,
+              convertPrice: sellPrice3,
+              convertMaterial: material[3],
             };
           }
         }
