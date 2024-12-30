@@ -154,8 +154,8 @@ function CraftDetail() {
     "화염 수류탄": 1,
     "암흑 수류탄": 2,
     "회오리 수류탄": 3,
-    "파괴 수류탄": 4,
-    "부식 수류탄": 5,
+    "파괴 폭탄": 4,
+    "부식 폭탄": 5,
     "수면 폭탄": 6,
     "성스러운 폭탄": 7,
     "정령의 회복약": 0,
@@ -165,6 +165,7 @@ function CraftDetail() {
     return axios
       .get(`${import.meta.env.VITE_APP_API_URL}/api/v1/craft/readData?craftItemId=${id}`)
       .then((res) => {
+        console.log(res.data);
         return res.data;
       })
       .catch((err) => {
