@@ -131,7 +131,7 @@ function Material() {
               proportion: Math.round((sellPrice3 / sellPrice1) * 1000) / 1000,
               sellPriceAll: sellPrice1,
               convertPrice: sellPrice3,
-              convertMaterial: material[3],
+              convertMaterial: material[high],
             };
           }
         }
