@@ -165,7 +165,6 @@ function CraftDetail() {
     return axios
       .get(`${import.meta.env.VITE_APP_API_URL}/api/v1/craft/readData?craftItemId=${id}`)
       .then((res) => {
-        console.log(res.data);
         return res.data;
       })
       .catch((err) => {
