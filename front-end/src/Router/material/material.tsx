@@ -344,7 +344,7 @@ function MaterialCord(props: { material: MaterialItem; simplify: boolean }) {
         <div className="flex justify-start items-center gap-2 p-2 border-t border-solid border-bddark">
           <div className="relative">
             <img src={materialIcon[props.material.marketName as keyof typeof materialIcon]} alt={props.material.marketName} className={"w-10 h-10 " + `${grade[props.material.grade]}`} />
-            <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{props.material.grade === "고급" ? 50 : props.material.grade === "희귀" ? 10 : 100}</span>
+            <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white"></span>
           </div>
           <span className={textColors[props.material.grade]}>{props.material.marketName}</span>
         </div>
@@ -353,7 +353,7 @@ function MaterialCord(props: { material: MaterialItem; simplify: boolean }) {
           <div className="flex justify-start items-center gap-2 p-2 border-t border-solid border-bddark">
             <div className="relative">
               <img src={materialIcon[props.material.convert.convertMaterial.marketName as keyof typeof materialIcon]} alt={props.material.convert.convertMaterial.marketName} className={"w-10 h-10 " + `${grade[props.material.convert.convertMaterial.grade]}`} />
-              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{props.material.convert.convertMaterial.grade === "고급" ? 50 : props.material.convert.convertMaterial.grade === "희귀" ? 10 : 100}</span>
+              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white"></span>
             </div>
             <span className={textColors[props.material.convert.convertMaterial.grade]}>{props.material.convert.convertMaterial.marketName}</span>
           </div>
@@ -361,7 +361,7 @@ function MaterialCord(props: { material: MaterialItem; simplify: boolean }) {
           <div className="flex justify-start items-center gap-2 p-2 border-t border-solid border-bddark">
             <div className="relative">
               <img src={materialIcon[props.material.marketName as keyof typeof materialIcon]} alt={props.material.marketName} className={"w-10 h-10 " + `${grade[props.material.grade]}`} />
-              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{props.material.grade === "고급" ? 50 : props.material.grade === "희귀" ? 10 : 100}</span>
+              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white"></span>
             </div>
             <span className={textColors[props.material.grade]}>{props.material.marketName}</span>
           </div>
@@ -369,7 +369,7 @@ function MaterialCord(props: { material: MaterialItem; simplify: boolean }) {
       </>
     );
   } else {
-    if ((props.material.grade == "일반" || props.material.grade == "고급") && props.material.convert) {
+    if ((props.material.grade == "일반" || props.material.grade == "고급") && props.material.convert && props.material.convert.convertMaterial.marketName !== "목재" && props.material.convert.convertMaterial.marketName !== "철광석") {
       return (
         <>
           {/*일반, 고급 -> 가루 */}
@@ -539,7 +539,7 @@ function MaterialCord(props: { material: MaterialItem; simplify: boolean }) {
         <div className="flex justify-start items-center gap-2 p-2 border-t border-solid border-bddark">
           <div className="relative">
             <img src={materialIcon[props.material.marketName as keyof typeof materialIcon]} alt={props.material.marketName} className={"w-10 h-10 " + `${grade[props.material.grade]}`} />
-            <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">10</span>
+            <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{props.material.marketName === "묵직한 철광석" || props.material.marketName === "부드러운 목재" ? "25" : ""}</span>
           </div>
           <span className={textColors[props.material.grade]}>{props.material.marketName}</span>
         </div>
@@ -548,7 +548,7 @@ function MaterialCord(props: { material: MaterialItem; simplify: boolean }) {
           <div className="flex justify-start items-center gap-2 p-2 border-t border-solid border-bddark">
             <div className="relative">
               <img src={materialIcon[props.material.convert.convertMaterial.marketName as keyof typeof materialIcon]} alt={props.material.convert.convertMaterial.marketName} className={"w-10 h-10 " + `${grade[props.material.convert.convertMaterial.grade]}`} />
-              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">10</span>
+              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">50</span>
             </div>
             <span className={textColors[props.material.convert.convertMaterial.grade]}>{props.material.convert.convertMaterial.marketName}</span>
           </div>
@@ -556,7 +556,7 @@ function MaterialCord(props: { material: MaterialItem; simplify: boolean }) {
           <div className="flex justify-start items-center gap-2 p-2 border-t border-solid border-bddark">
             <div className="relative">
               <img src={materialIcon[props.material.marketName as keyof typeof materialIcon]} alt={props.material.marketName} className={"w-10 h-10 " + `${grade[props.material.grade]}`} />
-              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">10</span>
+              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white"></span>
             </div>
             <span className={textColors[props.material.grade]}>{props.material.marketName}</span>
           </div>
