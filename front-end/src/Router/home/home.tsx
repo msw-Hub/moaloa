@@ -13,11 +13,11 @@ function Home() {
       description: "제작법의 최적의 제작비용을 계산하여 알려주는 기능을 제공합니다.",
       navurl: "/craft",
     },
-    // {
-    //   title: "생활재료판매",
-    //   description: "생활재료를 판매할때 각 재료별 최저가를 알려주는 기능을 제공합니다.",
-    //   navurl: "/material",
-    // },
+    {
+      title: "생활재료판매",
+      description: "생활재료를 판매할때 각 재료별 최저가를 알려주는 기능을 제공합니다.",
+      navurl: "/material",
+    },
     {
       title: "경매계산",
       description: "경매 입찰시 적정 입찰비용을 알려주는 기능을 제공합니다.",
@@ -49,9 +49,9 @@ function Home() {
         {/*메뉴*/}
         <div className="flex flex-col justify-center items-center gap-2">
           <span className="text-xl font-semibold">기능</span>
-          <div className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
+          <div className="grid lg:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-4">
             {/*선*/}
-            <div className="lg:col-span-3 sm:col-span-2 col-span-1 border border-solid border-bddark border-opacity-50"></div>
+            <div className="lg:col-span-4 sm:col-span-2 col-span-1 border border-solid border-bddark border-opacity-50"></div>
             {menuList.map((menu) => (
               <InfoCard key={menu.title} title={menu.title} description={menu.description} navurl={menu.navurl} />
             ))}
