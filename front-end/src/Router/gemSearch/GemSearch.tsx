@@ -131,32 +131,52 @@ function GemSearch() {
   }
 
   async function gemSerchAPISend() {
-    count.current = 0;
-    setGemListAll([]);
-    // API 키가 없을 때 경고창 띄우기
-    if (apikeycount === 0) {
-      alertBox("API키를 등록해주세요.");
-      return;
-    }
-    if (classSkillCount === 0) {
-      alertBox("클래스를 선택해주세요.");
-      return;
-    }
-    alertBox("검색이 멈추면 잠시 기다려주세요.");
-    setIsSearching(false);
-
-    // 체크한 직업만큼 반복
-    for (const b of checked) {
-      // 체크한 직업의 스킬만큼 반복
-      for (const className of classSkill[b]) {
-        apicount.current++;
-
-        // 딜레이 추가
-        await delay(100); // 0.1초 대기
-
-        // 검색 API 호출
-        await gemSerchAPI(className, b, apicount.current % apikeycount);
+    try {
+      count.current = 0;
+      setGemListAll([]);
+      // API 키가 없을 때 경고창 띄우기
+      if (apikeycount === 0) {
+        alertBox("API키를 등록해주세요.");
+        return;
       }
+
+      // 클래스 선택 안했을 때 경고창 띄우기
+      if (classSkillCount === 0) {
+        alertBox("클래스를 선택해주세요.");
+        return;
+      }
+
+      //서버 점검중인지 확인
+      const response = await axios.get(`https://developer-lostark.game.onstove.com/news/alarms`, {
+        headers: {
+          accept: "application/json",
+          authorization: `bearer ${apiKey[0].trim()}`,
+          "content-Type": "application/json",
+        },
+      });
+      if (response.status !== 200) {
+        alertBox("서버가 점검중입니다.");
+        return; // 상태 코드가 200이 아닌 경우 함수 종료
+      }
+
+      alertBox("검색이 멈추면 잠시 기다려주세요.");
+      setIsSearching(false);
+
+      // 체크한 직업만큼 반복
+      for (const b of checked) {
+        // 체크한 직업의 스킬만큼 반복
+        for (const className of classSkill[b]) {
+          apicount.current++;
+
+          // 딜레이 추가
+          await delay(100); // 0.1초 대기
+
+          // 검색 API 호출
+          await gemSerchAPI(className, b, apicount.current % apikeycount);
+        }
+      }
+    } catch (error) {
+      alertBox("서버가 점검중입니다.");
     }
   }
 
@@ -334,7 +354,7 @@ function GemSearch() {
                   <h2 className="sm:text-base text-sm text-center font-bold my-2">{className}</h2>
                   <div className="grid sm:grid-cols-1 grid-cols-3 gap-2">
                     {classIconListTyped[className].map((classIcon: ClassIcon) => (
-                      <button onClick={() => handleCheck(classIcon.Class)} className={`flex  md:justify-start justify-center items-center rounded-md gap-2 py-2 px-3 classIconHover ${checked.includes(classIcon.Class) ? "active-btn" : "default-btn"}`}>
+                      <button key={classIcon.Class} onClick={() => handleCheck(classIcon.Class)} className={`flex  md:justify-start justify-center items-center rounded-md gap-2 py-2 px-3 classIconHover ${checked.includes(classIcon.Class) ? "active-btn" : "default-btn"}`}>
                         {/* class 이미지 아이콘 */}
                         <img className={`md:block hidden transition-all w-5 h-5  ${darkMode === false && !checked.includes(classIcon.Class) ? " white-Mode-icon-filter" : null}`} src={classIcon.Icon} alt={classIcon.Class} />
                         {/* class 이름 */}
