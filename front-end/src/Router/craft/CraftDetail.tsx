@@ -262,6 +262,18 @@ function CraftDetail() {
           };
         }
 
+        //고급과 희귀가 같은 경우
+        if (gradeConvert2 === material[2].currentMinPrice) {
+          grade1 = (material[1].currentMinPrice / 8) * 50;
+          updatedMaterials[materialKey][0] = {
+            ...material[0],
+            convert: {
+              convertMaterial: material[1],
+              convertPrice: material[1].currentMinPrice / 2,
+            },
+          };
+        }
+
         // if (material[0].currentMinPrice * 10 > material[2].currentMinPrice) {
         //   grade1 = (material[2].currentMinPrice / 8) * 10;
         //   updatedMaterials[materialKey][0] = {
