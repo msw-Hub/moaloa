@@ -30,6 +30,7 @@ jsonFile:
   craftData: "/var/app/current/craftData.json"
   gemData: "/var/app/current/gemData.json"
   gemPrice: "/var/app/current/gemPrice.json"
+  lifeData: "/var/app/current/lifeData.json"
 
 turnstile:
   secret: ${TURNSTILE_SECRET}
