@@ -432,6 +432,25 @@ function CraftTest() {
     });
     setSortedCraftList(sortedList);
   }, [sort, craftList, convert, priceStandard]);
+  const [favoriteList, setFavoriteList] = useState<string[]>(() => JSON.parse(localStorage.getItem("favoriteList") || "[]"));
+
+  //즐겨찾기 on/off를 markketName을 localStorage에 저장 함수
+  const toggleFavorite = (marketName: string) => {
+    const updatedFavoriteList = [...favoriteList];
+    const index = updatedFavoriteList.indexOf(marketName);
+    if (index === -1) {
+      updatedFavoriteList.push(marketName);
+    } else {
+      updatedFavoriteList.splice(index, 1);
+    }
+    setFavoriteList(updatedFavoriteList);
+    localStorage.setItem("favoriteList", JSON.stringify(updatedFavoriteList));
+  };
+
+  const handleIconClick = (event: React.MouseEvent, marketName: string) => {
+    event.stopPropagation(); // 이벤트 버블링 방지
+    toggleFavorite(marketName);
+  };
 
   return (
     <div className="sm:text-sm text-xs w-full h-full flex justify-center gap-4 font-semibold xl:flex-row flex-col xl:items-start items-center p-2">
@@ -441,7 +460,7 @@ function CraftTest() {
         <div className="flex flex-col justify-center items-start content-box p-4 gap-4 ">
           <span className="sm:text-base text-sm font-semibold">카테고리</span>
           <div className="w-full grid grid-cols-4 gap-2 ">
-            {["전체", "특수", "물약", "폭탄", "수류탄", "로브", "기타", "요리"].map((category, index) => {
+            {["관심", "특수", "물약", "폭탄", "수류탄", "로브", "기타", "요리"].map((category, index) => {
               //카테고리 버튼 클릭시 해당 카테고리의 메뉴를 토글
               //전체 클릭시 모든 메뉴 토글 해제
               //전체를 제외한 나머지 카테고리를 클릭시 전체 메뉴 토글 해제
@@ -450,15 +469,21 @@ function CraftTest() {
                   key={category}
                   onClick={() => {
                     if (index === 0) {
-                      setCategoryMenu([true, false, false, false, false, false, false, false]);
+                      if (categoryMenu[0] === true) setCategoryMenu([false, false, false, false, false, false, false, false]);
+                      else setCategoryMenu([true, false, false, false, false, false, false, false]);
                     } else {
                       let temp = [...categoryMenu];
-                      temp[0] = false;
-                      temp[index] = !temp[index];
-                      if (temp.slice(1).every((menu) => !menu)) {
-                        temp[0] = true;
+                      //관심만 토글된 상태에서 다른 카테고리 클릭시 관심 토글 해제
+                      //관심만 토글된 상태에서 관심을 클릭시 관심 토글 해제
+                      if (temp[0] === true && temp.slice(1).every((item) => item === false)) {
+                        temp[0] = false;
                       }
+                      temp[index] = !temp[index];
                       setCategoryMenu(temp);
+
+                      // if (temp.slice(1).every((item) => item === false)) {
+                      //   setCategoryMenu([true, false, false, false, false, false, false, false]);
+                      // }
                     }
                   }}
                   className={`flexCC text-nowrap py-2 px-4 rounded-md ${categoryMenu[index] ? "active-btn" : "default-btn"}`}>
@@ -558,8 +583,11 @@ function CraftTest() {
           {sortedCraftList.map((craft: CraftItem) => {
             //제작법 이름 검색(내용이 없으면 전부 표시)
             if (searchName !== "" && !craft.craftName.includes(searchName)) return null;
+            //관심목록만 표시
+            if (categoryMenu[0] && favoriteList.indexOf(craft.craftName) === -1) return null;
+
             //카테고리 메뉴에서 전체가 아닌 경우 해당 카테고리만 표시
-            if (!categoryMenu[0] && !categoryMenu[craft.category]) return null;
+            if (!categoryMenu[0] && !categoryMenu[craft.category] && !categoryMenu.every((boolean) => boolean === false)) return null;
 
             //특정 제작법 제외
             const filter = ["빛나는 신호탄", "빛나는 진군의 깃발", "빛나는 신속 로브", "빛나는 화염 수류탄", "빛나는 점토 수류탄"];
@@ -568,8 +596,10 @@ function CraftTest() {
             return (
               <div
                 onClick={() => navigate(`/craft/${craft.id}`)}
-                className="cursor-pointer hover:bg-hover dark:hover:bg-gray-700 transition-all grid md:grid-cols-[3fr_1fr_1fr_1fr_0.8fr_0.5fr_0.5fr] sm:grid-cols-[1fr_1fr_1fr_1fr_0.8fr_0.5fr_0.5fr] grid-cols-[1fr_1fr_1fr_0.8fr_0.5fr_0.5fr] sm:gap-4 gap-3 border-t border-solid border-bddark py-2 px-4"
+                className="cursor-pointer hover:bg-hover dark:hover:bg-gray-700 transition-all grid md:grid-cols-[0.1fr_3fr_1fr_1fr_1fr_0.8fr_0.5fr_0.5fr] sm:grid-cols-[0.1fr_1fr_1fr_1fr_1fr_0.8fr_0.5fr_0.5fr] grid-cols-[0.1fr_1fr_1fr_1fr_0.8fr_0.5fr_0.5fr] sm:gap-4 gap-3 border-t border-solid border-bddark py-2 px-4"
                 key={craft.id}>
+                {/*관심 */}
+                <i onClick={(event) => handleIconClick(event, craft.craftName)} className={"xi-star p-2 flex justify-center items-center " + `${favoriteList.indexOf(craft.craftName) > -1 ? "text-yellow-400" : ""}`}></i>
                 {/* 이미지 및 제작 이름  */}
                 <div className=" flex md:justify-start justify-center items-center gap-4 ">
                   <div className="relative">
