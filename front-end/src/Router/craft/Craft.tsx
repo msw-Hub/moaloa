@@ -563,7 +563,8 @@ function CraftTest() {
 
         {/* 제작품 목록 */}
         <div className="sm:max-w-[1200px] p-4 content-box text-center flex flex-col  justify-center flex-wrap">
-          <div className="grid md:grid-cols-[3fr_1fr_1fr_1fr_0.8fr_0.5fr_0.5fr] sm:grid-cols-[1fr_1fr_1fr_1fr_0.8fr_0.5fr_0.5fr] grid-cols-[1fr_1fr_1fr_0.8fr_0.5fr_0.5fr] sm:gap-4 gap-3 py-2 px-4 text-nowrap">
+          <div className="grid md:grid-cols-[0.1fr_3fr_1fr_1fr_1fr_0.8fr_0.5fr_0.5fr] sm:grid-cols-[0.1fr_1fr_1fr_1fr_1fr_0.8fr_0.5fr_0.5fr] grid-cols-[0.1fr_1fr_1fr_1fr_0.8fr_0.5fr_0.5fr] sm:gap-4 gap-3 py-2 sm:px-4 text-nowrap">
+            <span></span>
             <span>제작법</span>
             <span className="flex justify-end items-center">{priceStandard === "currentMinPrice" ? "현재 최저가" : "전날 평균가"}</span>
             {/* <span>최저가</span> */}
@@ -596,10 +597,10 @@ function CraftTest() {
             return (
               <div
                 onClick={() => navigate(`/craft/${craft.id}`)}
-                className="cursor-pointer hover:bg-hover dark:hover:bg-gray-700 transition-all grid md:grid-cols-[0.1fr_3fr_1fr_1fr_1fr_0.8fr_0.5fr_0.5fr] sm:grid-cols-[0.1fr_1fr_1fr_1fr_1fr_0.8fr_0.5fr_0.5fr] grid-cols-[0.1fr_1fr_1fr_1fr_0.8fr_0.5fr_0.5fr] sm:gap-4 gap-3 border-t border-solid border-bddark py-2 px-4"
+                className="cursor-pointer hover:bg-hover dark:hover:bg-gray-700 transition-all grid md:grid-cols-[0.1fr_3fr_1fr_1fr_1fr_0.8fr_0.5fr_0.5fr] sm:grid-cols-[0.1fr_1fr_1fr_1fr_1fr_0.8fr_0.5fr_0.5fr] grid-cols-[0.1fr_1fr_1fr_1fr_0.8fr_0.5fr_0.5fr] sm:gap-4 gap-3 border-t border-solid border-bddark py-2 sm:px-4 "
                 key={craft.id}>
                 {/*관심 */}
-                <i onClick={(event) => handleIconClick(event, craft.craftName)} className={"xi-star p-2 flex justify-center items-center " + `${favoriteList.indexOf(craft.craftName) > -1 ? "text-yellow-400" : ""}`}></i>
+                <i onClick={(event) => handleIconClick(event, craft.craftName)} className={"xi-star sm:p-2 p-1 flex justify-center items-center " + `${favoriteList.indexOf(craft.craftName) > -1 ? "text-yellow-400" : ""}`}></i>
                 {/* 이미지 및 제작 이름  */}
                 <div className=" flex md:justify-start justify-center items-center gap-4 ">
                   <div className="relative">
@@ -609,7 +610,7 @@ function CraftTest() {
                   <span className="font-semibold md:block hidden">{craft.craftName}</span>
                 </div>
                 {/* 최저가 */}
-                <div className="gap-2 flex items-center justify-end text-center font-semibold">
+                <div className="sm:gap-2 gap-1 flex items-center justify-end text-center font-semibold">
                   <div>{priceStandard === "currentMinPrice" ? craft.currentMinPrice : Math.ceil(craft.ydayAvgPrice)}</div>
                   <img className="sm:w-5 sm:h-5 w-4 h-4" src="/itemIcon/gold.webp" alt="gold" />
                 </div>
@@ -620,7 +621,7 @@ function CraftTest() {
                 </div>
 
                 {/* 판매 차익 */}
-                <span className={"flex gap-2 items-center justify-end font-semibold"}>
+                <span className={"flex sm:gap-2 gap-1 items-center justify-end font-semibold"}>
                   {convert === "default" ? (
                     <div>{priceStandard === "currentMinPrice" ? craft?.craft?.craftSellPrice : craft?.ydayCraft?.ydayCraftSellPrice}</div>
                   ) : (
