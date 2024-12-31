@@ -102,7 +102,7 @@ function CraftTest() {
   const [craftList, setCraftList] = useState<CraftItem[]>([]);
   const [craftModalOpen, setCraftModalOpen] = useState(false);
   const [craftEffect, setCraftEffect] = useState<CraftEffect>(getInitialCraftEffect);
-  const [categoryMenu, setCategoryMenu] = useState<boolean[]>(() => JSON.parse(localStorage.getItem("categoryMenu") || `[true, false, false, false, false, false, false, false]`));
+  const [categoryMenu, setCategoryMenu] = useState<boolean[]>(() => JSON.parse(localStorage.getItem("categoryMenu") || `[false, false, false, false, false, false, false, false]`));
   const [searchName, setSearchName] = useState<string>("");
   const [materialList, setMaterialList] = useState<Material>();
   //시세 기준 (현재 최저가 : currentMinPrice, 전날가격 : ydayAvgPrice )
