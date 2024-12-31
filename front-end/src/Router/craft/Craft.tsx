@@ -201,7 +201,22 @@ function CraftTest() {
 
       // 생활 재료 교환 탭
       if (materialKey === "90400" || materialKey === "90300") {
-        if (material[0].currentMinPrice * 10 > material[2].currentMinPrice) {
+        const gradeConvert1 = material[0].currentMinPrice * 10;
+        const gradeConvert2 = material[1].currentMinPrice * 5;
+
+        //test1, gradeConvert2, material[2].currentMinPrice중 가장 작은 값이 grade1에 저장
+        if (gradeConvert2 < gradeConvert1 && gradeConvert2 < material[2].currentMinPrice) {
+          grade1 = (material[1].currentMinPrice / 8) * 50;
+          updatedMaterials[materialKey][0] = {
+            ...material[0],
+            convert: {
+              convertMaterial: material[1],
+              convertPrice: material[1].currentMinPrice / 2,
+            },
+          };
+        }
+
+        if (material[2].currentMinPrice < gradeConvert2 && material[2].currentMinPrice < gradeConvert1) {
           grade1 = (material[2].currentMinPrice / 8) * 10;
           updatedMaterials[materialKey][0] = {
             ...material[0],
@@ -212,18 +227,28 @@ function CraftTest() {
           };
         }
 
-        if (material[0].currentMinPrice * 2 > material[1].currentMinPrice && !(material[0].currentMinPrice * 10 > material[2].currentMinPrice)) {
-          grade1 = (material[1].currentMinPrice / 8) * 50;
-          updatedMaterials[materialKey][0] = {
-            ...material[0],
-            convert: {
-              convertMaterial: material[1],
-              convertPrice: material[1].currentMinPrice / 2,
-            },
-          };
-        }
-      }
+        // if (material[0].currentMinPrice * 10 > material[2].currentMinPrice) {
+        //   grade1 = (material[2].currentMinPrice / 8) * 10;
+        //   updatedMaterials[materialKey][0] = {
+        //     ...material[0],
+        //     convert: {
+        //       convertMaterial: material[2],
+        //       convertPrice: material[2].currentMinPrice / 10,
+        //     },
+        //   };
+        // }
 
+        // if (material[0].currentMinPrice * 2 > material[1].currentMinPrice && !(material[0].currentMinPrice * 10 > material[2].currentMinPrice)) {
+        //   grade1 = (material[1].currentMinPrice / 8) * 50;
+        //   updatedMaterials[materialKey][0] = {
+        //     ...material[0],
+        //     convert: {
+        //       convertMaterial: material[1],
+        //       convertPrice: material[1].currentMinPrice / 2,
+        //     },
+        //   };
+        // }
+      }
       // 일반, 고급 재료 중 아비도스 보다 저렴한 재료를 반환
       if (grade1 < material[3].currentMinPrice || grade2 < material[3].currentMinPrice) {
         updatedMaterials[materialKey][3] = {
@@ -522,6 +547,10 @@ function CraftTest() {
             if (searchName !== "" && !craft.craftName.includes(searchName)) return null;
             //카테고리 메뉴에서 전체가 아닌 경우 해당 카테고리만 표시
             if (!categoryMenu[0] && !categoryMenu[craft.category]) return null;
+
+            //특정 제작법 제외
+            const filter = ["빛나는 신호탄", "빛나는 진군의 깃발", "빛나는 신속 로브", "빛나는 화염 수류탄", "빛나는 점토 수류탄"];
+            if (filter.indexOf(craft.craftName) > -1) return null;
 
             return (
               <div
