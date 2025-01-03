@@ -532,6 +532,9 @@ function GemSearch() {
                 if (gem.price === 0 && !showGemList2) return null;
                 if (gem.price !== 0 && !showGemList1) return null;
                 if (gem.skillUseRate.recruitmentRate < recruitmentRate) return null;
+                //홀리나이트, 도화가, 바드 일때 4티어 딜 보석 일때만 출력
+                if ((gem.skillName === "신성의 오라" || gem.skillName === "음양 스킬" || gem.skillName === "세레나데 스킬") && !(gem.Tier === "4" && gem.gemDamCol === "딜")) return null;
+
                 return (
                   <div key={gem.skillValue} className="hover:bg-hover dark:hover:bg-gray-700 transition-colors grid min-[500px]:grid-cols-[1fr_1.5fr_3fr_1fr_1fr_1fr] grid-cols-[1fr_1.5fr_3fr_1fr_1fr] w-full font-medium">
                     <div className="border border-bddark py-2  flex justify-center items-center">

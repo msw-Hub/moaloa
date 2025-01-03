@@ -391,6 +391,12 @@
       "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/hk_skill/hk_skill_01_16.png"
     },
     {
+      "Value": 36800,
+      "Text": "신성의 오라",
+      "Class": "홀리나이트",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/hk_skill/hk_skill_01_21.png"
+    },
+    {
       "Value": 36140,
       "Text": "신성한 보호",
       "Class": "홀리나이트",
@@ -895,6 +901,12 @@
       "Text": "행진곡",
       "Class": "바드",
       "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/bd_skill/bd_skill_01_24.png"
+    },
+    {
+      "Value": 24000,
+      "Text": "세레나데 스킬",
+      "Class": "바드",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/bd_skill/bd_skill_01_19.png"
     }
   ],
   "소서리스": [
@@ -1661,10 +1673,10 @@
       "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/ifm_skill/ifm_skill_01_21.png"
     },
     {
-      "Value": 47950,
-      "Text": "권왕십이식 : 낙화",
+      "Value": 47000,
+      "Text": "권왕십이식",
       "Class": "브레이커",
-      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/ifm_skill/ifm_skill_01_26.png"
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/ability/ability_277.png"
     },
     {
       "Value": 47020,
@@ -2813,6 +2825,12 @@
       "Text": "필법 : 흩뿌리기",
       "Class": "도화가",
       "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/yy_skill/yy_skill_01_12.png"
+    },
+    {
+      "Value": 60000,
+      "Text": "음양 스킬",
+      "Class": "도화가",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/yy_skill/yy_skill_01_3.png"
     }
   ],
   "기상술사": [
