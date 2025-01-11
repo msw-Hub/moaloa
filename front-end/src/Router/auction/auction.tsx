@@ -108,10 +108,10 @@ function Auction() {
         <h1 className="font-bold">경매 계산기</h1>
         <input className="content-box border-solid border border-bddark p-4" onFocus={(e) => e.target.select()} type="number" placeholder="가격" onChange={(e) => setAuctionPrice(Number(e.target.value))} />
         <div className="flex justify-evenly items-center  text-nowrap">
-          {[4, 8, 16, 35].map((v) => (
+          {[4, 8, 16, 30].map((v) => (
             <div key={v} className="flex justify-center items-center gap-1 cursor-pointer" onClick={() => setPeople(v)}>
               {people === v ? <i className="xi-radiobox-checked xi-x text-blue-400 dark:text-light"></i> : <i className="xi-radiobox-blank xi-x text-blue-400 dark:text-light"></i>}
-              {v == 35 ? "필드보스[35인]" : `${v}인`}
+              {v == 30 ? `필드보스[${v}인]` : `${v}인`}
             </div>
           ))}
         </div>
