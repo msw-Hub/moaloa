@@ -1676,7 +1676,7 @@
       "Value": 47000,
       "Text": "권왕십이식",
       "Class": "브레이커",
-      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/ability/ability_277.png"
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/ark_passive_ifm/ark_passive_ifm_2.png"
     },
     {
       "Value": 47020,
@@ -2935,6 +2935,110 @@
       "Text": "여우비 스킬",
       "Class": "기상술사",
       "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/wa_skill/wa_skill_01_22.png"
+    }
+  ],
+  "환수사": [
+    {
+      "Value": 33150,
+      "Text": "까마귀 대소동",
+      "Class": "환수사",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/dr_skill/dr_skill_01_13.png"
+    },
+    {
+      "Value": 33120,
+      "Text": "까마귀 대행진",
+      "Class": "환수사",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/dr_skill/dr_skill_01_10.png"
+    },
+    {
+      "Value": 33130,
+      "Text": "꼬리 바람",
+      "Class": "환수사",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/dr_skill/dr_skill_01_11.png"
+    },
+    {
+      "Value": 33160,
+      "Text": "데굴방아",
+      "Class": "환수사",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/dr_skill/dr_skill_01_14.png"
+    },
+    {
+      "Value": 33210,
+      "Text": "뒤집 곰",
+      "Class": "환수사",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/dr_skill/dr_skill_01_17.png"
+    },
+    {
+      "Value": 33140,
+      "Text": "마구 쪼기",
+      "Class": "환수사",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/dr_skill/dr_skill_01_12.png"
+    },
+    {
+      "Value": 33230,
+      "Text": "바위 곰",
+      "Class": "환수사",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/dr_skill/dr_skill_01_19.png"
+    },
+    {
+      "Value": 33170,
+      "Text": "빙글빙글 꽝",
+      "Class": "환수사",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/dr_skill/dr_skill_01_15.png"
+    },
+    {
+      "Value": 33200,
+      "Text": "슈웅 곰",
+      "Class": "환수사",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/dr_skill/dr_skill_01_16.png"
+    },
+    {
+      "Value": 33100,
+      "Text": "얍!",
+      "Class": "환수사",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/dr_skill/dr_skill_01_8.png"
+    },
+    {
+      "Value": 33220,
+      "Text": "어흥 곰",
+      "Class": "환수사",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/dr_skill/dr_skill_01_18.png"
+    },
+    {
+      "Value": 33300,
+      "Text": "여우 구슬",
+      "Class": "환수사",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/dr_skill/dr_skill_01_23.png"
+    },
+    {
+      "Value": 33310,
+      "Text": "여우 꼬리물기",
+      "Class": "환수사",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/dr_skill/dr_skill_01_20.png"
+    },
+    {
+      "Value": 33320,
+      "Text": "여우 불꽃",
+      "Class": "환수사",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/dr_skill/dr_skill_01_21.png"
+    },
+    {
+      "Value": 33330,
+      "Text": "여우 폴짝",
+      "Class": "환수사",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/dr_skill/dr_skill_01_22.png"
+    },
+    {
+      "Value": 33110,
+      "Text": "할퀴기",
+      "Class": "환수사",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/dr_skill/dr_skill_01_9.png"
+    },
+    {
+      "Value": 63008,
+      "Text": "둔갑 금술 스킬",
+      "Class": "환수사",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/ark_passive_dr/ark_passive_dr_2.png"
     }
   ]
 }

@@ -77,7 +77,7 @@ function GemSearch() {
   //검색된 보석 리스트
   const [gemListAll, setGemListAll] = useState<GemList[]>([]);
   //채용률
-  const [recruitmentRate, setRecruitmentRate] = useState<number>(70);
+  const [recruitmentRate, setRecruitmentRate] = useState<number>(30);
 
   //정렬 기준 설정
   const [sort, setSort] = useState<string>("price");
@@ -214,7 +214,9 @@ function GemSearch() {
       .then((response) => {
         const classGem = response?.data;
         count.current++;
-        let skillUseRateData = skillUseRate[b][gemDamCol == "딜" ? "겁" : "작"].find((c: { skillName: "string"; recruitmentRate: "number" }) => c.skillName == a.Text);
+        let skillUseRateData = { skillName: a.Text, recruitmentRate: 0 };
+        if (skillUseRate[b] === undefined) skillUseRateData = { skillName: a.Text, recruitmentRate: 0 };
+        else skillUseRateData = skillUseRate[b][gemDamCol == "딜" ? "겁" : "작"].find((c: { skillName: "string"; recruitmentRate: "number" }) => c.skillName == a.Text);
         if (skillUseRateData === undefined) skillUseRateData = { skillName: a.Text, recruitmentRate: 0 };
         if (true) {
           const apiSearchValue = {
@@ -239,11 +241,18 @@ function GemSearch() {
           return;
         }
         if (error.response && error.response.status === 429) {
-          setTimeout(() => {
-            gemSerchAPI(a, b, i + 1);
-          }, 22000);
+          if (apikeycount === i + 1) {
+            setTimeout(() => {
+              gemSerchAPI(a, b, 0);
+            }, 35000);
+          } else
+            setTimeout(() => {
+              gemSerchAPI(a, b, i + 1);
+            }, 35000);
         } else {
-          let skillUseRateData = skillUseRate[b][gemDamCol == "딜" ? "겁" : "작"].find((c: { skillName: "string"; recruitmentRate: "number" }) => c.skillName == a.Text);
+          let skillUseRateData = { skillName: a.Text, recruitmentRate: 0 };
+          if (skillUseRate[b] === undefined) skillUseRateData = { skillName: a.Text, recruitmentRate: 0 };
+          else skillUseRateData = skillUseRate[b][gemDamCol == "딜" ? "겁" : "작"].find((c: { skillName: "string"; recruitmentRate: "number" }) => c.skillName == a.Text);
           if (skillUseRateData === undefined) skillUseRateData = { skillName: a.Text, recruitmentRate: 0 };
           if (true) {
             const apiSearchValue = {
@@ -490,7 +499,7 @@ function GemSearch() {
                   <span>채용률</span>
                   <span className="w-10 flex justify-center items-center ">{recruitmentRate}%</span>
                 </div>
-                <input className="dark:accent-light" onChange={(e) => setRecruitmentRate(Number(e.target.value))} type="range" min="0" max="100" step="5" defaultValue={70} />
+                <input className="dark:accent-light" onChange={(e) => setRecruitmentRate(Number(e.target.value))} type="range" min="0" max="100" step="5" defaultValue={30} />
               </div>
 
               <div className="flex justify-center items-center gap-2">

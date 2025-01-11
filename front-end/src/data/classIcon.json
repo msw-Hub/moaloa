@@ -113,6 +113,10 @@
     {
       "Class": "기상술사",
       "Icon": "classIcon/aeromancer.webp"
+    },
+    {
+      "Class": "환수사",
+      "Icon": "classIcon/wildsoul.webp"
     }
   ]
 }
