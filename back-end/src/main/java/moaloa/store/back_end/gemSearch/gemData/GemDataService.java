@@ -241,7 +241,7 @@ public class GemDataService {
             case "83" -> {
                 if (arkPassiveEffects.equals("야성")) {
                     engraveCountCache.updateEngraveCount("야성", 1);
-                } else engraveCountCache.updateEngraveCount("환수 각성", 1);
+                } else engraveCountCache.updateEngraveCount("환수각성", 1);
             }
             default ->
                 log.warn("Unknown jobId: {}", jobId);

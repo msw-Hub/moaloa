@@ -75,7 +75,7 @@ public class EngraveCountCache {
         engraveCountMap.put("이슬비", 0);
         engraveCountMap.put("질풍술사", 0);
         engraveCountMap.put("야성",0);
-        engraveCountMap.put("환수 각성",0);
+        engraveCountMap.put("환수각성",0);
     }
 
     public void reset2(){
@@ -133,7 +133,7 @@ public class EngraveCountCache {
         actualUserCountMap.put("이슬비", 0);
         actualUserCountMap.put("질풍술사", 0);
         actualUserCountMap.put("야성",0);
-        actualUserCountMap.put("환수 각성",0);
+        actualUserCountMap.put("환수각성",0);
     }
 
 
