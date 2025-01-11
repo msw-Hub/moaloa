@@ -15,13 +15,13 @@ public class GemApiController {
 
     private final GemApiService gemApiService;
 
-//    //크롤링 이후에 보석 API 호출
-//    @GetMapping("/test")
-//    public ResponseEntity<?> test(
-//    ) {
-//        gemApiService.loaAPI();
-//        return ResponseEntity.status(HttpStatus.OK).body("보석 API 호출에 성공하였습니다");
-//    }
+    //크롤링 이후에 보석 API 호출
+    @GetMapping("/test")
+    public ResponseEntity<?> test(
+    ) {
+        gemApiService.loaAPI();
+        return ResponseEntity.status(HttpStatus.OK).body("보석 API 호출에 성공하였습니다");
+    }
 
     //보석 가격 정보를 업데이트 (갱신해두는거)
     @GetMapping("/gemPrice")

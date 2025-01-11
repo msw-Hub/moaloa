@@ -59,20 +59,23 @@ public class GemApiService {
 
             int apiIndex = 0;
             int userCount = 0;
+            int maxUserCount = 370;  // 한 API 키당 최대 요청 횟수
 
             // 카운트 데이터 초기화
             engraveCountCache.reset2();
             gemApiRepository.deleteAll();
 
             for (CrawlingEntity user : users) {
-                if (userCount >= 80) {  // 80명 검색 후 다음 API로 전환
+                if (userCount >= maxUserCount) {  // 1번 API는 400번, 그 이후는 100번씩 제한
                     apiIndex++;
                     userCount = 0;
+                    maxUserCount = 80; // 첫 번째 API 키는 400번, 나머지는 100번으로 변경
 
                     if (apiIndex >= api.length) {  // 모든 API 키를 사용했다면 1분 대기 후 다시 첫 번째 API로
                         apiIndex = 0;
+                        maxUserCount = 370;
                         log.info("모든 API 키를 사용했습니다. 60초 동안 대기 중...");
-                        Thread.sleep(60000);  // 60초 대기
+                        Thread.sleep(80000);  // 80초 대기
                     }
                 }
 
