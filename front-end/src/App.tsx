@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Link, Route, Routes, useLocation } from "react-router-dom";
 import useDarkMode from "./hooks/useDarkMode";
 import GemSearch from "./Router/gemSearch/GemSearch";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,7 +14,6 @@ import Material from "./Router/material/material";
 import Home from "./Router/home/home";
 
 function App() {
-  const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -27,41 +26,43 @@ function App() {
     <>
       <div className={"z-30 flex justify-start items-center flex-col fixed top-0 left-0 bottom-0 bg-light dark:bg-bgdark p-4 w-52 gap-2 transition-all " + `${mobileMenuOpen ? "translate-x-0" : "-translate-x-52"}`}>
         <div className="w-full flex justify-around items-center p-2">
-          <span className="text-2xl font-extrabold logotext">MoaLoa</span>
+          <Link to="/" className="text-2xl font-extrabold logotext">
+            MoaLoa
+          </Link>
           <i onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="xi-close xi-x font-black cursor-pointer"></i>
         </div>
-        <button
+        <Link
+          to="/gemsearch"
           onClick={() => {
-            navigate("/gemsearch");
             setMobileMenuOpen(false);
           }}
           className={"navBtn hover:bg-[#d2d2d2] w-full flex items-center justify-center " + `${location.pathname === "/gemsearch" ? "bg-[#d2d2d2] dark:bg-hoverdark" : ""}`}>
           보석검색
-        </button>
-        <button
+        </Link>
+        <Link
+          to="/craft"
           onClick={() => {
-            navigate("/craft");
             setMobileMenuOpen(false);
           }}
           className={"navBtn hover:bg-[#d2d2d2] w-full flex items-center justify-center " + `${location.pathname.startsWith("/craft") ? "bg-[#d2d2d2] dark:bg-hoverdark" : ""}`}>
           영지제작
-        </button>
-        <button
+        </Link>
+        <Link
+          to="/material"
           onClick={() => {
-            navigate("/material");
             setMobileMenuOpen(false);
           }}
           className={"navBtn hover:bg-[#d2d2d2] w-full flex items-center justify-center " + `${location.pathname === "/material" ? "bg-[#d2d2d2] dark:bg-hoverdark" : ""}`}>
           생활재료판매
-        </button>
-        <button
+        </Link>
+        <Link
+          to="/auction"
           onClick={() => {
-            navigate("/auction");
             setMobileMenuOpen(false);
           }}
           className={"navBtn hover:bg-[#d2d2d2] w-full flex items-center justify-center " + `${location.pathname === "/auction" ? "bg-[#d2d2d2] dark:bg-hoverdark" : ""}`}>
           경매계산
-        </button>
+        </Link>
       </div>
       {/*모바일용 메뉴바 배경*/}
       <div>
@@ -80,25 +81,25 @@ function App() {
             {/*모바일 메뉴 오픈 버튼 */}
             <div className="flex justify-center items-center gap-2 mr-10">
               <i onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="xi-bars xi-x p-2 md:hidden block"></i>
-              <button onClick={() => navigate("/")} className="text-2xl font-extrabold logotext md:ml-10">
+              <Link to="/" className="text-2xl font-extrabold logotext md:ml-10">
                 MoaLoa
-              </button>
+              </Link>
             </div>
           </div>
           {/*메뉴*/}
           <div className="md:flex items-center justify-center h-full gap-4 hidden">
-            <button onClick={() => navigate("/gemsearch")} className={"navBtn flex items-center justify-center " + `${location.pathname === "/gemsearch" ? "bg-[#2652e6] dark:bg-ctdark" : ""}`}>
+            <Link to="/gemsearch" className={"navBtn flex items-center justify-center " + `${location.pathname === "/gemsearch" ? "bg-[#2652e6] dark:bg-ctdark" : ""}`}>
               보석검색
-            </button>
-            <button onClick={() => navigate("/craft")} className={"navBtn flex items-center justify-center " + `${location.pathname.startsWith("/craft") ? "bg-[#2652e6] dark:bg-ctdark" : ""}`}>
+            </Link>
+            <Link to="/craft" className={"navBtn flex items-center justify-center " + `${location.pathname.startsWith("/craft") ? "bg-[#2652e6] dark:bg-ctdark" : ""}`}>
               영지제작
-            </button>
-            <button onClick={() => navigate("/material")} className={"navBtn flex items-center justify-center " + `${location.pathname === "/material" ? "bg-[#2652e6] dark:bg-ctdark" : ""}`}>
+            </Link>
+            <Link to="/material" className={"navBtn flex items-center justify-center " + `${location.pathname === "/material" ? "bg-[#2652e6] dark:bg-ctdark" : ""}`}>
               생활재료판매
-            </button>
-            <button onClick={() => navigate("/auction")} className={"navBtn flex items-center justify-center " + `${location.pathname === "/auction" ? "bg-[#2652e6] dark:bg-ctdark" : ""}`}>
+            </Link>
+            <Link to="/auction" className={"navBtn flex items-center justify-center " + `${location.pathname === "/auction" ? "bg-[#2652e6] dark:bg-ctdark" : ""}`}>
               경매계산
-            </button>
+            </Link>
           </div>
         </div>
         {/*다크모드 / api키 버튼*/}
