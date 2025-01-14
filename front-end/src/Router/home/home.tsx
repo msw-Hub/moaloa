@@ -15,7 +15,7 @@ function Home() {
     },
     {
       title: "생활재료판매",
-      description: "생활재료를 판매할때 각 재료별 최저가를 알려주는 기능을 제공합니다.",
+      description: "생활재료를 판매할때 최대 효율을 알려주는 기능을 제공합니다.",
       navurl: "/material",
     },
     {
