@@ -525,9 +525,9 @@ function CraftDetail() {
                   {
                     // 기본 시세 판매 차익
                     priceStandard === "currentMinPrice" ? (
-                      <div>{isNaN(craftDetail?.craft?.craftPriceAll + craftDetail?.craft?.craftSellPrice) ? "0" : (craftDetail?.craft?.craftPriceAll + craftDetail?.craft?.craftSellPrice).toLocaleString()}</div>
+                      <div>{(craftDetail.craftQuantity / craftDetail.bundleCount) * (craftDetail.currentMinPrice - Math.ceil(craftDetail.currentMinPrice * 0.05))}</div>
                     ) : (
-                      <div>{isNaN(craftDetail?.ydayCraft?.ydayCraftPriceAll + craftDetail?.ydayCraft?.ydayCraftSellPrice) ? "0" : (craftDetail?.ydayCraft?.ydayCraftPriceAll + craftDetail?.ydayCraft?.ydayCraftSellPrice).toLocaleString()}</div>
+                      <div>{(craftDetail.craftQuantity / craftDetail.bundleCount) * (craftDetail.ydayAvgPrice - Math.ceil(craftDetail.ydayAvgPrice * 0.05))}</div>
                     )
                   }
                   <img className="sm:w-5 sm:h-5 w-4 h-4" src={goldIcon} alt="gold" />
