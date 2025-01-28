@@ -42,7 +42,7 @@ public class GemDataService {
     private  String filePath;
 
     private final String[] searchJobId = {
-            "11", "12", "13", "14", "91","21","22","31","32","33","34","41","42","43","44","51","61","62","63","64","71","72","73","74","81","82"
+            "11", "12", "13", "14", "91","21","22","31","32","33","34","41","42","43","44","51","61","62","63","64","71","72","73","74","81","82","83"
     };
 
     //클로아에서 직업별 상위 100명 조사해서 직업각인 비율 계산
@@ -151,7 +151,7 @@ public class GemDataService {
             case "32" -> {
                 if (arkPassiveEffects.equals("기력 회복")) {
                     engraveCountCache.updateEngraveCount("체술", 1);
-                } else engraveCountCache.updateEngraveCount("충격단력", 1);
+                } else engraveCountCache.updateEngraveCount("충격단련", 1);
             }
             case "33" -> {
                 if (arkPassiveEffects.equals("역천지체")) {
@@ -237,6 +237,11 @@ public class GemDataService {
                 if (arkPassiveEffects.equals("이슬비")) {
                     engraveCountCache.updateEngraveCount("이슬비", 1);
                 } else engraveCountCache.updateEngraveCount("질풍술사", 1);
+            }
+            case "83" -> {
+                if (arkPassiveEffects.equals("야성")) {
+                    engraveCountCache.updateEngraveCount("야성", 1);
+                } else engraveCountCache.updateEngraveCount("환수각성", 1);
             }
             default ->
                 log.warn("Unknown jobId: {}", jobId);
