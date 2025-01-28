@@ -74,7 +74,7 @@ public class CraftService {
         map.put(70000, List.of("거장의 채끝 스테이크 정식", "대가의 안심 스테이크 정식", "명인의 허브 스테이크 정식", "거장의 특제 스튜", "명인의 쫄깃한 꼬치구이"));
         map.put(60200, List.of("null"));
         map.put(60300, List.of("점토","화염","암흑","회오리","폭탄"));
-        map.put(60400, List.of("신호탄","만능","페로몬","시간","성스러운","불꽃 마법"));
+        map.put(60400, List.of("신호탄","만능","페로몬","시간","성스러운","불꽃 마법","특제 부패 중화제"));
         map.put(60500, List.of("신속 로브", "진군", "각성","아드로핀"));
         return map;
     }
@@ -145,7 +145,7 @@ public class CraftService {
             if(jsonObject.has("Items")) {
                 JSONArray jsonArray = jsonObject.getJSONArray("Items");
                 if(jsonArray.isEmpty()) {
-                    throw new CraftDataException("JSON 데이터에 Items 항목이 존재하지 않습니다");
+                    log.warn("해당 code로 검색한 데이터의 Items가 비어있습니다: {}", code);
                 }
 
                 for(int i = 0; i < jsonArray.length(); i++) {
@@ -161,7 +161,7 @@ public class CraftService {
                     if ((code > 90000 && !marketName.contains("결정"))
                             || (code == 60300 && !marketName.contains("빛나는"))
                             || (code == 60200 && marketId == 101063)
-                            || (code == 60400 && (marketName.equals("신호탄") || marketName.equals("만능 물약") || marketName.equals("성스러운 부적")) && !marketName.contains("빛나는"))
+                            || (code == 60400 && (marketName.equals("신호탄") || marketName.equals("만능 물약") || marketName.equals("성스러운 부적")) || marketName.equals("페로몬 정수")&& !marketName.contains("빛나는"))
                             || (code == 60500 && (marketName.equals("신속 로브") || marketName.equals("진군의 깃발")) && !marketName.contains("빛나는"))
                     ) {
                         CraftMaterialEntity craftMaterialEntity = craftMaterialRepository.findByMarketId(marketId);
@@ -190,7 +190,7 @@ public class CraftService {
                     }
                 }
             } else {
-                throw new CraftDataException("JSON 데이터에 Items 항목이 존재하지 않습니다");
+                log.warn("해당 code에 대한 데이터가 존재하지 않습니다: {}", code);
             }
         } catch (JSONException e) {
             log.error("JSON 파싱 중 오류가 발생했습니다: {}", responseString, e);
