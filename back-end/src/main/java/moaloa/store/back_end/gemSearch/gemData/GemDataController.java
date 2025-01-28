@@ -16,12 +16,12 @@ public class GemDataController {
 
     private final GemDataService gemDataService;
 
-    @GetMapping("/saveJson")
-    public ResponseEntity<?> aggregateGemData(
-    ){
-        gemDataService.aggregateAndSaveGemData();
-        return ResponseEntity.status(HttpStatus.OK).body("보석 데이터 집계 및 저장에 성공하였습니다");
-    }
+//    @GetMapping("/saveJson")
+//    public ResponseEntity<?> aggregateGemData(
+//    ){
+//        gemDataService.aggregateAndSaveGemData();
+//        return ResponseEntity.status(HttpStatus.OK).body("보석 데이터 집계 및 저장에 성공하였습니다");
+//    }
 
     @GetMapping("/readData")
     public ResponseEntity<?> getGemData(
