@@ -19,4 +19,13 @@ public class CrawlingController {
 //        return ResponseEntity.status(HttpStatus.OK).body("크롤링에 성공하였습니다");
 //    }
 
+    @GetMapping("/findId")
+    public ResponseEntity<?> findId() {
+        try {
+            crawlingService.findId();
+            return ResponseEntity.ok("아이디 찾기에 성공하였습니다");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("크롤링 실패: " + e.getMessage());
+        }
+    }
 }

@@ -46,21 +46,21 @@ public class CraftService {
     private final CraftItemRepository craftItemRepository;
     private final CraftMaterialRepository craftMaterialRepository;
     private final CraftRecipeRepository craftRecipeRepository;
-   /*
-        "Subs" 항목 코드들
-            90200: 식물채집 전리품
-            90300: 벌목 전리품
-            90400: 채광 전리품
-            90500: 수렵 전리품
-            90600: 낚시 전리품
-            90700: 고고학 전리품
-            50010: 융화 재료
-            70000: 요리
-            60200: 회복형 배틀 아이템
-            60300: 공격형 배틀 아이템
-            60400: 기능형 배틀 아이템
-            60500: 버프형 배틀 아이템
-     */
+    /*
+         "Subs" 항목 코드들
+             90200: 식물채집 전리품
+             90300: 벌목 전리품
+             90400: 채광 전리품
+             90500: 수렵 전리품
+             90600: 낚시 전리품
+             90700: 고고학 전리품
+             50010: 융화 재료
+             70000: 요리
+             60200: 회복형 배틀 아이템
+             60300: 공격형 배틀 아이템
+             60400: 기능형 배틀 아이템
+             60500: 버프형 배틀 아이템
+      */
     private Map<Integer, List<String>> subsCodeMap() {
         Map<Integer, List<String>> map = new HashMap<>();
 
@@ -74,12 +74,15 @@ public class CraftService {
         map.put(70000, List.of("거장의 채끝 스테이크 정식", "대가의 안심 스테이크 정식", "명인의 허브 스테이크 정식", "거장의 특제 스튜", "명인의 쫄깃한 꼬치구이"));
         map.put(60200, List.of("null"));
         map.put(60300, List.of("점토","화염","암흑","회오리","폭탄"));
-        map.put(60400, List.of("신호탄","만능","페로몬","시간","성스러운","불꽃 마법"));
+        map.put(60400, List.of("신호탄","만능","페로몬","시간","성스러운","불꽃 마법","특제 부패 중화제"));
         map.put(60500, List.of("신속 로브", "진군", "각성","아드로핀"));
         return map;
     }
     @Value("${jsonFile.craftData}")
     private String filePath;
+
+    @Value("${jsonFile.lifeData}")
+    private String lifeFilePath;
 
     @Transactional
     public void getLoaApi() {
@@ -142,7 +145,7 @@ public class CraftService {
             if(jsonObject.has("Items")) {
                 JSONArray jsonArray = jsonObject.getJSONArray("Items");
                 if(jsonArray.isEmpty()) {
-                    throw new CraftDataException("JSON 데이터에 Items 항목이 존재하지 않습니다");
+                    log.warn("해당 code로 검색한 데이터의 Items가 비어있습니다: {}", code);
                 }
 
                 for(int i = 0; i < jsonArray.length(); i++) {
@@ -158,7 +161,7 @@ public class CraftService {
                     if ((code > 90000 && !marketName.contains("결정"))
                             || (code == 60300 && !marketName.contains("빛나는"))
                             || (code == 60200 && marketId == 101063)
-                            || (code == 60400 && (marketName.equals("신호탄") || marketName.equals("만능 물약") || marketName.equals("성스러운 부적")) && !marketName.contains("빛나는"))
+                            || (code == 60400 && (marketName.equals("신호탄") || marketName.equals("만능 물약") || marketName.equals("성스러운 부적")) || marketName.equals("페로몬 정수")&& !marketName.contains("빛나는"))
                             || (code == 60500 && (marketName.equals("신속 로브") || marketName.equals("진군의 깃발")) && !marketName.contains("빛나는"))
                     ) {
                         CraftMaterialEntity craftMaterialEntity = craftMaterialRepository.findByMarketId(marketId);
@@ -187,7 +190,7 @@ public class CraftService {
                     }
                 }
             } else {
-                throw new CraftDataException("JSON 데이터에 Items 항목이 존재하지 않습니다");
+                log.warn("해당 code에 대한 데이터가 존재하지 않습니다: {}", code);
             }
         } catch (JSONException e) {
             log.error("JSON 파싱 중 오류가 발생했습니다: {}", responseString, e);
@@ -202,15 +205,15 @@ public class CraftService {
     private String createJsonInputString(int code, String itemName) {
         if(Objects.equals(itemName, "null"))
             return "{"
-                + "\"Sort\": \"GRADE\","
-                + "\"CategoryCode\": " + code + ","
-                + "\"CharacterClass\": null,"
-                + "\"ItemTier\": null,"
-                + "\"ItemGrade\": null,"
-                + "\"ItemName\": null,"
-                + "\"PageNo\": 0,"
-                + "\"SortCondition\": \"ASC\""
-                + "}";
+                    + "\"Sort\": \"GRADE\","
+                    + "\"CategoryCode\": " + code + ","
+                    + "\"CharacterClass\": null,"
+                    + "\"ItemTier\": null,"
+                    + "\"ItemGrade\": null,"
+                    + "\"ItemName\": null,"
+                    + "\"PageNo\": 0,"
+                    + "\"SortCondition\": \"ASC\""
+                    + "}";
         else return "{"
                 + "\"Sort\": \"GRADE\","
                 + "\"CategoryCode\": " + code + ","
@@ -249,6 +252,17 @@ public class CraftService {
 
         // JSON 파일로 저장
         Files.write(Paths.get(filePath), jsonString.getBytes());
+
+        //생활 재료만 추가적으로 저장해야함    >>>> 새로 추가된 내용 24.12.31
+        Map<String, Object> lifeMap = new HashMap<>();
+        lifeMap.put("갱신시간", currentDateTime);
+        lifeMap.put("생활재료 시세", lifeMeterialMap());
+        // ObjectMapper를 사용하여 Map을 JSON으로 변환
+        ObjectMapper objectMapper2 = new ObjectMapper();
+        String jsonString2 = objectMapper2.writerWithDefaultPrettyPrinter().writeValueAsString(lifeMap);
+        // JSON 파일로 저장
+        Files.write(Paths.get(lifeFilePath), jsonString2.getBytes());
+
     }
 
     private Map<String, Object> materialAllMap(){
@@ -262,11 +276,25 @@ public class CraftService {
         }
         return lifeMap;
     }
+    private Map<String, Object> lifeMeterialMap(){
+        Map<String, Object> lifeMap = new HashMap<>();
+        int[] subCodes = {90200, 90300, 90400, 90500, 90600, 90700};
+        for (int subCode : subCodes) {
+            List<CraftMaterialLifeDto> craftMaterialDtos = craftMaterialRepository.findBySubCode(subCode).stream()
+                    .map(CraftMaterialLifeDto::new)
+                    .toList();
+            lifeMap.put(String.valueOf(subCode), craftMaterialDtos);
+        }
+        return lifeMap;
+    }
 
 
-    public String readJsonFromFile() {
+    public String readJsonFromFile(int type) {
         try {
-            return Files.readString(Paths.get(filePath));
+            if(type == 0)
+                return Files.readString(Paths.get(filePath));
+            else
+                return Files.readString(Paths.get(lifeFilePath));
         } catch (IOException e) {
             throw new CraftDataException("JSON 파일 읽기 중 오류가 발생했습니다");
         }
