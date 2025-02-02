@@ -6,27 +6,63 @@ import materialIcon from "../../data/itemIcon.json";
 
 //생활재료 가격 타입
 interface Material {
-  [key: string]: MaterialItem[];
+  [key: string]: Item[];
 }
 
-interface MaterialItem {
+interface Item {
   marketId: number;
   marketName: string;
   currentMinPrice: number;
   ydayAvgPrice: number;
   // originalMinPrice: number; // 기존 최저가 백업
   grade: string;
-  convert?: {
-    proportion: number;
-    sellPriceAll: number;
-    convertPrice: number;
-    convertMaterial: MaterialItem;
+  ConvertList: ConvertList;
+}
+
+//생활재료 변환 정보 리스트
+interface ConvertList {
+  materialList: {
+    Before: Convert;
+    After: Convert;
+  }[];
+  materialConvertListSimplify: {
+    Before: Convert;
+    After: Convert;
   };
+  proportion: number;
+}
+
+//생활재료 변환 정보
+interface Convert {
+  icon: string;
+  grade: string;
+  marketName: string;
+  quantity?: number;
 }
 
 interface Grade {
   [key: string]: string;
 }
+
+const grade: Grade = {
+  일반: "imgBackground1",
+  고급: "imgBackground2",
+  희귀: "imgBackground3",
+  영웅: "imgBackground4",
+  전설: "imgBackground5",
+  유물: "imgBackground6",
+  고대: "imgBackground7",
+};
+
+const textColors: Grade = {
+  일반: "",
+  고급: "textColor2",
+  희귀: "textColor3",
+  영웅: "textColor4",
+  전설: "textColor5",
+  유물: "textColor6",
+  고대: "textColor7",
+};
 
 function MaterialRe() {
   const [materialList, setMaterialList] = useState<Material>();
@@ -47,7 +83,7 @@ function MaterialRe() {
     axios(`${import.meta.env.VITE_APP_API_URL}/api/v1/craft/readDataAll`)
       .then((res) => {
         console.log(res.data.제작재료시세);
-        setMaterialList(materialConversion(res.data.제작재료시세));
+        setMaterialList(addMaterialConversion(res.data.제작재료시세));
       })
       .catch((err) => {
         alertBox("목록을 불러오는데 실패했습니다.");
@@ -55,131 +91,294 @@ function MaterialRe() {
       });
   }
 
-  //재료 변환
-  const materialConversion = (materials: Material): Material => {
+  //재료 변환 리스트 반환
+  const addMaterialConversion = (materials: Material): Material => {
     const updatedMaterials = { ...materials };
 
-    for (const materialKey in updatedMaterials) {
-      // 기존 데이터의 convertPrice와 convertMaterial 필드를 제거
-      if (materialKey[0] !== "9") continue;
-      const material = updatedMaterials[materialKey];
-      //[0]은 일반 [1]은 고급
-      //[3]은 90300(벌목) || 90400(채광) 만 일반으로 변환가능
-      //나머지 [3]은 오레하임 일반이나 고급을 사용해서 변환가능
-      //[4]은 아비도스로 일반이나 고급을 사용해서 변환가능
-      //변환했을때 이득이면 convert에 변환가격과 변환재료를 넣어줌
-      let convertSellPrice = 0;
-      let high = 0;
+    for (const updatedMaterial in updatedMaterials) {
+      //생활 재료 리스트가 아니면 스킵[생활 재료는 9로 시작]
+      if (updatedMaterial[0] !== "9" || (updatedMaterial !== "90200" && updatedMaterial !== "90300" && updatedMaterial !== "90400" && updatedMaterial !== "90500" && updatedMaterial !== "90600" && updatedMaterial !== "90700")) continue;
+      const materialItem = updatedMaterials[updatedMaterial];
 
-      if (material[2].currentMinPrice >= material[3].currentMinPrice) {
-        convertSellPrice = Math.ceil(material[2].currentMinPrice * 0.05);
-        high = 2;
-      } else {
-        convertSellPrice = Math.ceil(material[3].currentMinPrice * 0.05);
-        high = 3;
+      //수수료 계산 함수
+      const calc = (price: number) => {
+        return price - Math.ceil(price * 0.05);
+      };
+
+      //계산 개수 비율
+      const quantity = {
+        일반: 5000,
+        고급: 2500,
+        희귀1: 500,
+        희귀2: 400,
+      };
+      const bundle = 100; // 판매 단위 100개씩
+
+      const 일반 = calc(materialItem[0].currentMinPrice) * (quantity["일반"] / bundle);
+      const 고급 = calc(materialItem[1].currentMinPrice) * (quantity["고급"] / bundle);
+
+      let 희귀1 = 0;
+      //벌목, 채광 일때 희귀1 계산
+      if (updatedMaterial === "90300" || updatedMaterial === "90400") {
+        희귀1 = calc(materialItem[2].currentMinPrice) * (quantity["희귀1"] / bundle);
       }
-      material.forEach((item, index) => {
-        //판매 수량 가정
+      //나머지 일때 희귀1 계산
+      else {
+        희귀1 = calc(materialItem[2].currentMinPrice) * (quantity["희귀2"] / bundle);
+      }
 
-        //판매수수료 포함 금액 1개 판매했을때 비용
-        const sellPrice = item.currentMinPrice - Math.ceil(item.currentMinPrice * 0.05);
+      const 희귀1변환 = calc(materialItem[2].currentMinPrice) * (quantity["희귀2"] / bundle);
 
-        //변환 재료가 일반일때
-        if (index === 0) {
-          const quantity = 5000;
-          //가루 변환후 오레하 제작 개수
-          const convertItemCount = (quantity * 8) / 100;
-          //변환된 오레하 판매 수수료
-          const convertPee = (convertItemCount / 100) * convertSellPrice;
-          //총 수수료 제외 비용
-          const convertTotalPrice = (convertItemCount / 100) * material[high].currentMinPrice - convertPee;
+      const 희귀2 = calc(materialItem[3].currentMinPrice) * (quantity["희귀2"] / bundle);
 
-          if (convertTotalPrice > (sellPrice * quantity) / 100) {
-            item.convert = {
-              proportion: Math.round((convertTotalPrice / ((sellPrice * quantity) / 100)) * 1000) / 1000,
-              sellPriceAll: (sellPrice * quantity) / 100,
-              convertPrice: convertTotalPrice,
-              convertMaterial: material[high],
-            };
-          }
+      console.log(`일반: ${일반}, 고급: ${고급}, 희귀1: ${희귀1변환}, 희귀2: ${희귀2}`);
+
+      const 가루아이콘 = {
+        90200: "채집의 가루",
+        90300: "벌목의 가루",
+        90400: "채광의 가루",
+        90500: "수렵의 가루",
+        90600: "낚시의 가루",
+        90700: "고고학의 가루",
+      };
+
+      //재료 변환 리스트 생성 함수
+      const convertList = (before: number, after: number, proportionBefore: number, proportionAfter: number) => {
+        //벌목 채광일때
+
+        let convertLists = {
+          materialList: [
+            {
+              Before: {
+                icon: materialIcon[materialItem[before % 2].marketName as keyof typeof materialIcon],
+                grade: before % 2 === 0 ? "일반" : "고급",
+                marketName: materialItem[before % 2].marketName,
+                quantity: before % 2 === 0 ? 100 : 50,
+              },
+              After: {
+                icon: materialIcon[가루아이콘[updatedMaterial] as keyof typeof materialIcon],
+                grade: "일반",
+                marketName: 가루아이콘[updatedMaterial],
+                quantity: 80,
+              },
+            },
+            {
+              Before: {
+                icon: materialIcon[가루아이콘[updatedMaterial] as keyof typeof materialIcon],
+                grade: "일반",
+                marketName: 가루아이콘[updatedMaterial],
+                quantity: 100,
+              },
+              After: {
+                icon: materialIcon[materialItem[after].marketName as keyof typeof materialIcon],
+                grade: "희귀",
+                marketName: materialItem[after].marketName,
+                quantity: 10,
+              },
+            },
+          ],
+          materialConvertListSimplify: {
+            Before: {
+              icon: materialIcon[materialItem[before].marketName as keyof typeof materialIcon],
+              grade: before === 0 ? "일반" : "고급",
+              marketName: materialItem[before].marketName,
+            },
+            After: {
+              icon: materialIcon[materialItem[after].marketName as keyof typeof materialIcon],
+              grade: "희귀",
+              marketName: materialItem[after].marketName,
+            },
+          },
+          proportion: proportionAfter / proportionBefore,
+        };
+
+        //벌목 채광일때 before가 희귀1이고 after가 희귀2일때 convertLists.materialList에 unshift후 convertLists.materialConvertListSimplify에 재정의
+        if ((updatedMaterial === "90300" || updatedMaterial === "90400") && before === 2 && after === 3) {
+          convertLists.materialList.unshift({
+            Before: {
+              icon: materialIcon[materialItem[2].marketName as keyof typeof materialIcon],
+              grade: "희귀",
+              marketName: materialItem[2].marketName,
+              quantity: 5,
+            },
+            After: {
+              icon: materialIcon[materialItem[0].marketName as keyof typeof materialIcon],
+              grade: "일반",
+              marketName: materialItem[0].marketName,
+              quantity: 50,
+            },
+          });
+
+          convertLists.materialConvertListSimplify = {
+            Before: {
+              icon: materialIcon[materialItem[2].marketName as keyof typeof materialIcon],
+              grade: "희귀",
+              marketName: materialItem[2].marketName,
+            },
+            After: {
+              icon: materialIcon[materialItem[3].marketName as keyof typeof materialIcon],
+              grade: "희귀",
+              marketName: materialItem[3].marketName,
+            },
+          };
         }
-        //변환 재료가 고급일때 일반으로 바꾸는 게 이득인지 아비도스로 바꾸는게 이득인지
-        else if (index == 1) {
-          const quantity = 2500;
 
-          //1. 고급 재료를 경매장에 그대로 판매 금액 계산
-          const sellPrice1 = ((item.currentMinPrice - Math.ceil(item.currentMinPrice * 0.05)) * quantity) / 100;
-          // 2. 고급 재료를 일반 재료로 교환후 판매 금액 계산 비율은 1:2
-          const sellPrice2 = ((material[0].currentMinPrice - Math.ceil(material[0].currentMinPrice * 0.05)) * quantity) / 50;
-
-          //가루 변환후 오레하 제작 개수
-          const convertItemCount = (quantity * 16) / 100;
-          //변환된 오레하 판매 수수료
-          const convertPee = (convertItemCount / 100) * convertSellPrice;
-          //총 수수료 제외 비용
-          const sellPrice3 = (convertItemCount / 100) * material[high].currentMinPrice - convertPee;
-
-          if (sellPrice1 < sellPrice2 && sellPrice2 > sellPrice3) {
-            item.convert = {
-              proportion: Math.round((sellPrice2 / sellPrice1) * 1000) / 1000,
-              sellPriceAll: sellPrice1,
-              convertPrice: sellPrice2,
-              convertMaterial: material[0],
-            };
-          } else if (sellPrice1 < sellPrice3 && sellPrice2 < sellPrice3) {
-            item.convert = {
-              proportion: Math.round((sellPrice3 / sellPrice1) * 1000) / 1000,
-              sellPriceAll: sellPrice1,
-              convertPrice: sellPrice3,
-              convertMaterial: material[high],
-            };
-          }
+        //벌목 채광일때 before가 희귀1이고 after가 일반일때 재정의
+        else if ((updatedMaterial === "90300" || updatedMaterial === "90400") && before === 2 && after === 0) {
+          convertLists = {
+            materialList: [
+              {
+                Before: {
+                  icon: materialIcon[materialItem[2].marketName as keyof typeof materialIcon],
+                  grade: "희귀",
+                  marketName: materialItem[2].marketName,
+                  quantity: 5,
+                },
+                After: {
+                  icon: materialIcon[materialItem[0].marketName as keyof typeof materialIcon],
+                  grade: "일반",
+                  marketName: materialItem[0].marketName,
+                  quantity: 50,
+                },
+              },
+            ],
+            materialConvertListSimplify: {
+              Before: {
+                icon: materialIcon[materialItem[2].marketName as keyof typeof materialIcon],
+                grade: "희귀",
+                marketName: materialItem[2].marketName,
+              },
+              After: {
+                icon: materialIcon[materialItem[0].marketName as keyof typeof materialIcon],
+                grade: "일반",
+                marketName: materialItem[0].marketName,
+              },
+            },
+            proportion: proportionAfter / proportionBefore,
+          };
         }
 
-        //튼튼한 목재, 단단한 철광석을 일반 재료로 교환 후 오레하 제작
-        else if (index == 2 && (materialKey === "90300" || materialKey === "90400")) {
-          const quantity = 5000;
-          //순서
-          //1. 튼튼한 목재, 단단한 철광석을 경매장에 그대로 판매 금액 계산
-          //2. index 2인 튼튼한 목재, 단단한 철광석을 일반 재료로 교환후 판매 금액 계산
-          //3. 일반 재료를 아비도스로 제작 후 판매 금액 계산
-          //4. 1, 2, 3의 비용을 비교하여 이득이면 convert에 변환가격과 변환재료를 넣어줌
-          //만약 convert가 없으면 튼튼한 목재, 단단한 철광석을 그대로 판매하는게 이득
-
-          //1. 튼튼한 목재, 단단한 철광석을 경매장에 그대로 판매 금액 계산
-          const sellPrice1 = ((item.currentMinPrice - Math.ceil(item.currentMinPrice * 0.05)) * quantity) / 1000;
-          //2. index 2인 튼튼한 목재, 단단한 철광석을 일반 재료로 교환후 판매 금액 계산 이때 비율은 1:10
-          const sellPrice2 = ((material[0].currentMinPrice - Math.ceil(material[0].currentMinPrice * 0.05)) * quantity) / 100;
-
-          //3. 일반 재료를 아비도스로 제작 후 판매 금액 계산
-          //가루 변환후 오레하 제작 개수
-          const convertItemCount = (quantity * 8) / 100;
-          //변환된 오레하 판매 수수료
-          const convertPee = (convertItemCount / 100) * convertSellPrice;
-          //총 수수료 제외 비용
-          const sellPrice3 = (convertItemCount / 100) * material[high].currentMinPrice - convertPee;
-
-          //1이 가장 크다면 convert에 넣지않음
-          //2가 가장 크다면 convert에 넣음
-          //3이 가장 크다면 convert에 넣음
-          if (sellPrice1 < sellPrice2 && sellPrice2 > sellPrice3) {
-            item.convert = {
-              proportion: Math.round((sellPrice2 / sellPrice1) * 1000) / 1000,
-              sellPriceAll: sellPrice1,
-              convertPrice: sellPrice2,
-              convertMaterial: material[0],
-            };
-          } else if (sellPrice1 < sellPrice3 && sellPrice2 < sellPrice3) {
-            item.convert = {
-              proportion: Math.round((sellPrice3 / sellPrice1) * 1000) / 1000,
-              sellPriceAll: sellPrice1,
-              convertPrice: sellPrice3,
-              convertMaterial: material[3],
-            };
-          }
+        //벌목 채광일때 before가 고급이고 after가 일반 일때 재정의
+        else if ((updatedMaterial === "90300" || updatedMaterial === "90400") && before === 1 && after === 0) {
+          convertLists = {
+            materialList: [
+              {
+                Before: {
+                  icon: materialIcon[materialItem[1].marketName as keyof typeof materialIcon],
+                  grade: "고급",
+                  marketName: materialItem[1].marketName,
+                  quantity: 25,
+                },
+                After: {
+                  icon: materialIcon[materialItem[0].marketName as keyof typeof materialIcon],
+                  grade: "일반",
+                  marketName: materialItem[0].marketName,
+                  quantity: 50,
+                },
+              },
+            ],
+            materialConvertListSimplify: {
+              Before: {
+                icon: materialIcon[materialItem[1].marketName as keyof typeof materialIcon],
+                grade: "고급",
+                marketName: materialItem[1].marketName,
+              },
+              After: {
+                icon: materialIcon[materialItem[0].marketName as keyof typeof materialIcon],
+                grade: "일반",
+                marketName: materialItem[0].marketName,
+              },
+            },
+            proportion: proportionAfter / proportionBefore,
+          };
         }
-      });
+
+        //before가 after와 같을때
+        else if (before === after) {
+          convertLists = {
+            materialList: [
+              {
+                Before: {
+                  icon: materialIcon[materialItem[before].marketName as keyof typeof materialIcon],
+                  grade: before === 0 ? "일반" : before === 1 ? "고급" : "희귀",
+                  marketName: materialItem[before].marketName,
+                  quantity: 0,
+                },
+                After: {
+                  icon: materialIcon[materialItem[after].marketName as keyof typeof materialIcon],
+                  grade: before === 0 ? "일반" : before === 1 ? "고급" : "희귀",
+                  marketName: materialItem[after].marketName,
+                  quantity: 0,
+                },
+              },
+            ],
+            materialConvertListSimplify: {
+              Before: {
+                icon: materialIcon[materialItem[before].marketName as keyof typeof materialIcon],
+                grade: before === 0 ? "일반" : before === 1 ? "고급" : "희귀",
+                marketName: materialItem[before].marketName,
+              },
+              After: {
+                icon: materialIcon[materialItem[after].marketName as keyof typeof materialIcon],
+                grade: before === 0 ? "일반" : before === 1 ? "고급" : "희귀",
+                marketName: materialItem[after].marketName,
+              },
+            },
+            proportion: proportionAfter / proportionBefore,
+          };
+        }
+
+        return convertLists;
+      };
+
+      //재료 변환 리스트
+      //일반재료
+      //일반 -> 희귀1
+      if (일반 < 희귀1변환 && 희귀2 < 희귀1변환) updatedMaterials[updatedMaterial][0].ConvertList = convertList(0, 2, 일반, 희귀1변환);
+      //일반 -> 희귀2
+      else if (일반 < 희귀2 && 희귀1변환 < 희귀2) updatedMaterials[updatedMaterial][0].ConvertList = convertList(0, 3, 일반, 희귀2);
+      //일반 -> 일반
+      else if (희귀1변환 < 일반 && 희귀2 < 일반) updatedMaterials[updatedMaterial][0].ConvertList = convertList(0, 0, 일반, 일반);
+
+      //고급재료
+      //벌목과 채광만 고급 -> 일반 추가
+      if (updatedMaterial === "90300" || updatedMaterial === "90400") {
+        //고급 -> 일반
+        if (고급 < 일반 && 희귀1변환 < 일반 && 희귀2 < 일반) updatedMaterials[updatedMaterial][1].ConvertList = convertList(1, 0, 고급, 일반);
+        //고급 -> 희귀1
+        else if (고급 < 희귀1변환 && 일반 < 희귀1변환 && 희귀2 < 희귀1변환) updatedMaterials[updatedMaterial][1].ConvertList = convertList(1, 2, 고급, 희귀1변환);
+        //고급 -> 희귀2
+        else if (고급 < 희귀2 && 희귀1변환 < 희귀2 && 일반 < 희귀2) updatedMaterials[updatedMaterial][1].ConvertList = convertList(1, 3, 고급, 희귀2);
+        //고급 -> 고급
+        else if (희귀1변환 < 고급 && 희귀2 < 고급 && 일반 < 고급) updatedMaterials[updatedMaterial][1].ConvertList = convertList(1, 1, 고급, 고급);
+      } else {
+        //고급 -> 희귀1
+        if (고급 < 희귀1변환 && 희귀2 < 희귀1변환) updatedMaterials[updatedMaterial][1].ConvertList = convertList(1, 2, 고급, 희귀1변환);
+        //고급 -> 희귀2
+        else if (고급 < 희귀2 && 희귀1변환 < 희귀2) updatedMaterials[updatedMaterial][1].ConvertList = convertList(1, 3, 고급, 희귀2);
+        //고급 -> 고급
+        else if (희귀1변환 < 고급 && 희귀2 < 고급) updatedMaterials[updatedMaterial][1].ConvertList = convertList(1, 1, 고급, 고급);
+      }
+
+      //희귀1재료
+      //벌목과 채광만
+      if (updatedMaterial === "90300" || updatedMaterial === "90400") {
+        //희귀1 -> 일반
+        if (희귀1 < 일반 && 희귀2 < 일반) updatedMaterials[updatedMaterial][2].ConvertList = convertList(2, 0, 희귀1, 일반);
+        //희귀1 -> 희귀2
+        else if (희귀1 < 희귀2 && 일반 < 희귀2) updatedMaterials[updatedMaterial][2].ConvertList = convertList(2, 3, 희귀1, 희귀2);
+        //흐귀1 -> 희귀1
+        else if (일반 < 희귀1 && 희귀2 < 희귀1) updatedMaterials[updatedMaterial][2].ConvertList = convertList(2, 2, 희귀1, 희귀1);
+      }
+      //나머지 희귀1재료는 재료 변경 불가능
+      else updatedMaterials[updatedMaterial][2].ConvertList = convertList(2, 2, 희귀1, 희귀1);
+
+      //희귀2재료는 재료 변경 불가능
+      updatedMaterials[updatedMaterial][3].ConvertList = convertList(3, 3, 희귀2, 희귀2);
+
+      if (updatedMaterials[updatedMaterial][4]) updatedMaterials[updatedMaterial][4].ConvertList = convertList(4, 4, 희귀2, 희귀2);
     }
+
     return updatedMaterials;
   };
 
@@ -190,7 +389,7 @@ function MaterialRe() {
     const updatedMaterialList = { ...materialList };
     for (const materialKey in updatedMaterialList) {
       updatedMaterialList[materialKey] = updatedMaterialList[materialKey].map((item) => {
-        const { convert, ...rest } = item;
+        const { ...rest } = item;
         return { ...rest };
       });
     }
@@ -206,7 +405,7 @@ function MaterialRe() {
       currentMinPrice: Number(e.target.value),
     };
 
-    setMaterialList(materialConversion(updatedMaterialList));
+    setMaterialList(addMaterialConversion(updatedMaterialList));
   };
 
   useEffect(() => {
@@ -218,25 +417,6 @@ function MaterialRe() {
     getCraftList();
   }, []);
 
-  const grade: Grade = {
-    일반: "imgBackground1",
-    고급: "imgBackground2",
-    희귀: "imgBackground3",
-    영웅: "imgBackground4",
-    전설: "imgBackground5",
-    유물: "imgBackground6",
-    고대: "imgBackground7",
-  };
-
-  const textColors: Grade = {
-    일반: "",
-    고급: "textColor2",
-    희귀: "textColor3",
-    영웅: "textColor4",
-    전설: "textColor5",
-    유물: "textColor6",
-    고대: "textColor7",
-  };
   return (
     <>
       <MaterialMetas></MaterialMetas>
@@ -294,11 +474,14 @@ function MaterialRe() {
                 <span className="label flex items-center text-sm font-medium text-black"></span>
               </label>
             </div>
-            <div className="lg:w-[500px] grid grid-cols-[1fr_0.3fr_1fr] gap-y-1 font-semibold">
-              {materialList[categoryState].map((material) => {
-                return <MaterialCord key={material.marketId} material={material} simplify={simplify}></MaterialCord>;
-              })}
-            </div>
+
+            {materialList[categoryState][0].ConvertList.materialList && (
+              <div className="flex flex-col gap-1">
+                {materialList[categoryState].map((material) => {
+                  return <MaterialConvertItem key={material.marketId} convertList={material.ConvertList} simplify={simplify}></MaterialConvertItem>;
+                })}
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -306,374 +489,68 @@ function MaterialRe() {
   );
 }
 
-function MaterialCord(props: { material: MaterialItem; simplify: boolean }) {
-  const grade: Grade = {
-    일반: "imgBackground1",
-    고급: "imgBackground2",
-    희귀: "imgBackground3",
-    영웅: "imgBackground4",
-    전설: "imgBackground5",
-    유물: "imgBackground6",
-    고대: "imgBackground7",
-  };
-
-  const textColors: Grade = {
-    일반: "",
-    고급: "textColor2",
-    희귀: "textColor3",
-    영웅: "textColor4",
-    전설: "textColor5",
-    유물: "textColor6",
-    고대: "textColor7",
-  };
-
-  //간소화 state 에따라 재료 목록을 전부 보여줄지 간소화된 목록을 보여줄지 결정
-  const lastString = props.material.marketName.split(" ")[props.material.marketName.split(" ").length - 1];
-  if (props.simplify) {
-    return (
-      <>
-        {/*간소화 했을때 */}
-        {/*처음 아이템과 convert만 보여줌 */}
-        <div className="mt-3 col-span-3 flex justify-between items-center">
-          <div className={"font-semibold " + `${textColors[props.material.grade]}`}>{props.material.marketName}</div>
-          {/*이득률 */}
-          <div className={"flex justify-start items-center font-semibold " + `${props.material.convert && props.material.convert.proportion > 0 ? "text-red-400" : "text-blue-400"}`}>
-            이득률 : {props.material.convert && isFinite(props.material.convert.proportion) ? Math.round((props.material.convert.proportion - 1) * 10000) / 100 + "%" : "0%"}
-          </div>
-        </div>
-        <div className="flex justify-start items-center gap-2 p-2 border-t border-solid border-bddark">
-          <div className="relative">
-            <img src={materialIcon[props.material.marketName as keyof typeof materialIcon]} alt={props.material.marketName} className={"w-10 h-10 " + `${grade[props.material.grade]}`} />
-            <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white"></span>
-          </div>
-          <span className={textColors[props.material.grade]}>{props.material.marketName}</span>
-        </div>
-        <i className="flex justify-center items-center xi-arrow-right p-2 border-t border-solid border-bddark"></i>
-        {props.material.convert ? (
-          <div className="flex justify-start items-center gap-2 p-2 border-t border-solid border-bddark">
-            <div className="relative">
-              <img src={materialIcon[props.material.convert.convertMaterial.marketName as keyof typeof materialIcon]} alt={props.material.convert.convertMaterial.marketName} className={"w-10 h-10 " + `${grade[props.material.convert.convertMaterial.grade]}`} />
-              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white"></span>
-            </div>
-            <span className={textColors[props.material.convert.convertMaterial.grade]}>{props.material.convert.convertMaterial.marketName}</span>
-          </div>
-        ) : (
-          <div className="flex justify-start items-center gap-2 p-2 border-t border-solid border-bddark">
-            <div className="relative">
-              <img src={materialIcon[props.material.marketName as keyof typeof materialIcon]} alt={props.material.marketName} className={"w-10 h-10 " + `${grade[props.material.grade]}`} />
-              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white"></span>
-            </div>
-            <span className={textColors[props.material.grade]}>{props.material.marketName}</span>
-          </div>
-        )}
-      </>
-    );
-  } else {
-    if ((props.material.grade == "일반" || props.material.grade == "고급") && props.material.convert && props.material.convert.convertMaterial.marketName !== "목재" && props.material.convert.convertMaterial.marketName !== "철광석") {
-      return (
-        <>
-          {/*일반, 고급 -> 가루 */}
-          <div className="mt-3 col-span-3 flex justify-between items-center">
-            <div className={"font-semibold " + `${textColors[props.material.grade]}`}>{props.material.marketName}</div>
-            {/*이득률 */}
-            <div className={"flex justify-start items-center font-semibold " + `${props.material.convert && props.material.convert.proportion > 0 ? "text-red-400" : "text-blue-400"}`}>
-              이득률 : {props.material.convert && isFinite(props.material.convert.proportion) ? Math.round((props.material.convert.proportion - 1) * 10000) / 100 + "%" : "0%"}
-            </div>
-          </div>
-          <div className="flex justify-start items-center gap-2 p-2 border-t border-solid border-bddark">
-            <div className="relative">
-              <img src={materialIcon[props.material.marketName as keyof typeof materialIcon]} alt={props.material.marketName} className={"w-10 h-10 " + `${grade[props.material.grade]}`} />
-              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{props.material.grade === "고급" ? 50 : 100}</span>
-            </div>
-            <span className={textColors[props.material.grade]}>{props.material.marketName}</span>
-          </div>
-          <i className="flex justify-center items-center xi-arrow-right p-2 border-t border-solid border-bddark"></i>
-          <div className="flex justify-start items-center gap-2 p-2 border-t border-solid border-bddark">
-            <div className="relative">
-              <img
-                className={`w-10 h-10 ${grade.일반}`}
-                src={materialIcon[lastString === "들꽃" ? "채집의 가루" : lastString === "철광석" ? "채광의 가루" : lastString === "목재" ? "벌목의 가루" : lastString === "생고기" ? "수렵의 가루" : lastString === "유물" ? "고고학의 가루" : "낚시의 가루"]}
-                alt="가루"
-              />
-              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">80</span>
-            </div>
-            <span>{lastString === "들꽃" ? "채집의 가루" : lastString === "철광석" ? "채광의 가루" : lastString === "목재" ? "벌목의 가루" : lastString === "생고기" ? "수렵의 가루" : lastString === "유물" ? "고고학의 가루" : "낚시의 가루"}</span>
-          </div>
-
-          {/*가루 -> 오레하 , 아비도스 */}
-          <div className="flex justify-start items-center gap-2 p-2">
-            <div className="relative">
-              <img
-                className={`w-10 h-10 ${grade.일반}`}
-                src={materialIcon[lastString === "들꽃" ? "채집의 가루" : lastString === "철광석" ? "채광의 가루" : lastString === "목재" ? "벌목의 가루" : lastString === "생고기" ? "수렵의 가루" : lastString === "유물" ? "고고학의 가루" : "낚시의 가루"]}
-                alt="가루"
-              />
-              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">100</span>
-            </div>
-            <span>{lastString === "들꽃" ? "채집의 가루" : lastString === "철광석" ? "채광의 가루" : lastString === "목재" ? "벌목의 가루" : lastString === "생고기" ? "수렵의 가루" : lastString === "유물" ? "고고학의 가루" : "낚시의 가루"}</span>
-          </div>
-          <i className="flex justify-center items-center xi-arrow-right p-2"></i>
-          <div className="flex justify-start items-center gap-2 p-2">
-            <div className="relative">
-              <img src={materialIcon[props.material.convert.convertMaterial.marketName as keyof typeof materialIcon]} alt={props.material.convert.convertMaterial.marketName} className={"w-10 h-10 " + `${grade[props.material.convert.convertMaterial.grade]}`} />
-              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">10</span>
-            </div>
-            <span className={textColors[props.material.convert.convertMaterial.grade]}>{props.material.convert.convertMaterial.marketName}</span>
-          </div>
-        </>
-      );
-    }
-
-    // 단단한 철광석, 튼튼한 목재
-    if (props.material.marketName === "단단한 철광석" || props.material.marketName === "튼튼한 목재") {
-      // 일반까지만 교환시
-      if (props.material.convert && props.material.convert.convertMaterial.grade === "일반") {
-        return (
-          <>
-            <div className="mt-3 col-span-3 flex justify-between items-center">
-              <div className={"font-semibold " + `${textColors[props.material.grade]}`}>{props.material.marketName}</div>
-              {/*이득률 */}
-              <div className={"flex justify-start items-center font-semibold " + `${props.material.convert && props.material.convert.proportion > 0 ? "text-red-400" : "text-blue-400"}`}>
-                이득률 : {props.material.convert && isFinite(props.material.convert.proportion) ? Math.round((props.material.convert.proportion - 1) * 10000) / 100 + "%" : "0%"}
-              </div>
-            </div>
-            <div className="flex justify-start items-center gap-2 p-2 border-t border-solid border-bddark">
-              <div className="relative">
-                <img src={materialIcon[props.material.marketName as keyof typeof materialIcon]} alt={props.material.marketName} className={"w-10 h-10 " + `${grade[props.material.grade]}`} />
-                <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">5</span>
-              </div>
-              <span className={textColors[props.material.grade]}>{props.material.marketName}</span>
-            </div>
-            <i className="flex justify-center items-center xi-arrow-right p-2 border-t border-solid border-bddark"></i>
-            <div className="flex justify-start items-center gap-2 p-2 border-t border-solid border-bddark">
-              <div className="relative">
-                <img src={materialIcon[props.material.convert.convertMaterial.marketName as keyof typeof materialIcon]} alt={props.material.convert.convertMaterial.marketName} className={"w-10 h-10 " + `${grade[props.material.convert.convertMaterial.grade]}`} />
-                <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">50</span>
-              </div>
-              <span className={textColors[props.material.convert.convertMaterial.grade]}>{props.material.convert.convertMaterial.marketName}</span>
-            </div>
-          </>
-        );
-      }
-      // 가루로 오레하나 아비도스로 교환시
-      if (props.material.convert && props.material.convert.convertMaterial.grade === "희귀") {
-        return (
-          <>
-            <div className="mt-3 col-span-3 flex justify-between items-center">
-              <div className={"font-semibold " + `${textColors[props.material.grade]}`}>{props.material.marketName}</div>
-              {/*이득률 */}
-              <div className={"flex justify-start items-center font-semibold " + `${props.material.convert && props.material.convert.proportion > 0 ? "text-red-400" : "text-blue-400"}`}>
-                이득률 : {props.material.convert && isFinite(props.material.convert.proportion) ? Math.round((props.material.convert.proportion - 1) * 10000) / 100 + "%" : "0%"}
-              </div>
-            </div>
-            <div className="flex justify-start items-center gap-2 p-2 border-t border-solid border-bddark">
-              <div className="relative">
-                <img src={materialIcon[props.material.marketName as keyof typeof materialIcon]} alt={props.material.marketName} className={"w-10 h-10 " + `${grade[props.material.grade]}`} />
-                <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">5</span>
-              </div>
-              <span className={textColors[props.material.grade]}>{props.material.marketName}</span>
-            </div>
-            <i className="flex justify-center items-center xi-arrow-right p-2 border-t border-solid border-bddark"></i>
-            <div className="flex justify-start items-center gap-2 p-2 border-t border-solid border-bddark">
-              <div className="relative">
-                <img src={materialIcon[props.material.convert.convertMaterial.marketName == "아비도스 철광석" ? "철광석" : "목재"]} alt={props.material.convert.convertMaterial.marketName} className={"w-10 h-10 " + `${grade["일반"]}`} />
-                <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">50</span>
-              </div>
-              <span className={textColors["일반"]}>{props.material.convert.convertMaterial.marketName == "아비도스 철광석" ? "철광석" : "목재"}</span>
-            </div>
-
-            <div className="flex justify-start items-center gap-2 p-2 ">
-              <div className="relative">
-                <img src={materialIcon[props.material.convert.convertMaterial.marketName == "아비도스 철광석" ? "철광석" : "목재"]} alt={props.material.convert.convertMaterial.marketName} className={"w-10 h-10 " + `${grade["일반"]}`} />
-                <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">100</span>
-              </div>
-              <span className={textColors["일반"]}>{props.material.convert.convertMaterial.marketName == "아비도스 철광석" ? "철광석" : "목재"}</span>
-            </div>
-            <i className="flex justify-center items-center xi-arrow-right p-2"></i>
-            <div className="flex justify-start items-center gap-2 p-2">
-              <div className="relative">
-                <img
-                  className={`w-10 h-10 ${grade.일반}`}
-                  src={materialIcon[lastString === "들꽃" ? "채집의 가루" : lastString === "철광석" ? "채광의 가루" : lastString === "목재" ? "벌목의 가루" : lastString === "생고기" ? "수렵의 가루" : lastString === "유물" ? "고고학의 가루" : "낚시의 가루"]}
-                  alt="가루"
-                />
-                <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">80</span>
-              </div>
-              <span>{lastString === "들꽃" ? "채집의 가루" : lastString === "철광석" ? "채광의 가루" : lastString === "목재" ? "벌목의 가루" : lastString === "생고기" ? "수렵의 가루" : lastString === "유물" ? "고고학의 가루" : "낚시의 가루"}</span>
-            </div>
-
-            {/*가루 -> 오레하 , 아비도스 */}
-            <div className="flex justify-start items-center gap-2 p-2">
-              <div className="relative">
-                <img
-                  className={`w-10 h-10 ${grade.일반}`}
-                  src={materialIcon[lastString === "들꽃" ? "채집의 가루" : lastString === "철광석" ? "채광의 가루" : lastString === "목재" ? "벌목의 가루" : lastString === "생고기" ? "수렵의 가루" : lastString === "유물" ? "고고학의 가루" : "낚시의 가루"]}
-                  alt="가루"
-                />
-                <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">100</span>
-              </div>
-              <span>{lastString === "들꽃" ? "채집의 가루" : lastString === "철광석" ? "채광의 가루" : lastString === "목재" ? "벌목의 가루" : lastString === "생고기" ? "수렵의 가루" : lastString === "유물" ? "고고학의 가루" : "낚시의 가루"}</span>
-            </div>
-            <i className="flex justify-center items-center xi-arrow-right p-2"></i>
-            <div className="flex justify-start items-center gap-2 p-2">
-              <div className="relative">
-                <img src={materialIcon[props.material.convert.convertMaterial.marketName as keyof typeof materialIcon]} alt={props.material.convert.convertMaterial.marketName} className={"w-10 h-10 " + `${grade[props.material.convert.convertMaterial.grade]}`} />
-                <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">10</span>
-              </div>
-              <span className={textColors[props.material.convert.convertMaterial.grade]}>{props.material.convert.convertMaterial.marketName}</span>
-            </div>
-          </>
-        );
-      }
-    }
-    // 오레하 , 아비도스, 진귀한 가죽,  진귀한 유물
-    return (
-      <>
-        <div className="mt-3 col-span-3 flex justify-between items-center">
-          <div className={"font-semibold " + `${textColors[props.material.grade]}`}>{props.material.marketName}</div>
-          {/*이득률 */}
-          <div className={"flex justify-start items-center font-semibold " + `${props.material.convert && props.material.convert.proportion > 0 ? "text-red-400" : "text-blue-400"}`}>
-            이득률 : {props.material.convert && isFinite(props.material.convert.proportion) ? Math.round((props.material.convert.proportion - 1) * 10000) / 100 + "%" : "0%"}
-          </div>
-        </div>
-        <div className="flex justify-start items-center gap-2 p-2 border-t border-solid border-bddark">
-          <div className="relative">
-            <img src={materialIcon[props.material.marketName as keyof typeof materialIcon]} alt={props.material.marketName} className={"w-10 h-10 " + `${grade[props.material.grade]}`} />
-            <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{props.material.convert?.convertMaterial.grade === "일반" ? "25" : ""}</span>
-          </div>
-          <span className={textColors[props.material.grade]}>{props.material.marketName}</span>
-        </div>
-        <i className="flex justify-center items-center xi-arrow-right p-2 border-t border-solid border-bddark"></i>
-        {props.material.convert ? (
-          <div className="flex justify-start items-center gap-2 p-2 border-t border-solid border-bddark">
-            <div className="relative">
-              <img src={materialIcon[props.material.convert.convertMaterial.marketName as keyof typeof materialIcon]} alt={props.material.convert.convertMaterial.marketName} className={"w-10 h-10 " + `${grade[props.material.convert.convertMaterial.grade]}`} />
-              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{props.material.convert?.convertMaterial.grade === "일반" ? "50" : ""}</span>
-            </div>
-            <span className={textColors[props.material.convert.convertMaterial.grade]}>{props.material.convert.convertMaterial.marketName}</span>
-          </div>
-        ) : (
-          <div className="flex justify-start items-center gap-2 p-2 border-t border-solid border-bddark">
-            <div className="relative">
-              <img src={materialIcon[props.material.marketName as keyof typeof materialIcon]} alt={props.material.marketName} className={"w-10 h-10 " + `${grade[props.material.grade]}`} />
-              <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white"></span>
-            </div>
-            <span className={textColors[props.material.grade]}>{props.material.marketName}</span>
-          </div>
-        )}
-      </>
-    );
-  }
-}
-
-//재료 변환 결과 component
-/* 
-  porps{
-    materialItem:{
-      icon: string,
-      grade: string,
-      marketName: string,
-      quantity: number,
-    },
-    materialItemConvert:{
-      icon: string,
-      grade: string,
-      marketName: string,
-      quantity: number,
-    }
-  }
-
-*/
-
-interface MaterialItem {
-  icon: string;
-  grade: string;
-  marketName: string;
-  quantity?: number;
-}
-
-interface MaterialItemList {
-  materialList: [
-    {
-      materialItem: MaterialItem;
-      materialItemConvert: MaterialItem;
-    }
-  ];
-  materialListSimplify: {
-    materialItem: MaterialItem;
-    materialItemConvert: MaterialItem;
-  };
-  simplify: boolean;
-}
-
-function MaterialConvertItem(props: MaterialItemList) {
-  //배경색
-  const grade: Grade = {
-    일반: "imgBackground1",
-    고급: "imgBackground2",
-    희귀: "imgBackground3",
-    영웅: "imgBackground4",
-    전설: "imgBackground5",
-    유물: "imgBackground6",
-    고대: "imgBackground7",
-  };
-
-  //텍스트 색상
-  const textColors: Grade = {
-    일반: "",
-    고급: "textColor2",
-    희귀: "textColor3",
-    영웅: "textColor4",
-    전설: "textColor5",
-    유물: "textColor6",
-    고대: "textColor7",
-  };
-
-  const materialList = props.materialList;
-  const materialListSimplify = props.materialListSimplify;
+function MaterialConvertItem(props: { convertList: ConvertList; simplify: boolean }) {
+  //재료 아이템 리스트
+  const materialList = props.convertList.materialList;
+  //간소화 정보
+  const simplify = props.convertList.materialConvertListSimplify;
 
   //간소화 quantitiy 표시 안함
   if (props.simplify) {
     return (
-      <div className="lg:w-[500px] grid grid-cols-[1fr_0.3fr_1fr] gap-y-1 font-semibold">
-        <div className="flex justify-start items-center gap-2 p-2 border-t border-solid border-bddark">
-          <img src={materialIcon[materialListSimplify.materialItem.marketName as keyof typeof materialIcon]} alt={materialListSimplify.materialItem.marketName} className={"w-10 h-10 " + `${grade[materialListSimplify.materialItem.grade]}`} />
-          <span className={textColors[materialListSimplify.materialItem.grade]}>{materialListSimplify.materialItem.marketName}</span>
+      <>
+        <div className="mt-3 col-span-3 flex justify-between items-center">
+          <div className={"font-semibold " + `${textColors[simplify.Before.grade]}`}>{simplify.Before.marketName}</div>
+          {/*이득률 */}
+          <div className={"flex justify-start items-center font-semibold " + `${props.convertList.proportion !== 1 ? "text-red-400" : "text-blue-400"}`}>이득률 : {isFinite(props.convertList.proportion) ? Math.round((props.convertList.proportion - 1) * 1000) / 10 + "%" : "0%"}</div>
         </div>
-        <i className="flex justify-center items-center xi-arrow-right p-2 border-t border-solid border-bddark"></i>
-        <div className="flex justify-start items-center gap-2 p-2 border-t border-solid border-bddark">
-          <img src={materialIcon[materialListSimplify.materialItemConvert.marketName as keyof typeof materialIcon]} alt={materialListSimplify.materialItemConvert.marketName} className={"w-10 h-10 " + `${grade[materialListSimplify.materialItemConvert.grade]}`} />
-          <span className={textColors[materialListSimplify.materialItemConvert.grade]}>{materialListSimplify.materialItemConvert.marketName}</span>
+        <div className="lg:w-[500px] grid grid-cols-[1fr_0.3fr_1fr] gap-y-1 font-semibold">
+          <div className="flex justify-start items-center gap-2 p-2 border-t border-solid border-bddark">
+            <img src={materialIcon[simplify.Before.marketName as keyof typeof materialIcon]} alt={simplify.Before.marketName} className={"w-10 h-10 " + `${grade[simplify.Before.grade]}`} />
+            <span className={textColors[simplify.Before.grade]}>{simplify.Before.marketName}</span>
+          </div>
+          <i className="flex justify-center items-center xi-arrow-right p-2 border-t border-solid border-bddark"></i>
+          <div className="flex justify-start items-center gap-2 p-2 border-t border-solid border-bddark">
+            <img src={materialIcon[simplify.After.marketName as keyof typeof materialIcon]} alt={simplify.After.marketName} className={"w-10 h-10 " + `${grade[simplify.After.grade]}`} />
+            <span className={textColors[simplify.After.grade]}>{simplify.After.marketName}</span>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   //간소화 x
   return (
-    <div className="lg:w-[500px] grid grid-cols-[1fr_0.3fr_1fr] gap-y-1 font-semibold">
-      {materialList.map((material) => {
-        return (
-          <>
-            <div className="flex justify-start items-center gap-2 p-2 border-t border-solid border-bddark">
-              <div className="relative">
-                <img src={materialIcon[material.materialItem.marketName as keyof typeof materialIcon]} alt={material.materialItem.marketName} className={"w-10 h-10 " + `${grade[material.materialItem.grade]}`} />
-                <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{material.materialItem.quantity}</span>
+    <>
+      <div className="mt-3 col-span-3 flex justify-between items-center">
+        <div className={"font-semibold " + `${textColors[simplify.Before.grade]}`}>{simplify.Before.marketName}</div>
+        {/*이득률 */}
+        <div className={"flex justify-start items-center font-semibold " + `${props.convertList.proportion !== 1 ? "text-red-400" : "text-blue-400"}`}>이득률 : {isFinite(props.convertList.proportion) ? Math.round((props.convertList.proportion - 1) * 1000) / 10 + "%" : "0%"}</div>
+      </div>
+      <div className="lg:w-[500px] grid grid-cols-[1fr_0.3fr_1fr] gap-y-1 font-semibold border-t border-solid border-bddark">
+        {materialList.map((material, index) => {
+          return (
+            <React.Fragment key={material.Before.marketName + index}>
+              <div className="flex justify-start items-center gap-2 p-2 ">
+                <div className="relative">
+                  <img src={materialIcon[material.Before.marketName as keyof typeof materialIcon]} alt={material.Before.marketName} className={"w-10 h-10 " + `${grade[material.Before.grade]}`} />
+                  <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{material.Before.quantity === 0 ? "" : material.Before.quantity}</span>
+                </div>
+                <span className={textColors[material.Before.grade]}>{material.Before.marketName}</span>
               </div>
-              <span className={textColors[material.materialItem.grade]}>{material.materialItem.marketName}</span>
-            </div>
-            <i className="flex justify-center items-center xi-arrow-right p-2 border-t border-solid border-bddark"></i>
-            <div className="flex justify-start items-center gap-2 p-2 border-t border-solid border-bddark">
-              <div className="relative">
-                <img src={materialIcon[material.materialItemConvert.marketName as keyof typeof materialIcon]} alt={material.materialItemConvert.marketName} className={"w-10 h-10 " + `${grade[material.materialItemConvert.grade]}`} />
-                <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{material.materialItemConvert.quantity}</span>
+              <i className="flex justify-center items-center xi-arrow-right p-2 "></i>
+              <div className="flex justify-start items-center gap-2 p-2 ">
+                <div className="relative">
+                  <img src={materialIcon[material.After.marketName as keyof typeof materialIcon]} alt={material.After.marketName} className={"w-10 h-10 " + `${grade[material.After.grade]}`} />
+                  <span className="absolute bottom-0 right-[0.125rem] text-xs font-semibold text-white">{material.After.quantity === 0 ? "" : material.After.quantity}</span>
+                </div>
+                <span className={textColors[material.After.grade]}>{material.After.marketName}</span>
               </div>
-              <span className={textColors[material.materialItemConvert.grade]}>{material.materialItemConvert.marketName}</span>
-            </div>
-          </>
-        );
-      })}
-    </div>
+            </React.Fragment>
+          );
+        })}
+      </div>
+    </>
   );
 }
 
