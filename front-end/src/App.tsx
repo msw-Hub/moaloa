@@ -12,7 +12,6 @@ import Auction from "./Router/auction/auction";
 import { AlertText } from "./hooks/useAlert";
 import Material from "./Router/material/material";
 import Home from "./Router/home/home";
-import MaterialRe from "./Router/material-re/material-re";
 
 function App() {
   const location = useLocation();
@@ -170,9 +169,6 @@ function App() {
             <Route path="/craft/:id" element={<CraftDetail></CraftDetail>}></Route>
             {/*생활 재료 판매 페이지*/}
             <Route path="/material" element={<Material></Material>}></Route>
-            {/*생활 재료 판매 페이지 refeactor */}
-            <Route path="/material-re" element={<MaterialRe></MaterialRe>}></Route>
-
             {/*경매 계산 페이지*/}
             <Route path="/auction" element={<Auction></Auction>}></Route>
           </Routes>
