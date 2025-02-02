@@ -126,10 +126,12 @@ function GemSearch() {
   let apicount = useRef(0); // API 키 카운트
   const apikeycount = apiKey.reduce((a, b) => (b !== "" ? a + 1 : a), 0); // API 키 개수
 
+  /**딜레이 함수(ms) */
   function delay(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
+  /**api 검색 요청 함수**/
   async function gemSerchAPISend() {
     try {
       count.current = 0;
