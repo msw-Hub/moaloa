@@ -416,7 +416,7 @@ function MaterialRe() {
       {materialList && (
         <div className="sm:text-sm text-xs flex justify-center lg:items-start items-center lg:flex-row flex-col gap-4 p-2">
           <div className="flex flex-col justify-start items-center gap-4 max-w-[22rem]">
-            <div className="content-box p-4 flex justify-center items-center col-span-1 w-full">
+            <div className="content-box p-4 flex justify-center items-center col-span-1 w-full gap-1">
               {categorys.map((category) => {
                 return (
                   <button className={"py-1 px-2 " + `${category.subCode === categoryState ? "active-btn" : "default-btn"}`} onClick={() => setCategoryState(Number(category.subCode))} key={category.subCode}>
