@@ -329,19 +329,19 @@ function CraftTest() {
 
     //기본 시세 판매 차익 및 원가이익률 계산
     const craftSellPrice = Math.ceil((craftItem.craftQuantity * (defaultSellPrice / craftItem.bundleCount) - craftPriceAll) * 100) / 100;
-    const craftCostMargin = Math.round((craftSellPrice / (craftItem.currentMinPrice * (craftItem.craftQuantity / craftItem.bundleCount) - craftSellPrice)) * 10000) / 100;
+    const craftCostMargin = Math.round((craftSellPrice / (craftItem.currentMinPrice * craftItem.craftQuantity - craftSellPrice)) * 10000) / 100;
 
     //전날 시세 판매 차익 및 원가이익률 계산
     const ydayCraftSellPrice = Math.ceil((craftItem.craftQuantity * (ydaySellPrice / craftItem.bundleCount) - craftPriceAll) * 100) / 100;
-    const ydayCraftCostMargin = Math.round((ydayCraftSellPrice / (craftItem.ydayAvgPrice * (craftItem.craftQuantity / craftItem.bundleCount) - ydayCraftSellPrice)) * 10000) / 100;
+    const ydayCraftCostMargin = Math.round((ydayCraftSellPrice / (craftItem.ydayAvgPrice * craftItem.craftQuantity - ydayCraftSellPrice)) * 10000) / 100;
 
     //변환 시세 판매 차익 및 원가이익률 계산
     const convertCraftSellPrice = Math.ceil((craftItem.craftQuantity * (defaultSellPrice / craftItem.bundleCount) - convertCraftPriceAll) * 100) / 100;
-    const convertCraftCostMargin = Math.round((convertCraftSellPrice / (craftItem.currentMinPrice * (craftItem.craftQuantity / craftItem.bundleCount) - convertCraftSellPrice)) * 10000) / 100;
+    const convertCraftCostMargin = Math.round((convertCraftSellPrice / (craftItem.currentMinPrice * craftItem.craftQuantity - convertCraftSellPrice)) * 10000) / 100;
     //기본 재료
 
     const ydayConvertCraftSellPrice = Math.ceil((craftItem.craftQuantity * (ydaySellPrice / craftItem.bundleCount) - convertCraftPriceAll) * 100) / 100;
-    const ydayConvertCraftCostMargin = Math.round((ydayConvertCraftSellPrice / (craftItem.ydayAvgPrice * (craftItem.craftQuantity / craftItem.bundleCount) - ydayConvertCraftSellPrice)) * 10000) / 100;
+    const ydayConvertCraftCostMargin = Math.round((ydayConvertCraftSellPrice / (craftItem.ydayAvgPrice * craftItem.craftQuantity - ydayConvertCraftSellPrice)) * 10000) / 100;
 
     return {
       craft: {
