@@ -210,8 +210,6 @@ function CraftDetail() {
     const updatedMaterial = updatedMaterialList[subCode];
     const updatedMaterialIndex = updatedMaterial.findIndex((item) => item.marketId === marketID);
 
-    //모든 재료 convert 삭제
-
     //재료 가격 수정
     updatedMaterial[updatedMaterialIndex] = {
       ...updatedMaterial[updatedMaterialIndex],
