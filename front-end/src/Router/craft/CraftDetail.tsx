@@ -526,7 +526,7 @@ function CraftDetail() {
                     priceStandard === "currentMinPrice" ? (
                       <div>{(craftDetail.craftQuantity / craftDetail.bundleCount) * (craftDetail.currentMinPrice - Math.ceil(craftDetail.currentMinPrice * 0.05))}</div>
                     ) : (
-                      <div>{(craftDetail.craftQuantity / craftDetail.bundleCount) * (craftDetail.ydayAvgPrice - Math.ceil(craftDetail.ydayAvgPrice * 0.05))}</div>
+                      <div>{(craftDetail.craftQuantity / craftDetail.bundleCount) * (Math.ceil(craftDetail.ydayAvgPrice) - Math.ceil(Math.ceil(craftDetail.ydayAvgPrice) * 0.05))}</div>
                     )
                   }
                   <img className="sm:w-5 sm:h-5 w-4 h-4" src={goldIcon} alt="gold" />
