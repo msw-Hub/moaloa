@@ -341,13 +341,13 @@ function MaterialRe() {
       //벌목과 채광만 고급 -> 일반 추가
       if (updatedMaterial === "90300" || updatedMaterial === "90400") {
         //고급 -> 일반
-        if (고급 < 일반 && 희귀1변환 < 일반 && 희귀2 < 일반) updatedMaterials[updatedMaterial][1].ConvertList = convertList(1, 0, 고급, 일반);
+        if (고급 <= 일반 && 희귀1변환 < 일반 && 희귀2 < 일반) updatedMaterials[updatedMaterial][1].ConvertList = convertList(1, 0, 고급, 일반);
         //고급 -> 희귀1
         else if (고급 < 희귀1변환 && 일반 < 희귀1변환 && 희귀2 <= 희귀1변환) updatedMaterials[updatedMaterial][1].ConvertList = convertList(1, 2, 고급, 희귀1변환);
         //고급 -> 희귀2
         else if (고급 < 희귀2 && 희귀1변환 <= 희귀2 && 일반 < 희귀2) updatedMaterials[updatedMaterial][1].ConvertList = convertList(1, 3, 고급, 희귀2);
         //고급 -> 고급
-        else if (희귀1변환 < 고급 && 희귀2 < 고급 && 일반 < 고급) updatedMaterials[updatedMaterial][1].ConvertList = convertList(1, 1, 고급, 고급);
+        else if (희귀1변환 < 고급 && 희귀2 < 고급 && 일반 <= 고급) updatedMaterials[updatedMaterial][1].ConvertList = convertList(1, 1, 고급, 고급);
       } else {
         //고급 -> 희귀1
         if (고급 < 희귀1변환 && 희귀2 <= 희귀1변환) updatedMaterials[updatedMaterial][1].ConvertList = convertList(1, 2, 고급, 희귀1변환);
