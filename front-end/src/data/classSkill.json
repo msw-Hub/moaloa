@@ -3040,5 +3040,127 @@
       "Class": "환수사",
       "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/ark_passive_dr/ark_passive_dr_2.png"
     }
+  ],
+  "발키리": [
+    {
+      "Value": 48100,
+      "Text": "간파 베기",
+      "Class": "발키리",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/hkf_skill/hkf_skill_01_3.png"
+    },
+    {
+      "Value": 48110,
+      "Text": "유성 찌르기",
+      "Class": "발키리",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/hkf_skill/hkf_skill_01_4.png"
+    },
+    {
+      "Value": 48120,
+      "Text": "전진 찌르기",
+      "Class": "발키리",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/hkf_skill/hkf_skill_01_5.png"
+    },
+    {
+      "Value": 48130,
+      "Text": "단죄의 쇄도",
+      "Class": "발키리",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/hkf_skill/hkf_skill_01_6.png"
+    },
+    {
+      "Value": 48140,
+      "Text": "단죄의 성흔",
+      "Class": "발키리",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/hkf_skill/hkf_skill_01_7.png"
+    },
+    {
+      "Value": 48150,
+      "Text": "단죄의 속삭임",
+      "Class": "발키리",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/hkf_skill/hkf_skill_01_8.png"
+    },
+    {
+      "Value": 48160,
+      "Text": "계시의 검",
+      "Class": "발키리",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/hkf_skill/hkf_skill_01_9.png"
+    },
+    {
+      "Value": 48170,
+      "Text": "계시의 진격",
+      "Class": "발키리",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/hkf_skill/hkf_skill_01_10.png"
+    },
+    {
+      "Value": 48180,
+      "Text": "계시의 집행",
+      "Class": "발키리",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/hkf_skill/hkf_skill_01_11.png"
+    },
+    {
+      "Value": 48190,
+      "Text": "안식의 폭풍",
+      "Class": "발키리",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/hkf_skill/hkf_skill_01_12.png"
+    },
+    {
+      "Value": 48200,
+      "Text": "안식의 비",
+      "Class": "발키리",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/hkf_skill/hkf_skill_01_13.png"
+    },
+    {
+      "Value": 48210,
+      "Text": "안식의 재",
+      "Class": "발키리",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/hkf_skill/hkf_skill_01_14.png"
+    },
+    {
+      "Value": 48220,
+      "Text": "진리의 선고",
+      "Class": "발키리",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/hkf_skill/hkf_skill_01_15.png"
+    },
+    {
+      "Value": 48230,
+      "Text": "진리의 륜",
+      "Class": "발키리",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/hkf_skill/hkf_skill_01_16.png"
+    },
+    {
+      "Value": 48240,
+      "Text": "구원의 터",
+      "Class": "발키리",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/hkf_skill/hkf_skill_01_17.png"
+    },
+    {
+      "Value": 48250,
+      "Text": "숭고한 맹세",
+      "Class": "발키리",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/hkf_skill/hkf_skill_01_18.png"
+    },
+    {
+      "Value": 48260,
+      "Text": "구원의 은총",
+      "Class": "발키리",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/hkf_skill/hkf_skill_01_19.png"
+    },
+    {
+      "Value": 48270,
+      "Text": "숭고한 도약",
+      "Class": "발키리",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/hkf_skill/hkf_skill_01_20.png"
+    },
+    {
+      "Value": 16000,
+      "Text": "신앙 스킬",
+      "Class": "발키리",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/hkf_skill/hkf_skill_01_21.png"
+    },
+    {
+      "Value": 48070,
+      "Text": "종언의 빛",
+      "Class": "발키리",
+      "Icon": "https://cdn-lostark.game.onstove.com/efui_iconatlas/hkf_skill/hkf_skill_01_24.png"
+    }
   ]
 }
