@@ -3,7 +3,7 @@ import { useAlert } from "../../hooks/useAlert";
 import { AuctionMetas } from "../../metadatas/metadatas";
 
 interface Auction {
-  commission: number; //판매 수수료
+  commission?: number; //판매 수수료
 
   bEPPrice: number; //손익분기점
   bEPPriceProfit: number; //판매 차익
@@ -61,77 +61,34 @@ function Auction() {
       return;
     }
 
-    const sellPrice = Math.floor(auctionPrice * 0.95);
-    const commission = Math.floor(auctionPrice * 0.05);
+    // const bEPPrice = Math.floor(auctionPrice * value);
+    const bEPPrice = Math.floor(((0.95 * (people - 1)) / (people - 1 + 0.95)) * auctionPrice);
+    const bEPPriceProfit = Math.floor(auctionPrice * 0.95 - bEPPrice);
+    const bEPPriceDistribution = Math.floor((bEPPrice * 0.95) / (people - 1));
 
-    //입찰가가 100,000골드 이하일 경우
-    const bid = sellPrice - sellPrice / people;
-    if (bid <= 100000) {
-      const bEPPrice = sellPrice - sellPrice / people;
-      const bEPPriceProfit = sellPrice - (sellPrice - sellPrice / people);
-      const bEPPriceDistribution = sellPrice / people;
+    const bidPrice = Math.floor(bEPPrice / 1.1);
+    const bidPriceProfit = Math.floor(auctionPrice * 0.95 - bidPrice);
+    const bidPriceDistribution = Math.floor((bidPrice * 0.95) / (people - 1));
 
-      const bidPriceProfit = sellPrice - (sellPrice - sellPrice / people) / 1.1;
+    const gainPrice = Math.floor(bEPPrice / (1.1 - 0.001 * (100 - profitRate)));
+    const gainPriceProfit = Math.floor(auctionPrice * 0.95 - gainPrice);
+    const gainPriceDistribution = Math.floor((gainPrice * 0.95) / (people - 1));
 
-      //이득률 계산
-      const gainPrice = bEPPrice / (1.1 - 0.001 * (100 - profitRate)); //이득 적정 입찰가
-      const gainPriceProfit = sellPrice - gainPrice; //판매 차익
-      const gainPriceDistribution = gainPrice / (people - 1); //분배금
+    setAuction({
+      // commission: Math.floor(commission),
 
-      setAuction({
-        commission: Math.floor(commission),
+      bEPPrice: Math.floor(bEPPrice),
+      bEPPriceProfit: Math.floor(bEPPriceProfit),
+      bEPPriceDistribution: Math.floor(bEPPriceDistribution),
 
-        bEPPrice: Math.floor(bEPPrice),
-        bEPPriceProfit: Math.floor(bEPPriceProfit),
-        bEPPriceDistribution: Math.floor(bEPPriceDistribution),
+      bidPrice: Math.floor(bidPrice),
+      bidPriceProfit: Math.floor(bidPriceProfit),
+      bidPriceDistribution: Math.floor(bidPriceDistribution),
 
-        bidPrice: Math.floor(bEPPrice / 1.1),
-        bidPriceProfit: Math.floor(bidPriceProfit),
-        bidPriceDistribution: Math.floor(bEPPriceDistribution / 1.1),
-
-        gainPrice: Math.floor(gainPrice),
-        gainPriceProfit: Math.floor(gainPriceProfit),
-        gainPriceDistribution: Math.floor(gainPriceDistribution),
-      });
-    }
-    //분배금이 100,000 이상일 경우 10만골을 초과하는 금액에 대해서는 5%의 수수료가 발생합니다.
-    //예시 : 200,000골드의 분배금이 발생할 경우 100,000골드에 대해서는 수수료가 없지만, 나머지 100,000골드에 대해서는 5%의 수수료가 발생합니다.
-    // 따라서 200,000골드의 분배금에서 5%의 수수료가 발생한 금액은 100,000골드 * 0.05 = 5,000골드입니다.
-    else {
-      const bEPPrice = ((people - 1) * (0.95 * auctionPrice) - 5000) / (people - 1 + 0.95);
-
-      // N빵 입찰가 계산
-      const bEPPriceCommission = bEPPrice - (bEPPrice - 100000) * 0.05; //금액
-      const bEPPriceProfit = sellPrice - bEPPrice; //판매 차익
-      const bEPPriceDistribution = bEPPriceCommission / (people - 1); //분배금
-
-      //입찰적정가 계산
-      const bidPrice = bEPPrice / 1.1; //입찰적정가
-      const bidPriceCommission = bidPrice - (bidPrice - 100000) * 0.05; //금액
-      const bidPriceProfit = sellPrice - bidPrice; //판매 차익
-      const bidPriceDistribution = bidPriceCommission / (people - 1); //분배금
-      //이득률 계산
-      const gainPrice = bEPPrice / (1.1 - 0.001 * (100 - profitRate)); //이득 적정 입찰가
-      const gainPriceCommission = gainPrice - (gainPrice - 100000) * 0.05; //금액
-      const gainPriceProfit = sellPrice - gainPrice; //판매 차익
-      const gainPriceDistribution = gainPriceCommission / (people - 1); //분배금
-
-      setAuction({
-        commission: Math.floor(commission),
-
-        bEPPrice: Math.floor(bEPPrice),
-        bEPPriceProfit: Math.floor(bEPPriceProfit),
-        bEPPriceDistribution: Math.floor(bEPPriceDistribution),
-
-        bidPrice: Math.floor(bidPrice),
-        bidPriceProfit: Math.floor(bidPriceProfit),
-        bidPriceDistribution: Math.floor(bidPriceDistribution),
-
-        gainPrice: Math.floor(gainPrice),
-        gainPriceProfit: Math.floor(gainPriceProfit),
-        gainPriceDistribution: Math.floor(gainPriceDistribution),
-      });
-    }
+      gainPrice: Math.floor(gainPrice),
+      gainPriceProfit: Math.floor(gainPriceProfit),
+      gainPriceDistribution: Math.floor(gainPriceDistribution),
+    });
   }, [auctionPrice, people, profitRate]);
 
   //텍스트 복사
@@ -144,7 +101,11 @@ function Auction() {
       <AuctionMetas></AuctionMetas>
       {/* 가격 , 인원 , 이득률 퍼센트 설정 */}
       <div className="content-box col-span-2 grid grid-cols-1 gap-4 p-4 font-medium">
-        <h1 className="font-bold">경매 계산기</h1>
+        <div className="flex justify-between items-center">
+          <h1 className="font-bold">경매 계산기</h1>
+          {/* 패치 내용 적용일자 텍스트 */}
+          <div className="text-xs">2025.07.23 패치 반영</div>
+        </div>
         <input className="content-box border-solid border border-bddark p-4" onFocus={(e) => e.target.select()} type="number" placeholder="가격" onChange={(e) => setAuctionPrice(Number(e.target.value))} />
         <div className="flex justify-evenly items-center  text-nowrap">
           {[4, 8, 16, 30].map((v) => (
