@@ -99,7 +99,7 @@ INSERT INTO craft_material_entity (id, market_id, market_name, sub_code, bundle_
 (37, 101261, '수면 폭탄', 60300, 1, 'https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_69.png', '희귀', 24, 24, 21.9),
 (38, 101271, '성스러운 폭탄', 60300, 1, 'https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_70.png', '희귀', 24, 24, 23),
 (39, 101042, '신호탄', 60400, 1, 'https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_4.png', '고급', 4, 4, 4.5),
-(40, 101063, '정령의 회복약', 60200, 1, 'https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_8.png', '영웅', 35, 35, 34.5)
+(40, 101063, '정령의 회복약', 60200, 1, 'https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_8.png', '영웅', 35, 35, 34.5),
 (41, 101916, '페로몬 정수', 60400,1,'https://cdn-lostark.game.onstove.com/efui_iconatlas/battle_item/battle_item_01_78.png', '희귀', 12, 12, 16.5);
 
 
