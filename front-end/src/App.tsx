@@ -1,18 +1,17 @@
 import { Link, Route, Routes, useLocation } from "react-router-dom";
 import useDarkMode from "./hooks/useDarkMode";
-// import GemSearch from "./Router/gemSearch/GemSearch";
+import GemSearch from "./Router/gemSearch/GemSearch";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "./components/modal";
-// import Craft from "./Router/craft/Craft";
-// import CraftDetail from "./Router/craft/CraftDetail";
+import Craft from "./Router/craft/Craft";
+import CraftDetail from "./Router/craft/CraftDetail";
 import { RootState } from "./store/store";
 import { setApiKey } from "./store/apiKey";
 import { useState } from "react";
 import Auction from "./Router/auction/auction";
 import { AlertText } from "./hooks/useAlert";
-// import Material from "./Router/material/material";
+import Material from "./Router/material/material";
 import Home from "./Router/home/home";
-import Maintenance from "./Router/maintenance/Maintenance";
 
 function App() {
   const location = useLocation();
@@ -163,17 +162,17 @@ function App() {
             {/*메인페이지*/}
             <Route path="/" element={<Home></Home>}></Route>
             {/*보석 검색 페이지*/}
-            <Route path="/gemsearch" element={<Maintenance></Maintenance>}></Route>
-            {/* <Route path="/gemsearch" element={<GemSearch></GemSearch>}></Route> */}
+            {/* <Route path="/gemsearch" element={<Maintenance></Maintenance>}></Route> */}
+            <Route path="/gemsearch" element={<GemSearch></GemSearch>}></Route>
             {/*영지 제작 페이지*/}
-            <Route path="/craft" element={<Maintenance></Maintenance>}></Route>
-            {/* <Route path="/craft" element={<Craft></Craft>}></Route> */}
+            {/* <Route path="/craft" element={<Maintenance></Maintenance>}></Route> */}
+            <Route path="/craft" element={<Craft></Craft>}></Route>
             {/*영지 제작 페이지 detail*/}
-            <Route path="/craft/:id" element={<Maintenance></Maintenance>}></Route>
-            {/* <Route path="/craft/:id" element={<CraftDetail></CraftDetail>}></Route> */}
+            {/* <Route path="/craft/:id" element={<Maintenance></Maintenance>}></Route> */}
+            <Route path="/craft/:id" element={<CraftDetail></CraftDetail>}></Route>
             {/*생활 재료 판매 페이지*/}
-            <Route path="/material" element={<Maintenance></Maintenance>}></Route>
-            {/* <Route path="/material" element={<Material></Material>}></Route> */}
+            {/* <Route path="/material" element={<Maintenance></Maintenance>}></Route> */}
+            <Route path="/material" element={<Material></Material>}></Route>
             {/*경매 계산 페이지*/}
             <Route path="/auction" element={<Auction></Auction>}></Route>
           </Routes>
