@@ -1,8 +1,13 @@
 name: CI/CD
 
+# AWS Elastic Beanstalk 배포용 워크플로다. 서버를 Oracle Cloud로 옮긴 뒤(2026-01)에는 서버에서 직접 빌드·배포하므로 쓰지 않는다.
+# 커밋 메시지에 [BE]가 들어가도 자동으로 돌지 않도록 push 트리거를 막고, 수동 실행(workflow_dispatch)만 남겼다(2026-11).
+# 이전 트리거:
+# on:
+#   push:
+#     branches: [ main ]
 on:
-  push:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:

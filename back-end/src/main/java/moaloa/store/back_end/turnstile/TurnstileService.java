@@ -25,13 +25,16 @@ public class TurnstileService {
         this.secret = secret;
     }
 
+    // 비밀 키를 로그에 남기지 않도록 출력을 막았다(2026-11, 저장소 공개 정리).
+    // 지금 프론트는 Turnstile 검증을 쓰지 않아 이 서비스는 사용되지 않는다. 처음 연결할 때 값 확인용으로 넣었던 로그다.
     @PostConstruct
     public void init() {
-        log.info("Turnstile Secret Key: {}", secret);  // secret 값 확인을 위한 로그
+        // log.info("Turnstile Secret Key: {}", secret);  // secret 값 확인을 위한 로그
     }
 
     public boolean verifyTurnstile(String token) {
-        log.info("토큰 검증을 시작합니다. token: {}", token);
+        // 검증용 토큰도 로그에 남기지 않는다(2026-11, 저장소 공개 정리)
+        // log.info("토큰 검증을 시작합니다. token: {}", token);
 
         String reqURL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
